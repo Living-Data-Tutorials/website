@@ -1,7 +1,7 @@
 ---
-title: "Tree Swallow Dataset"
+title: "Getting familiar with R and the Tree Swallow Dataset"
 description: |
-  A short description of the post.
+  This is a tutorial to get you familiar with R and explore ecological concepts through a Tree Swallow nest productivity dataset. Please download the accompanying RMarkdown file and data to follow along with this tutorial in R.
 author:
   - Elizabeth Houghton
   - Kirsten Palmier
@@ -9,48 +9,70 @@ date: 2022-04-07
 output:
   distill::distill_article:
     self_contained: false
+    code_folding: ~
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE) # so code text doesnt run off the page
+
+# ipak function: install and load multiple R packages.
+# check to see if packages are installed. Install them if they are not, then load them into the R session.
+ipak <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) 
+        install.packages(new.pkg, dependencies = TRUE)
+    sapply(pkg, require, character.only = TRUE)
+}
+
+packages <- c("dplyr", "ggplot2", "tidyr", "lubridate", "reshape", "readr", "vembedr", "xfun")
+ipak(packages)
 ```
 
-## Tree Swallow Nest Productivity 
+```{r echo=FALSE}
+xfun::embed_file('tree-swallow-dataset.Rmd', text = 'Download required RMarkdown file')
+```
 
-This is a tutorial to get you familiar with R and explore ecological concepts through a Tree Swallow nest productivity dataset. Before we jump into the weeds, let's get to know our dataset!  
-
-The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest’ boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
-
-Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
-
-![](TRES/tres.jpg)
-
-Through Bird Studies Canada, Long Point Bird Observatory monitored three nest box "colonies" of Tree Swallows at Long Point, two on the "mainland" near Port Rowan (at the Port Rowan sewagelagoons and adjacent to agricultural land at mudd creek) and the third at the tip of the Point.
-
-### The Point
-This colony was established in its present location in 1969. The nest boxes are located about 1 km west of the Tip of the point and are arranged 24.4m apart in a grid of numbered (north-south) rows and lettered (east-west) columns. Each box is designated by its position, so box 10G is in row 10 and column G. At the present time the rows in use are 1-19 and the letters are D-K, but many positions are unfilled and there are a total of 64 boxes.
-
-![](TRES/thePoint.png)
-
-### The Sewage Lagoon
-This colony was first established in 1977 and has since been expanded to a total of 77 boxes. The boxes are in two rows around the lagoon embankment, as well as across the street in a small cluster of 5 boxes.
-
-![](TRES/theSewage.png)
-
-### Mud Creek
-Established in 1987, the Mud Creek site is located 3.25 km north-northeast of Sewage Lagoon and contains 80 nest boxes. The habitat is an open, uncultivated field adjacent to a small woodlot.
-
-![](TRES/mudCreek.png)
+```{r echo=FALSE}
+xfun::embed_dir('TRES/', text = 'Download required data')
+```
 
 ## Tutorial Learning Objectives
 
 In this tutorial you will learn how to:
 
 - Learn to work with data within R studio
-  - Use simple commands in R (e.g., subsetting, changing class, aggregating data)
+  - Use simple commands in `R` (e.g., subsetting, changing class, aggregating data)
   - Graph a simple bar chart
   - Graph a time series 
 - Observe trends in figures
+
+## Tree Swallow Nest Productivity 
+Before we jump into the weeds, let's get to know our dataset!
+
+The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest’ boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
+
+Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
+
+![](TRES/tres.jpg){.external}
+
+Through Bird Studies Canada, Long Point Bird Observatory monitored three nest box "colonies" of Tree Swallows at Long Point, two on the "mainland" near Port Rowan (at the Port Rowan sewage lagoons and adjacent to agricultural land at mudd creek) and the third at the tip of the Point.
+
+![](TRES/Long_point_map.png){.external}
+
+### The Point
+This colony was established in its present location in 1969. The nest boxes are located about 1 km west of the Tip of the point and are arranged 24.4m apart in a grid of numbered (north-south) rows and lettered (east-west) columns. Each box is designated by its position, so box 10G is in row 10 and column G. At the present time the rows in use are 1-19 and the letters are D-K, but many positions are unfilled and there are a total of 64 boxes.
+
+![The Point colony area. Location of bird boxes outlined in black.](TRES/thePoint.png){.external}
+
+### The Sewage Lagoon
+This colony was first established in 1977 and has since been expanded to a total of 77 boxes. The boxes are in two rows around the lagoon embankment, as well as across the street in a small cluster of 5 boxes.
+
+![Sewage Lagoon colony area. Location of bird boxes outlined in black.](TRES/theSewage.png){.external}
+
+### Mud Creek
+Established in 1987, the Mud Creek site is located 3.25 km north-northeast of Sewage Lagoon and contains 80 nest boxes. The habitat is an open, uncultivated field adjacent to a small woodlot.
+
+![Mud Creek colony area. Location of bird boxes outlined in black.](TRES/mudCreek.png){.external}
 
 ## Installing R
 
@@ -67,11 +89,10 @@ In this next section we are going to walk you through a few of the concepts you 
 
 ### Importing data and packages
 
-In order to work with certain set of data in R, you must first pull them into the program.
+In order to work with certain set of data in `R`, you must first pull them into the program.
 
-```{r, echo = TRUE, warnings = FALSE, message = FALSE}
-
-# Before we can pull packages into 'R', you will first have to install them onto your computer. Run the following code to download the required packages (without the #s, you only need to install them once):
+```{r, echo = TRUE, warning = FALSE, message = FALSE, code_folding=TRUE}
+# Before we can pull packages into R, you will first have to install them onto your computer. Run the following code to download the required packages (without the #s, you only need to install them once):
 
 # install.packages("dplyr")
 # install.packages("ggplot2")
@@ -81,7 +102,6 @@ In order to work with certain set of data in R, you must first pull them into th
 # install.packages("readr")
 
 # Now we can start running those packages by calling on them using the following code:
-
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -89,10 +109,9 @@ library(lubridate)
 library(reshape)
 library(readr)
 
+# And lastly, we need to pull the actual datasets into R
 banding <- read.csv("TRES/banding_final.csv") #this dataset set contains banding information
-
 nest <- read.csv("TRES/nest_final.csv") #this dataset contains nest information
-
 nestling <- read.csv("TRES/nestling_final.csv") #this dataset contains nestling information
 ```
 
@@ -100,18 +119,18 @@ nestling <- read.csv("TRES/nestling_final.csv") #this dataset contains nestling 
 
 Let's do some data exploring! First, let's see what is in the banding dataset. This will help give us a better idea of what we can look at.
 
-```{r echo=TRUE}
-#look into the first few rows of the banding dataset. You can do this using the head() function
+```{r echo=TRUE, code_folding=TRUE}
+# look into the first few rows of the banding dataset. You can do this using the head() function
 head(banding) #where head() is the function and banding is the dataset
 ```
 
 You can dig in deeper by using the summary() and str() functions
 
-```{r echo=TRUE}
-#summarise the banding dataset
+```{r echo=TRUE, code_folding=TRUE}
+# summarise the banding dataset
 summary(banding) 
 
-#check the structure of the banding dataset
+# check the structure of the banding dataset
 str(banding) #This is important, because the variables need to match what they are being used for (i.e., to calculate mean, the variable must be numeric, not a character type)
 ```
 
@@ -123,21 +142,24 @@ str(banding) #This is important, because the variables need to match what they a
 
 Let's try pulling the first row from the banding dataset
 
-```{r echo=TRUE}
-banding[c(1),] #notice how there is a comma after c(1)? This specifies the first row!
+```{r echo=TRUE, code_folding=TRUE}
+banding[c(1),] #notice how there is a comma after c(1)? This specifies we want to subset the first row!
 ```
 Let's make a mini version of our banding dataset, and call it banding2, by subsetting rows 1 through 50 and columns 2, and 5 through 13
 
-```{r echo=TRUE}
+```{r echo=TRUE, code_folding=TRUE}
 banding2 <- banding[c(1:50), c(2,5:13)] #where banding2 is our new dataframe containing data from rows 1:50 and columns 1 and 5:13 from the banding dataset. 
 ```
 
-You can also run functions on different variables of your datasets which you can select by using `$`. You can wrap these in different functions to calculate various things. Let's calculate the mean weight from our banding2 dataset and assign it to a new variable called mean_weight.
+### Appplying different functions to data
 
-```{r echo=TRUE}
+You can also run functions on different variables of your datasets which you can select by using `$`. You can wrap these in different functions to calculate various things. For example, let's try calculating the mean weight from our banding2 dataset and assign it to a new variable called mean_weight.
+
+```{r echo=TRUE, code_folding=TRUE}
+# This line of code creates a column in banding2 called mean_weight and assigns the mean of the column weight from banding2 to it
 banding2$mean_weight <- mean(banding2$weight)
 
-#Let's take a quick look at banding2 now
+# Let's take a quick look at banding2 now
 head(banding2)
 ```
 
@@ -145,9 +167,9 @@ What if we wanted to calculate the mean weight of the Tree Swallows as recorded 
 
 aggregate(y ~ a + b + c + ..., df, mean)
 
-Where y is the variable you want to take the mean of, a, b, c... are variables that you are interested in grouping these means by, df is the dataframe that you are pulling these data from, and 'mean' is instructing the command that the summary statistic you want to complete is the mean. Lets try it out!
+Where y is the variable you want to take the mean of, a, b, c... are variables that you are interested in grouping these means by, df is the dataframe that you are pulling these data from, and mean is instructing the command that the summary statistic you want to complete is the mean. Lets try it out!
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, code_folding=TRUE}
 # If we wanted to look at the average weight of female and male birds in the banding dataset we would use aggregate() like this
 banding3 <- aggregate(weight ~ sex, banding, mean) # banding3 is where these values will be stored
 banding3
@@ -161,10 +183,7 @@ banding3
 
 
 
-
 ```
-
-
 
 Now that you have a good handle on basic subsetting, let's dig a little deeper and use logical operators to further subset your data. 
 
@@ -181,21 +200,19 @@ What if you want to focus in on looking at just one sex? How would you extract o
 
 It is important to note that certain logical operators only work on certain classes of data. For example, if we looked at sex (class of factor) we can't subset values that are less than or equal to Female (this would make no sense since Female is not a number or integer!).
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, code_folding=TRUE}
 # pull out female birds from your banding dataset 
 head(subset(banding, sex == "F")) #the head function limits the amount of rows displayed
 
 # Remember, if you want to store this in a df to look at later I would have to assign it to a vector called "female_birds"
 female_birds <- subset(banding, sex == "F")
-
 head(female_birds)
 
 # what if you wanted to look at female birds that weighed over 20g?
 female_birds <- subset(banding, sex == "F" & weight > 20)
-
 head(female_birds)
 
-#Notice how the vector female_birds changed from 853 observations to 495 observations?
+# Notice how the vector female_birds changed from 853 observations to 495 observations?
 ```
 
 
@@ -204,41 +221,32 @@ head(female_birds)
 
 ```{r, echo = TRUE}
 # Try to subset a dataframe called 'male_birds' that consists of male birds with the chord_length less than or equal to 150
-
-
-
-
-
-
 ```
 
 
 ***
 **Question**
 
-How many male birds have a chord_length less than or equal to 150?
+*How many male birds have a chord_length less than or equal to 150?*
 
-Answer:
-
-
-
+***
 
 
 Having fun yet? I know I am! Let's look at the basics of a plot. This image was pulled from [here]("https://www.open.edu/openlearn/mod/oucontent/view.php?id=90853&section=3.1"). 
 
-![](TRES/Graph.png)
+![](TRES/Graph.png){.external}
 
 Now that we are refreshed in the elements of a graph, let's graph a relatively simple bar plot with our banding data frame.
 
 Let's look at the number of banded and recaptured birds there were each year.
 We will use **ggplot** to visualize the data. 
 
-```{r echo = TRUE, warning = FALSE}
-#First, we will create a table base on the band_or_recapture column and the year column
+```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
+# First, we will create a table base on the band_or_recapture column and the year column
 tbl1 <- with(banding, table(band_or_recapture, year))  
 tbl1
 
-#Next, we can plot our table 
+# Next, we can plot our table 
 ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapture))+ #we've changed the format of our table to a dataframe so we can plot it. 
   geom_col(position = 'dodge') #geom_column is the type of graph, and position='dodge' allows us to visualize the barplots side by side.
 ```
@@ -247,8 +255,8 @@ ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapt
 Congrats! You've made your first graph. We can change elements of the graph by adding labels and titles, changing the theme and colours of our bars. 
 
 
-```{r echo = TRUE, warning = FALSE}
-#Add labels and change colours
+```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
+# Add labels and change colours
 ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapture))+ 
   geom_col(position = 'dodge') +
   xlab('Year') +
@@ -261,72 +269,60 @@ ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapt
 ***
 **Question**
 
-What trends do you see? Why do you think there are more recaptured birds compared to banded birds every year?
+*What trends do you see?*
 
-Answer:
+*Why do you think there are more recaptured birds compared to banded birds every year?*
 
-
-
-
-
-
-
+***
 
 (If you'd like to learn more about ggplot, [this]("https://www.datanovia.com/en/blog/ggplot-legend-title-position-and-labels/") tutorial is great!)
 
+## More data exploration
 
 Next, let's change gears and take a quick look at the egg nestling dataset.
 
-```{r echo =TRUE, warning = FALSE}
+```{r echo =TRUE, warning = FALSE, code_folding=TRUE}
+# Lets get a sense of what columns are present in our dataset
 head(nestling)
-```
 
-If we look at the structure of our new dataframe, nestling:
+# Lets look at the structure of our new dataframe, nestling:
 
-```{r echo = TRUE, warning = FALSE}
 str(nestling)
-```
 
-We don't have entries for all rows of our dataframe. They will appear as **NA**s. We see the weight is a character vector. Let's change that to numeric using the as.numeric() function. Let's start with the **day_1_weight** column:
 
-```{r echo = TRUE, warning = FALSE}
+#We don't have entries for all rows of our dataframe. They will appear as **NA**s. We see the weight #is a character vector. Let's change that to numeric using the as.numeric() function. Let's start #with the **day_1_weight** column:
+
 nestling$day_1_weight <- as.numeric(nestling$day_1_weight)
-```
 
-Now the **day_12_weight** column:
+# Now the **day_12_weight** column:
 
-```{r echo =TRUE, warning = FALSE}
 nestling$day_12_weight <- as.numeric(nestling$day_12_weight)
 ```
 
 
 We want to summarize our data so we can calculate the mean of each weight by year
 
-```{r echo = TRUE, warning = FALSE}
+```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
 nestling_weight <- nestling %>%
   group_by(year) %>% #groups weights by year
   filter(is.na(day_1_weight) == F,  #gets rid of NAs
          is.na(day_12_weight) == F) %>%
   summarise(mean_day_1 = mean(day_1_weight), #calculates the mean of each year 
             mean_day_12 = mean(day_12_weight)) 
-```
 
-We can convert the mean weights to long format, which gives us a weight column,
-with both weight variables, and a total column which contains the weights
+# We can convert the mean weights to long format, which gives us a weight column,
+# with both weight variables, and a total column which contains the weights
 
-```{r echo = TRUE, warning = FALSE}
 nestling_weight2 <- gather(nestling_weight, weight, total, mean_day_1:mean_day_12)
-```
 
-Look at the structure of our new dataframe, nestling_weight2
+#Look at the structure of our new dataframe, nestling_weight2
 
-```{r echo =TRUE, warning = FALSE}
 str(nestling_weight2)
 ```
 
 Ok, now we can plot it using **ggplot**.
 
-```{r echo = TRUE, warning = FALSE}
+```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
 ggplot(data = nestling_weight2,
        aes(x = year, y = total, group = weight)) + #Year goes on the x axis, weight(totals) on the y axis, and we group by each the means of each day
   geom_line(aes(linetype = weight, color = weight)) + #aes changes the aesthetics of the lines so that linetype and colors are different from each other
@@ -335,13 +331,13 @@ ggplot(data = nestling_weight2,
 
 Hmm, looks like something is not quite right in our plot. There seems to be an outlier within the data. If we assume this is a data entry error, we can get rid of it. Since it looks like an earlier date, let's just look at the first few rows (n = 10) and see if we can find the outlier. 
 
-```{r echo =TRUE, warning = FALSE}
+```{r echo =TRUE, warning = FALSE, code_folding=TRUE}
 head(nestling_weight2, n = 10)
 ```
 
 Ah ha! The first row contains a mean_day_1 weight of 21.828571. This is likely an error. Let's get rid of it and then re-plot it.
 
-```{r echo = TRUE, warning = FALSE}
+```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
 nestling_weight2 <- nestling_weight2[-1,]
 ggplot(data = nestling_weight2,
        aes(x = year, y = total, group = weight)) + #Year goes on the x axis, weight(totals) on the y axis, and we group by each the means of each day
@@ -349,21 +345,20 @@ ggplot(data = nestling_weight2,
   theme_classic()
 ```
 
+Much better!
+
 ***
-**Question**
+**Questions**
 
-Much better! Do you see any trends within this datasets over time? 
-What other variables could you look at within the nestling dataset?
+*Do you see any trends within this datasets over time?*
 
-Answer:
+*What other variables could you look at within the nestling dataset?*
 
-
+***
 
 Check out this cool video on nesting Tree Swallows!
 
-```{r, echo = FALSE, message= FALSE, }
+```{r, echo = FALSE, message= FALSE}
 library(vembedr)
 embed_url("https://www.youtube.com/watch?v=0FHSJnza9P8")
 ```
-
-

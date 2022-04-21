@@ -18,9 +18,9 @@ navbar:
           href: lessons/2022-04-07-anticosti-historical-data-tutorial/index.html
         - text: "Alberta Trees"
           href: lessons/2022-04-07-alberta-trees-tutorial/index.html
-        - text: "Tree Swallow Dataset"
-          href: lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html
-        - text: "Sexual Dimorphism and Sexual Selection"
+        - text: "Tree Swallows: Data Exploration"
+          href: lessons/2022-04-07-tree-swallow-dataset/index.html
+        - text: "Tree Swallows: Sexual Dimorphism and Sexual Selection"
           href: lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html
     - text: "About"
       href: about.html
