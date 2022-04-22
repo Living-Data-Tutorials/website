@@ -107,5 +107,30 @@
     "preview": "lessons/2022-04-07-tree-swallow-dataset/tree-swallow-dataset_files/figure-html5/unnamed-chunk-11-1.png",
     "last_modified": "2022-04-09T03:16:21+00:00",
     "input_file": {}
+  },
+  {
+    "path": "lessons/2022-04-07-alberta-trees-tutorial/",
+    "title": "Alberta Trees Tutorial",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Jhoan Chavez",
+        "url": {}
+      },
+      {
+        "name": "Zihaohan Sang",
+        "url": {}
+      },
+      {
+        "name": "Rolando Trejo Pérez",
+        "url": {}
+      }
+    ],
+    "date": "2022-04-07",
+    "categories": [],
+    "contents": "\n\n\n\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-04-16T22:38:26-04:00",
+    "input_file": "alberta-trees-tutorial.knit.md"
   }
 ]

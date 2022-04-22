@@ -17,8 +17,6 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
-
-Learn more about using Distill at <https://rstudio.github.io/distill>.
-
-
+```{r, layout="l-screen-inset"}
+htmltools::tags$iframe(src = "https://rtrejo.shinyapps.io/Biodiversity_Alberta/", height = "1200px", width = "100%", `data-external` = "1")
+```
