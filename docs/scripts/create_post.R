@@ -1,6 +1,6 @@
-distill::create_post(title = "Tree Swallow Dataset",
-                     author = c("Elizabeth Houghton", "Kirsten Palmier"),
+distill::create_post(title = "Chronic Wasting Disease",
+                     author = c("Amy Forsythe", "Bryn Wiley"),
                      collection = "lessons",
-                     date = lubridate::ymd("2022-04-07"),
+                     date = lubridate::ymd("2022-06-03"),
                      edit = FALSE
 )
