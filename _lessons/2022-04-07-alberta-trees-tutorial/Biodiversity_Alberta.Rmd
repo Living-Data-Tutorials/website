@@ -1,9 +1,8 @@
-
 ---
-title: "**Alberta Trees Tutorial**"
-author: "Rolando Trejo (Université de Montréal),
-         Jhoan Chavez (University of Northern British Columbia),
-         Zihaohan Sang (University of Alberta)"
+title: Alberta Trees Tutorial
+author: "Zihaohan Sang (University of Alberta),
+        Rolando Trejo (Université de Montréal),
+        Jhoan Chavez (University of Northern British Columbia)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: learnr::tutorial
 runtime: shiny_prerendered
@@ -112,7 +111,7 @@ Two regions were used for this study: one in the Hondo-Slave Lake (hereafter, Ho
 
 ```{r fig2, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
 htmltools::img(
-				src = "https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Alberta_Project.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+				src = "https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Alberta_Project.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
 			)
 ```
 *Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects metadata, Alberta*
@@ -161,12 +160,12 @@ Alberta, including 660 000 km2, is a diverse Canadian province. Almost 2000 spec
   <summary> **Click here** </summary>
   <p>  
   
-In order to answer our questions, we will use data from two different datasets from a long-term tree and plant surveys in Alberta. We can respond our questions using data from a specific year. In this tutorial we will use 2010 data.Now we can better understand the regression line provided by graphing soil temperature and species richness. It basically follows a negative correlation (more species, less soil temperature). Regarding the boxplot graphic, we can see that stand 5 and 6 contains more species than stand 3 and 4. In stand 7 and 8 we can visualize outlines (extreme values). 
+In order to answer our questions, we will use data from two different datasets from long-term tree and plant surveys in Alberta. We can respond to our questions using data from a specific year. In this tutorial, we will use 2010 data. Now we can better understand the regression line provided by graphing soil temperature and species richness. It basically follows a negative correlation (more species, less soil temperature). Regarding the boxplot graphic, we can see that stand 5 and 6 contain more species than stand 3 and 4. In stands 7 and 8 we can visualize outlines (extreme values). 
 
-**7.1. Species richness variation by soil temperature (C)**
+**7.1. Species richness variation by soil temperature (°C)**
 
 ```{r,message=FALSE,warning=FALSE}
-# Species richness variation by soil temperature (C)
+# Species richness variation by soil temperature (°C)
 Hondo_VascularCover_2010_CLEAN<-read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_VascularCover_2010_CLEAN.csv", sep=";")
 Hondo_SoilTemp_2010_CLEAN<- read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_SoilTemp_2010_CLEAN.csv", sep=";")
 
@@ -199,7 +198,7 @@ bp
 
 **7.3. Counts of the number of species frequencies in each abundance class**
 
-We already know the patterns among stands, soil temperature, and interaction. But, what continuous variables (species richness and soil temperature) tell us regarding their frequency distributions? 
+We already know the patterns among stands, soil temperature, and interaction. But, what do continuous variables (species richness and soil temperature) tell us regarding their frequency distributions? 
 
 Species richness clearly follows a normal distribution.
 
@@ -324,7 +323,7 @@ Homogeneity of variance test
 bartlett.test(SR ~ stand,data = SR_SoilTemp) # We have homogeneity of variance (p-value = 0.1793)
 ```
 
-There are an homogeneous dispersion of the residuals regarding the graphic and the homogeneity of variance test(p-value = 0.1793). *The assumption is respected!*
+There is a homogeneous dispersion of the residuals regarding the graphic and the homogeneity of variance test(p-value = 0.1793). *The assumption is respected!*
 
 **10.2. Independence of the model residuals**
 
@@ -365,9 +364,9 @@ The residuals follow a normal distribution regarding the histogram and the Shapi
   <summary> **Click here** </summary>
   <p> 
   
-**Species richness as function of  stand**
+**Species richness as a function of  stand**
 
-Once we have corroborated the linear regression model assumption we can continuous with model interpretation and visualization. There are significant differences among stands (p < 2.2e-16). Stands 3 and 4 are associated to less species richness than stands 5 and 6.
+Once we have corroborated the linear regression model assumption we can continue with model interpretation and visualization. There are significant differences among stands (p < 2.2e-16). Stands 3 and 4 are associated with less species richness than stands 5 and 6.
 
 ```{r, include=TRUE,message=FALSE, echo=FALSE}
 
@@ -420,7 +419,7 @@ over <- 0.1*max( a$stats[nrow(a$stats),] )
  #     col=my_colors[as.numeric(LABELS[,1])] )
 ```
 
-Different colors in the stands means statistical differences.
+Different colours in the stands mean statistical differences.
 
   </details>
   
@@ -430,9 +429,9 @@ Different colors in the stands means statistical differences.
   <summary> **Click here** </summary>
   <p>  
   
-**12.1. SPECIES RICHNESS AS FUNCTION OF SOIL TEMPERATURE (C)**
+**12.1. SPECIES RICHNESS AS A FUNCTION OF SOIL TEMPERATURE (°C)**
 
-Run the following code and answer the question below. Here, we use the model one (M1) corresponding to species richness as function of soil temperature (C) to verify if there is any relationship between species richness and soil temperature alone. We will consider that model assumptions are respected.
+Run the following code and answer the question below. Here, we use model one (M1) corresponding to species richness as a function of soil temperature (C) to verify if there is any relationship between species richness and soil temperature alone. We will consider that model assumption are respected.
 
 ```{r M1_plot, exercise=TRUE, exercise.lines = 36, message=FALSE}
 # Importing data
@@ -475,7 +474,7 @@ Plot_AllData +
 
 ```
 
-Check the graphic, then the p-value of soil temperature (temp_C). Respond the following question:
+Check the graphic, then the p-value of soil temperature (temp_C). Respond to the following question:
 
 ```{r quizM1}
 quiz(
@@ -585,9 +584,9 @@ quiz(
 
 **12.3. INTERACTION MODEL**
 
-Situation: we are interested to model the species richness of Hondo as function of temperature (this is our main predictor of interest) but we don't know if we need to consider the stand as another important variable in the model. Observe the following graphics (M1, M3 and M4 model) and then the r squared and AICc into the summary table. Respond the questions below.
+Situation: we are interested to model the species richness of Hondo as a function of temperature (this is our main predictor of interest) but we don't know if we need to consider the stand as another important variable in the model. Observe the following graphics (M1, M3 and M4 model) and then the r squared and AICc into the summary table. Respond to the questions below.
 
-**12.3.1. Species richness as function of soil temperature (C) plus stand, and soil temperature-stand interaction**
+**12.3.1. Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 # Species richness as function of soil temperature (C)
@@ -614,7 +613,7 @@ Plot_AllData +
               slope     = -0.3346, col = "coral2")
 ```
 
-**12.3.2. Species richness as function of soil temperature (C) plus stand, and soil temperature-stand interaction**
+**12.3.2. Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 M3 <- lm(SR ~ temp_C*stand,data = SR_SoilTemp)
@@ -624,7 +623,7 @@ interact_plot(M3, pred = temp_C, modx = stand, x.label = "Soil temperature (C)",
 
 ```
 
-**12.3.3. Species richness as function of soil temperature (C) and stand**
+**12.3.3. Species richness as a function of soil temperature (°C) and stand**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp) 
@@ -652,7 +651,7 @@ delta is the AICc difference with the lowest value
 
 ```{r quizInteraction}
 quiz(
-  question("Regarding R squared and graphics, whic is the best model?",
+  question("Regarding R squared and graphics, which is the best model?",
     answer("M3 model",correct = TRUE),
     answer("M1 model"),
     answer("M4 model"),
@@ -669,7 +668,7 @@ quiz(
   <summary> **Click here** </summary>
   <p>  
   
-The graphics and results presented in this tutorial were obtained using historical data of soil temperature and vascular diversity datasets from Hondo stands. Data is available at [https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP3/PZCAVE]. We imported the original datasets from Import dataset in R Studio.
+The graphics and results presented in this tutorial were obtained using historical soil temperature data, and vascular diversity datasets from Hondo stands. Data is available at  [https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP3/PZCAVE]. We imported the original datasets from the Import dataset in R Studio.
 
 ```
 Hondo_VascularCover_1980_2015 # Historical
@@ -762,7 +761,7 @@ use_align("center")
   <summary> **Click here** </summary>
   <p>  
   
-An interesting concept in biology, and more in forestry, is the ring dynamics of trees over time. Dendrochronology is the dating and study of annual rings in trees (see https://ltrr.arizona.edu/about/treerings). Dating and studying annual rings allow us to do inferences in other tree fields of study, for example, linking dendrochronolgy with weather. Here, Dendroclimatology studies and uses the growth ring patterns to reconstruct past variations in climate (Fritts. 1987). Since well-defined annual-growth rings can be observed in the wood (rings) from many species of temperate forest trees throughout the world, in certain circumstances, these growth rings contain useful information about varying environmental conditions affecting their growth like temperature changes and humidity as well as tree features (age and size), depending on the species and latitude for what other data analysis (climate data) should be included (Tumajer, J., & Lehejček, J. 2019).  
+An interesting concept in biology, and more in forestry, is the ring dynamics of trees over time. Dendrochronology is the dating and study of annual rings in trees (see https://ltrr.arizona.edu/about/treerings). Dating and studying annual rings allow us to do inferences in other tree fields of study, for example, linking dendrochronology with the weather. Here, Dendroclimatology studies and uses the growth ring patterns to reconstruct past variations in climate (Fritts. 1987). Since well-defined annual-growth rings can be observed in the wood (rings) from many species of temperate forest trees throughout the world, in certain circumstances, these growth rings contain useful information about varying environmental conditions affecting their growth like temperature changes and humidity as well as tree features (age and size), depending on the species and latitude for what other data analysis (climate data) should be included (Tumajer, J., & Lehejček, J. 2019). 
 
 </details>
 
@@ -772,7 +771,7 @@ An interesting concept in biology, and more in forestry, is the ring dynamics of
   <summary> **Click here** </summary>
   <p>  
 
-Let's plot some graphics. We can plot the average ring width (mm) in axe y in function of time (year) in axe x (see red line). But, we can also plot the average ring width (mm) in axe y in function of time (year) in axe x, simultaneously considering the stands (see gray lines). Do you have some ideas about what these trends might be telling us?
+Let's plot some graphics. We can plot the average ring width (mm) in axe y in the function of time (year) in axe x (see red line). But, we can also plot the average ring width (mm) in axe y as a function of time (year) in axe x, simultaneously considering the stands (see gray lines). Do you have some ideas about what these trends might be telling us?
 
   
    </details>
@@ -877,8 +876,11 @@ hondo_dt %>% group_by(year, stand) %>%
   <summary> **What can we deduce from the graphics?** (Open responses) </summary>
   <p> BINGO!!!: 
   
-     1. Tree ring width decreases over time, and patterns, changes follow an oscillation behavior which might suggest external (temperature, humidity) and internal (age, latitude, species) factors affecting tree growth, respectively. 
-     2. It seems that stands follow different patters, perhaps they have different composition, or why not, they can be more or less diverse in vascular species affecting growth. As you can see, the information observed in the graphics can bring us some insights about what is going on with ring trees dynamics.
+     1. Tree ring width decreases over time, and patterns change following an oscillating behaviour, suggesting that external (temperature, humidity) and internal (age, latitude, species) factors affect tree growth.
+     
+     2.  It seems that stands follow different patterns, perhaps they have a different composition, or why not, they can be more or less diverse in vascular species affecting overall tree growth. 
+     
+  As you can see, the information observed in the graphics can bring us some insights about what is going on with ring tree dynamics.
   
 </details>
 
@@ -890,10 +892,10 @@ quiz(
   question("**What dendrochronology is?**",
     answer("It studies the plant height growth"),
     answer("It studies the growht ring patterns regarding past variation in climate"),
-    answer("It studies and dates of annual rings in trees", correct = TRUE),
+    answer("It studies and dates annual rings in trees", correct = TRUE),
     answer("It studies the variation of tree species over time")
   ),
-  question("What it means gray lines in graphics used in this tutorial?",
+  question("What does it gray lines mean in graphics used in this tutorial?",
     answer("It is the average ring width trend varying over time"),
     answer("It is the average ring width trend varying over stand"),
     answer("It is the average ring width trend varying over time and stand", correct = TRUE),
@@ -909,7 +911,7 @@ quiz(
   <summary> **Click here** </summary>
   <p>
   
-This tutorial was created using RStudio and RMarkdown. The entire code to reproduce the results and graphics provided in this tutorial are available in the Living Data working Group project through the GitHub page.
+This tutorial was created using RStudio and RMarkdown. The entire code to reproduce the results and graphics provided in this tutorial is available in the Living Data Working Group project through the GitHub page.
 
 ```
 library(learnr)
@@ -943,3 +945,6 @@ NOAA. . Picture Climate: How Can We Learn from Tree Rings? | National Centers fo
 
 Rivet, A., Payette, S., Berteaux, D., & Girard, F. (2017). Pines and porcupines: A tree-ring analysis of browsing and dynamics of an overmature pine forest. Canadian Journal of Forest Research, 47, 257–268. https://doi.org/10.1139/cjfr-2016-0214  
   </details>
+## **Français**
+
+Version en français disponible sur https://rtrejo.shinyapps.io/Biodiversite_Arbres_Alberta

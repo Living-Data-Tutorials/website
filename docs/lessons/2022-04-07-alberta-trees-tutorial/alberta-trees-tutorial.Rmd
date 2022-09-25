@@ -1,0 +1,22 @@
+---
+title: "Alberta Trees Tutorial"
+description: |
+  A short description of the post.
+author:
+  - Jhoan Chavez
+  - Zihaohan Sang
+  - Rolando Trejo Pérez
+date: 2022-04-07
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, layout="l-screen-inset"}
+htmltools::tags$iframe(src = "https://rtrejo.shinyapps.io/Biodiversity_Alberta/", height = "1200px", width = "100%", `data-external` = "1")
+```

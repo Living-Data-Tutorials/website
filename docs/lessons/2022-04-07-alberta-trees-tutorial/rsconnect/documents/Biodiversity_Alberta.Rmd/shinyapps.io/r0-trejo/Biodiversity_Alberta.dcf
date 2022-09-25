@@ -1,0 +1,13 @@
+name: Biodiversity_Alberta
+title: Biodiversity_Alberta
+username:
+account: r0-trejo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6088040
+bundleId: 6307137
+url: https://rtrejo.shinyapps.io/Biodiversity_Alberta/
+when: 1663285994.77963
+lastSyncTime: 1663285994.77964
+asMultiple: FALSE
+asStatic: FALSE
