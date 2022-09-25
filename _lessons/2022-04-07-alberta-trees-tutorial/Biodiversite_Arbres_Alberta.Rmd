@@ -1,0 +1,958 @@
+---
+title: "**Tutoriel:Arbres/Alberta**"
+author: "Zihaohan Sang (University of Alberta),
+         Rolando Trejo (Université de Montréal),
+         Jhoan Chavez (University of Northern British Columbia)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  learnr::tutorial:
+    language: fr
+runtime: shiny_prerendered
+---
+  
+  
+```{r, include=FALSE,message=FALSE, echo=FALSE}
+RequiredPackages <- c("learnr","htmlwidgets","vembedr","tidyverse", "readr","ggplot2","multcompView","MuMIn","rpart","rpart.plot","plotly","dplyr","jtools","interactions","shiny")
+for (i in RequiredPackages) { #Installs packages if not yet installed
+  if (!require(i, character.only = TRUE)) install.packages(i)
+}
+
+library(learnr)
+library(htmlwidgets)
+library(vembedr)
+library(tidyverse)
+library(readr)
+library(ggplot2)
+library(multcompView)
+library(MuMIn)
+library(rpart)
+library(rpart.plot)
+library(plotly)
+library(dplyr)
+library(jtools)
+library(interactions)
+library(shiny)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+## **Sujet 1 : VARIATION DE LA DIVERSITÉ DES PLANTES VASCULAIRES LE LONG DES PEUPLEMENTS ET TEMPÉRATURE DU SOL**
+
+### **1. AUDIENCE : FORESTERIE ET ÉCOLOGIE** 
+
+Quelle est la taille de la forêt boréale du Canada ? *Video de Boreal Conservation [https://www.borealconservation.org]*
+  
+```{r, include=FALSE,message=FALSE, echo=FALSE}
+library(vembedr)
+```
+
+```{r, message=FALSE, echo=FALSE}
+embed_url("https://www.youtube.com/watch?v=_XjpzlVVdW8")%>%
+  use_align("center")
+```
+
+
+### **2. OBJECTIFS D'APPRENTISSAGE**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+  1. Vous comprendrez pourquoi la biologie et les statistiques peuvent bien se mélanger ensemble. 
+
+2. Vous serez en mesure de comprendre comment mettre en œuvre la régression linéaire appliquée à la richesse des espèces en fonction d'au moins deux variables indépendantes.
+
+</details>
+
+### **3. PRÉALABLES**
+
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+   **3.1 Une introduction à la régression linéaire**:https://www.youtube.com/watch?v=gb4qqX4uhYA
+
+
+   **3.2 Comment lire un boxplot?**:https://www.youtube.com/watch?v=7UK2DK7rblw
+
+
+   **3.3 La courbe de Bell (distribution normale/gaussienne)**:https://www.youtube.com/watch?v=DJzmb7hGmeM
+
+
+   **3.4 Qu'est-ce qu'un graphique résiduel?**:https://www.youtube.com/watch?v=J5gRckrv44c
+
+</details>
+
+
+### **4. LA DIVERSITÉ DES PLANTES VASCULAIRES : DE QUOI S'AGIT-IL?**
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  La diversité est un concept clé en biologie. Si vous vous êtes demandé quel est le lien entre la richesse en espèces des plantes par rapport à l'espace et à l'environnement, vous êtes au bon endroit pour acquérir les concepts biologiques et statistiques de base. Il existe plus de 352 000 (391 000 selon Jin et Qian, 2019) espèces de plantes vasculaires dans le monde. Plus de 95 % des plantes vasculaires sont des plantes à fleurs, également appelées angiospermes (par exemple, les graminées, les orchidées, les érables). Les autres types de plantes vasculaires sont les gymnospermes (arbres à cônes, par exemple les pins, les épicéas) et les plantes sans graines (par exemple les fougères) (voir la figure des plantes vasculaires ci-dessous). 5111 espèces de plantes vasculaires ont été trouvées au Canada (CCCEP, 2010). Une telle quantité de types et de formes de vie invite définitivement les biologistes à s'interroger sur le fonctionnement de la diversité dans la nature.
+
+
+```{r fig1, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
+htmltools::img(
+				src = "https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Vascular_Plants.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+			)
+```
+*Images de «The Gymnosperm Database» et «Go Botany (3.7)»*
+
+  </details>
+
+### **5. CONTEXTE DES PROJETS SEADYN ET ANNDYN**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+Un projet intéressant de surveillance de la diversité était la Dynamique saisonnière et annuelle des communautés végétales de la forêt boréale de l'Ouest canadien : un ensemble de données héritées couvrant quatre décennies. L'objectif principal des projets de recherche sur la dynamique saisonnière (SEADYN) et plus tard sur la dynamique annuelle (ANNDYN) était de documenter les changements saisonniers dans la composition végétale pendant la saison sans neige (mai à octobre) et les changements à plus long terme dans la mensuration de la végétation et de la forêt pour les sites de la forêt boréale en Alberta, au Canada, dominés par Pinus banksiana (Lamb.) (voir l'image centrale dans la figure ci-dessous). 
+
+
+Deux régions ont été utilisées pour cette étude : la première c'est la région de Hondo-Slave Lake (ci-après, Hondo) en Alberta, qui a été étudiée de 1980 à 2015, et la deuxième c'est la région des sables bitumineux de l'Athabasca (ci-après, AOS) dans le nord-est de l'Alberta, qui a été étudiée de 1981 à 1984 et dont on pense qu'elle présente une pollution atmosphérique importante en raison du développement industriel régional (exploitation et traitement des sables bitumineux).
+
+
+```{r fig2, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
+htmltools::img(
+				src = "https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Alberta_Project.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+			)
+```
+*Image tirée des métadonnées des projets de recherche Dynamique saisonnière (SEADYN) et, plus tard, Dynamique annuelle (ANNDYN), Alberta*
+
+  </details>
+  
+### **5.1 DESIGN D'EXPÉRIENCE** 
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+  La conception expérimentale consistait en des parcelles de 50x50 m subdivisées en 50 quadrants de 5x5 m. Les données provenant du suivi de Hondo peuvent nous permettre d'énoncer les questions relatives aux arbres concernant la température du sol et les peuplements.
+
+
+
+
+```{r fig3, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
+htmltools::img(
+				src = "https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Location.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+			)
+```
+*Image tirée des métadonnées des projets de recherche Dynamique saisonnière (SEADYN) et, plus tard, Dynamique annuelle (ANNDYN), Alberta*
+
+  </details>
+
+### **6. VARIATION DE LA DIVERSITÉ DES PLANTES VASCULAIRES EN FONCTION DES PEUPLEMENTS ET DE LA TEMPÉRATURE DU SOL**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+L'Alberta, comprenant 660 000 km2, est une province canadienne diversifiée. Près de 2000 espèces de plantes vasculaires ont été recensées (dont près de 1500 indigènes) (Packer et Gould, 2017). Afin de révéler comment la biodiversité est liée à l'espace et à au moins une variable environnementale, nous nous concentrerons sur la compréhension de l'effet des sites et de la température du sol sur la richesse en espèces en 2010 en ce qui concerne uniquement les sites de Hondo de ce projet.Les sites de Hondo sont au nord d'Edmonton et à l'est du Petit Lac des Esclaves, Alberta (AB), Canada (panneau de carte en bas à droite). En 2010, la flore vasculaire de Hondo est composée de 131 espèces. Dans ces sites, le nombre maximum d'espèces trouvées entre 1980-2015 était de 215. En ce qui concerne la diversité des espèces, nous pouvons poser les questions suivantes :
+
+
+     A. Peut-on expliquer la diversité vasculaire par la température du sol ? 
+ 
+     B. Les peuplements sont-ils un meilleur prédicteur que la température du sol ? 
+ 
+     C. Devons-nous considérer les deux variables ensemble pour comprendre la variation de la diversité des plantes vasculaires ? 
+ 
+  </details>
+
+### **7. EXPLORATION DE DONNÉES**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+Pour répondre à nos questions, nous utiliserons les données de deux ensembles de données différents provenant d'un suivi à long terme sur les arbres et les plantes en Alberta. Nous pouvons répondre à nos questions en utilisant les données d'une année spécifique. Dans ce tutoriel, nous utiliserons les données de 2010. Nous pouvons maintenant mieux comprendre la ligne de régression fournie par le graphique de la température du sol et de la richesse des espèces. Elle suit essentiellement une corrélation négative (plus d'espèces, moins de température du sol). En ce qui concerne le graphique boxplot, nous pouvons voir que les peuplements 5 et 6 contiennent plus d'espèces que les peuplements 3 et 4. Dans les peuplements 7 et 8, nous pouvons visualiser des valeurs extrêmes. 
+
+
+**7.1. Variation de la richesse des espèces en fonction de la température du sol (°C)**
+
+```{r,message=FALSE,warning=FALSE}
+# Variation de la richesse des espèces en fonction de la température du sol (°C)
+Hondo_VascularCover_2010_CLEAN<-read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_VascularCover_2010_CLEAN.csv", sep=";")
+Hondo_SoilTemp_2010_CLEAN<- read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_SoilTemp_2010_CLEAN.csv", sep=";")
+
+SR_SoilTemp <- data.frame(stand=as.factor(Hondo_SoilTemp_2010_CLEAN$stand),
+                          SR=Hondo_VascularCover_2010_CLEAN$SR,
+                          temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
+
+bc <- plot_ly(SR_SoilTemp, x=~temp_C, y=~SR, type = "scatter", size=~SR, 
+              color = 'Paired')%>% layout(title="",
+              xaxis=list(title="Soil temperature (C)", showgrid = F),
+              yaxis=list(title="Species richness", showgrid = F))
+
+bc
+```
+
+**7.2. Variation de la richesse en espèces le long des peuplements**
+
+```{r, message=FALSE, echo=FALSE,warning=FALSE}
+# Variation de la richesse en espèces le long des peuplements
+bp <- plot_ly(SR_SoilTemp, y=~SR, color = ~as.factor(stand),symbol="stand", 
+              type="box",boxpoints = "all",
+              
+              jitter = 0.4,pointpos = -1.8) %>% 
+              layout(title = "", 
+              xaxis = list(title = "Stand", showgrid = F),
+              yaxis=list(title="Species richness", showgrid = F))
+
+bp
+```
+
+**7.3. Fréquences d'espèces dans chaque classe d'abondance**
+
+Nous connaissons déjà les tendences entre les peuplements, la température du sol et l'interaction. Mais, que nous disent les variables continues (richesse en espèces et température du sol) concernant leurs distributions de fréquence? 
+  
+  La richesse des espèces suit clairement une distribution normale.
+
+```{r,message=FALSE, echo=FALSE}
+SRichness <- data.frame(SR=Hondo_VascularCover_2010_CLEAN$SR)
+ab <- table(unlist(SRichness))
+barplot(ab, las = 1, # make axis labels perpendicular to axis
+        xlab = "Abundance class: species richness", ylab = "Frequency", # label axes
+        col = grey(5:0/5)) # 5-colour gradient for the bars
+```
+
+**7.4. Fréquences de température du sol dans chaque classe d'abondance**
+
+La température du sol ne suit pas nécessairement une distribution normale, mais il semble qu'on puisse le supposer.
+
+```{r,message=FALSE, echo=FALSE}
+STemp <- data.frame(temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
+ab <- table(unlist(STemp))
+barplot(ab, las = 1, # make axis labels perpendicular to axis
+        xlab = "Abundance class: soil temperature", ylab = "Frequency", # label axes
+        col = grey(5:0/5)) # 5-colour gradient for the bars
+```
+
+</details>
+  
+  ### **8. CODIFICATION DES MODÈLES: C'EST PARTI!**
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+  Afin de comprendre comment la température du sol en Celsius et le peuplement (x = variable indépendante) peuvent affecter la biodiversité, nous pouvons créer cinq modèles différents contenant la richesse en espèces comme variable de réponse (y = variable dépendante). 
+
+```{r,message=FALSE, echo=FALSE}
+# Species richness as function of soil temperature (C) alone
+M1 <- lm(SR ~ temp_C,data = SR_SoilTemp)  
+# Species richness as function of peuplement alone
+M2 <-lm(SR ~ stand,data = SR_SoilTemp)    
+# Species richness as function of soil temperature (C) plus peuplement, and soil temperature-peuplement interaction
+M3 <- lm(SR ~ temp_C*stand,data = SR_SoilTemp)
+# Species richness as function of soil temperature (C) and peuplement
+M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp)
+# Species richness as function of soil temperature-peuplement interaction alone
+M5 <- lm(SR ~ temp_C:stand,data = SR_SoilTemp)
+```
+
+```
+# Richesse des espèces en fonction de la température du sol (C) toute seule
+M1 <- lm(SR ~ temp_C,data = SR_SoilTemp)  
+# La richesse des espèces en fonction du peuplement tout seul
+M2 <-lm(SR ~ stand,data = SR_SoilTemp)    
+# Richesse en espèces en fonction de la température du sol (C), du peuplement et de l'interaction entre la température du sol et le peuplement.
+M3 <- lm(SR ~ temp_C*stand,data = SR_SoilTemp)
+# Richesse en espèces en fonction de la température du sol (C) et du peuplement
+M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp)
+# La richesse des espèces en fonction de l'interaction température du sol-peuplement
+M5 <- lm(SR ~ temp_C:stand,data = SR_SoilTemp)
+```
+</details>
+  
+  ###  **9. SÉLECTION DU MODÈLE**
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+  En ce qui concerne les modèles associés à la richesse en espèces en fonction de la température du sol et du peuplement, pouvons-nous utiliser ces résultats pour formuler nos conclusions écologiques ? Est-ce que la combinaison de la température du sol et du peuplement peut révéler un modèle caché par la modélisation indépendante des deux variables? Nous pouvons utiliser l'approche AICc et R carré pour sélectionner le meilleur modèle. Ici, nous pouvons voir que les modèles M2 et M4 sont les meilleures options suivant une approche lm avec effets fixes. Cependant, le modèle M4 présente un R carré réduit. Le modèle M2, uniquement la richesse en espèces en fonction du peuplement, présente un AIC plus faible et un R carré plus élevé.
+
+```{r,message=FALSE, echo=FALSE}
+R2_adjusted <- c(summary(M1)$adj.r.squared,
+                 summary(M2)$adj.r.squared,
+                 summary(M3)$adj.r.squared,
+                 summary(M4)$adj.r.squared,
+                 summary(M5)$adj.r.squared)
+r2 <- c(summary(M1)$r.squared,
+        summary(M2)$r.squared,
+        summary(M3)$r.squared,
+        summary(M4)$r.squared,
+        summary(M5)$r.squared)
+library(MuMIn)
+AIC.table  <- MuMIn::model.sel( M1, M2, M3, M4, M5)
+AIC.table <- AIC.table[ , c("df", "logLik", "AICc", "delta")]
+
+Model_summary<-data.frame(R2_adjusted,r2,AIC.table)
+Model_summary
+```
+df est les degrés de liberté,
+logLik est la log-vraisemblance, et
+delta est la différence AICc avec la valeur la plus faible.
+
+Nous pouvons employer le modèle M2 pour voir comment il fonctionne la richesse en espèces en fonction des peuplements. Nous pouvons identifier le modèle M2 comme étant le meilleur en fonction de son AICc et de son R carré les plus faibles. Mais, avant d'effectuer une analyse de la variance et une comparaison post-hoc des moyennes, nous devons vérifier les hypothèses de base du modèle de régression linéaire
+
+```
+# La richesse en espèces en fonction du peuplement
+M2 <-lm(SR ~ stand,data = SR_SoilTemp)  
+```
+</details>
+  
+  
+  ### **10. VALIDATION DU MODÈLE**
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+  **10.1. Homogénéité de la variance**
+  
+  Graphic des valeurs prédites par rapport aux valeurs résiduelles
+
+```{r,message=FALSE, echo=FALSE}
+M2 <-lm(SR ~ stand,data = SR_SoilTemp) 
+plot(resid(M2) ~ fitted(M2),
+     xlab = 'Predicted values',
+     ylab = 'Normalized residuals')
+abline(h = 0, lty = 2)
+```
+
+Test d'homogénéité de la variance
+
+```{r,message=FALSE, echo=FALSE}
+# Test d'homogénéité de la variance
+bartlett.test(SR ~ stand,data = SR_SoilTemp) # We have homogeneity of variance (p-value = 0.1793)
+```
+
+Il y a une dispersion homogène des résidus en ce qui concerne le graphique et le test d'homogénéité de la variance (p-value = 0.1793). *L'hypothèse est respectée!*
+  
+  **10.2. Indépendance des résidus du modèle**
+  
+  Vérification de l'indépendance des résidus du modèle avec les peuplements
+
+```{r,message=FALSE, echo=FALSE}
+
+boxplot(resid(M2) ~ stand, data = SR_SoilTemp,
+        xlab = "Stand", ylab = "Normalized residuals")
+abline(h = 0, lty = 2)
+```
+
+Dispersion homogène des résidus autour de 0 et aucune tendance des résidus en fonction de la variable. *L'hypothèse est respectée!*
+  
+  **10.3. Normalité des résidus de modèle**
+  
+  Histogramme des résidus du modèle
+```{r,message=FALSE, echo=FALSE}
+hist(resid(M2)) # Histogram of residuals
+```
+
+Test de Shapiro pour vérifier la normalité des résidus
+
+```{r,message=FALSE, echo=FALSE}
+# Shapiro test to check normality
+M2 <-lm(SR ~ stand,data = SR_SoilTemp)
+ANOVA_M2=aov(M2)
+shapiro.test(ANOVA_M2$residuals) # The errors follow a normal distribution (p-value = 0.2401)
+```
+
+Les résidus suivent une distribution normale au regard de l'histogramme et du test de Shapiro (p-value = 0.2401).*L'hypothèse est respectée!*
+  
+  </details>
+  
+  ### **11. INTERPRÉTATION ET VISUALISATION DES MODÈLES**
+  
+  <details>
+  <summary> **Cliquez ici** </summary>
+  <p> 
+  
+  **La richesse en espèces en fonction du peuplement**
+  
+  Une fois que nous avons corroboré les hypothèses de base du modèle de régression linéaire, nous pouvons continuer avec l'interprétation et la visualisation du modèle. Il existe des différences significatives entre les peuplements (p < 2,2e-16). Les peuplements 3 et 4 sont associés à une moindre richesse en espèces que les peuplements 5 et 6.
+
+```{r, include=TRUE,message=FALSE, echo=FALSE}
+
+M2 <-lm(SR ~ stand,data = SR_SoilTemp)
+ANOVA_M2=aov(M2) # There are significant differences among stands (p < 2.2e-16)
+summary(ANOVA_M2)
+```
+
+```{r,message=FALSE, echo=FALSE}
+ANOVA=aov(M2)
+# Tukey test to study each pair of treatment :
+TUKEY <- TukeyHSD(x=ANOVA, "stand", conf.level=0.95)
+
+# Group the treatments that are not different each other together.
+generate_label_df <- function(TUKEY, variable){
+  
+  # Extract labels and factor levels from Tukey post-hoc 
+  Tukey.levels <- TUKEY[[variable]][,4]
+  Tukey.labels <- data.frame(multcompLetters(Tukey.levels)['Letters'])
+  
+  # Put the labels in the same order as in the boxplot :
+  Tukey.labels$stand=rownames(Tukey.labels)
+  Tukey.labels=Tukey.labels[order(Tukey.labels$stand) , ]
+  return(Tukey.labels)
+}
+
+# Apply the function on the dataset
+LABELS <- generate_label_df(TUKEY , "stand")
+
+
+# A panel of colors to draw each group with the same color :
+my_colors <- c( 
+  rgb(143,199,74,maxColorValue = 255),
+  rgb(242,104,34,maxColorValue = 255), 
+  rgb(111,145,202,maxColorValue = 255),
+  rgb(144,108,84,maxColorValue = 255),
+  rgb(144,108,84,maxColorValue = 255),
+  rgb(143,199,74,maxColorValue = 255),
+  rgb(143,199,74,maxColorValue = 255))
+
+# Draw the basic boxplot
+a <- boxplot(SR_SoilTemp$SR ~ SR_SoilTemp$stand , ylim=c(min(SR_SoilTemp$SR) , 1.1*max(SR_SoilTemp$SR)) , 
+             col=my_colors[as.numeric(LABELS[,1])] , ylab="Species richness" , main="",xlab="Stand")
+
+# It writes the letter over each box. Over is how high letters are written.
+over <- 0.1*max( a$stats[nrow(a$stats),] )
+
+#Add the labels
+#text( c(1:nlevels(SR_SoilTemp$stand)) , a$stats[nrow(a$stats),]+over , LABELS[,1], 
+ #     col=my_colors[as.numeric(LABELS[,1])] )
+```
+
+Des couleurs différentes dans les peuplements signifient des différences statistiques.
+
+  </details>
+  
+### **12. EXERCICES**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+**12.1. RICHESSE EN ESPÈCES EN FONCTION DE LA TEMPÉRATURE DU SOL (°C)**
+
+Exécutez le code suivant et répondez à la question ci-dessous. Ici, nous utilisons le modèle un (M1) correspondant à la richesse en espèces en fonction de la température du sol (C) pour vérifier s'il existe une relation entre la richesse en espèces et la température du sol. Nous considérerons que les hypothèses de base du modèle sont respectées.
+
+```{r M1_plot, exercise=TRUE, exercise.lines = 36, message=FALSE}
+# Importing data
+Hondo_VascularCover_2010_CLEAN<-read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_VascularCover_2010_CLEAN.csv", sep=";")
+Hondo_SoilTemp_2010_CLEAN<- read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_SoilTemp_2010_CLEAN.csv", sep=";")
+
+# Merging data
+SR_SoilTemp <- data.frame(stand=as.factor(Hondo_SoilTemp_2010_CLEAN$stand),
+                          SR=Hondo_VascularCover_2010_CLEAN$SR,
+                          temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
+
+# Species richness as function of soil temperature (C)
+M1 <- lm(SR ~ temp_C,data = SR_SoilTemp) 
+# Residuals and coefficients of the model
+(summ_M1 <- summary(M1)) #
+# Simplified ggplot theme
+library(ggplot2)
+fig <- theme_bw() +
+  theme(panel.grid.minor=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.background=element_blank()) +
+  theme(strip.background=element_blank(),
+        strip.text.y = element_text()) +
+  theme(legend.background=element_blank()) +
+  theme(legend.key=element_blank()) +
+  theme(panel.border = element_rect(colour="black", fill=NA))
+# Plot
+plot <- ggplot(aes(temp_C, SR), data = SR_SoilTemp)
+Plot_AllData <- plot + geom_point() +
+  xlab("Soil temperature (C)") +
+  ylab("Species richness") +
+  labs(title = "All data") + fig
+
+# Add regression lines with the intercepts specific to each stand
+
+Plot_AllData +
+  geom_abline(intercept = 23.8756 ,
+              slope     = -0.3346, col = "coral2")
+
+
+```
+
+Vérifiez le graphique, puis la p-value de la température du sol (temp_C). Répondez à la question suivante :
+  
+```{r quizM1}
+quiz(
+  question("**Quelle est la relation entre la richesse des espèces et la température du sol ?**",
+           answer("Plus de richesse d'espèces, plus de température du sol"),
+           answer("Plus de richesse d'espèces, moins de température du sol", correct = TRUE),
+           answer("La relation n'est pas significative"),
+           answer("Aucune des réponses ci-dessus n'est correcte")
+  )
+)
+```
+
+**12.2 RELATION LINÉAIRE OU NON LINÉAIRE**
+  
+  Exécutez le code suivant. Observez ensuite le tableau AIC et la visualisation graphique. 
+
+```{r Linear_not_linear, exercise=TRUE, exercise.lines = 25, message=FALSE}
+
+# Data
+x <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)
+y_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)
+Linear_not_linear <- data.frame(x,y_response)
+
+# Linear model or not?
+library(mgcv)
+linear_model <- gam(y_response  ~ x, data = Linear_not_linear)
+smooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)
+AIC(linear_model, smooth_model)
+
+# Visualization
+library(ggplot2)
+p1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +
+  geom_point() +
+  geom_line(colour = "red", size = 1.2,
+            aes(y = fitted(linear_model))) +
+  xlab("x") +
+  ylab("y") +
+  labs(title = "Linear model or not?")+
+  geom_line(colour = "blue", size = 1.2,
+            aes(y = fitted(smooth_model))) +
+  theme_bw()
+
+p1
+
+```
+
+Vous pouvez voir que l'AIC et la tendance du GAM justifient que l'ajout d'une fonction de lissage améliore la performance du modèle. La non-linéarité est alors soutenue par ces données.
+
+Maintenant, explorons notre relation réelle entre la richesse des espèces et les données de température du sol. Suivez les étapes suivantes :
+
+1. Codez vous-même : Utilisez et adaptez le code R des sections 12.1 et 12.2 pour vérifier la linéarité.
+
+2. Utilisez le code du Hint : Cliquez sur Hint pour revoir et coller le code. Exécutez le code.
+
+```{r print-linearityTest, exercise=TRUE,exercise.lines = 25, message=FALSE, exercise.eval=TRUE}
+
+```
+
+```{r print-linearityTest-hint}
+# Data
+Hondo_VascularCover_2010_CLEAN<-read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_VascularCover_2010_CLEAN.csv", sep=";")
+Hondo_SoilTemp_2010_CLEAN<- read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_SoilTemp_2010_CLEAN.csv", sep=";")
+SR_SoilTemp <- data.frame(stand=as.factor(Hondo_SoilTemp_2010_CLEAN$stand),
+                          SR=Hondo_VascularCover_2010_CLEAN$SR,
+                          temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
+
+# Linear model or not?
+library(mgcv)
+linear_model <- gam(SR  ~ temp_C, data = SR_SoilTemp)
+smooth_model <- gam(SR  ~ s(temp_C), data = SR_SoilTemp)
+AIC(linear_model, smooth_model)
+
+# Visualization
+library(ggplot2)
+Non_linear<-ggplot(SR_SoilTemp, aes(x = temp_C, y = SR )) +
+  geom_point() +
+  xlab("Soil temperature (C)") +
+  ylab("Species richness") +
+  labs(title = "Smooth model curve: Linear model or not?")+
+  geom_line(colour = "blue", size = 1.2,
+            aes(y = fitted(smooth_model))) +
+  theme_bw()
+
+Non_linear
+
+Linear<-ggplot(SR_SoilTemp, aes(x = temp_C, y = SR )) +
+  geom_point() +
+  geom_line(colour = "red", size = 1.2,
+            aes(y = fitted(linear_model))) +
+  xlab("Soil temperature (C)") +
+  ylab("Species richness") +
+  labs(title = "Linear model line:Linear model or not?")+
+  theme_bw()
+
+Linear
+```
+
+```{r quizLinearity}
+quiz(
+  question("**Peut-on utiliser la régression linéaire pour modéliser la relation entre la richesse des espèces et la température du sol?**",
+    answer("La non-linéarité est soutenue par ces données"),
+    answer("Il est difficile de tirer des conclusions"),
+    answer("La linéarité est confirmée par ces données", correct = TRUE),
+    answer("Aucune des réponses ci-dessus n'est correcte")
+  )
+  )
+```
+
+**12.3. MODÈLE AVEC INTERACTION**
+
+Situation : nous souhaitons modéliser la richesse en espèces de Hondo en fonction de la température (c'est notre principal prédicteur d'intérêt) mais nous ne savons pas si nous devons considérer le peuplement comme une autre variable importante dans le modèle. Observez les graphiques suivants (modèle M1, M3 et M4) puis le R au carré et l'AICc dans le tableau récapitulatif. Répondez aux questions ci-dessous.
+
+**12.3.1. Richesse en espèces en fonction de la température du sol (°C), du peuplement et de l'interaction entre la température du sol et le peuplement.**
+
+```{r, message=FALSE, echo=FALSE,warning=FALSE}
+# Species richness as function of soil temperature (C)
+M1 <- lm(SR ~ temp_C,data = SR_SoilTemp) 
+# Simplified ggplot theme
+fig <- theme_bw() +
+  theme(panel.grid.minor=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.background=element_blank()) +
+  theme(strip.background=element_blank(),
+        strip.text.y = element_text()) +
+  theme(legend.background=element_blank()) +
+  theme(legend.key=element_blank()) +
+  theme(panel.border = element_rect(colour="black", fill=NA))
+# Plot
+plot <- ggplot(aes(temp_C, SR), data = SR_SoilTemp)
+Plot_AllData <- plot + geom_point(color="blue") +
+  xlab("Soil temperature (C)") +
+  ylab("Species richness") +
+  labs(title = "M1 model") + fig
+
+Plot_AllData +
+  geom_abline(intercept = 23.8756 ,
+              slope     = -0.3346, col = "coral2")
+```
+
+**12.3.2. Richesse en espèces en fonction de la température du sol (°C), du peuplement et de l'interaction entre la température du sol et le peuplement.**
+
+```{r, message=FALSE, echo=FALSE,warning=FALSE}
+M3 <- lm(SR ~ temp_C*stand,data = SR_SoilTemp)
+interact_plot(M3, pred = temp_C, modx = stand, x.label = "Soil temperature (C)", y.label = "Species richness",
+              main.title = "M3 model",  legend.main = "Stand",plot.points = TRUE)
+
+
+```
+
+**12.3.3. Richesse en espèces en fonction de la température du sol (°C) et du peuplement**
+
+```{r, message=FALSE, echo=FALSE,warning=FALSE}
+M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp) 
+interact_plot(M4, pred = temp_C, modx = stand, x.label = "Soil temperature (C)", y.label = "Species richness",
+              main.title = "M4 model",  legend.main = "Stand",plot.points = TRUE)
+```
+
+```{r,message=FALSE, echo=FALSE}
+R2_adjusted <- c(summary(M1)$adj.r.squared,
+                 summary(M3)$adj.r.squared,
+                 summary(M4)$adj.r.squared)
+r2 <- c(summary(M1)$r.squared,
+        summary(M3)$r.squared,
+        summary(M4)$r.squared)
+library(MuMIn)
+AIC.table  <- MuMIn::model.sel( M1, M3, M4)
+AIC.table <- AIC.table[ , c("df", "logLik", "AICc", "delta")]
+
+Model_summary<-data.frame(R2_adjusted,r2,AIC.table)
+Model_summary
+```
+df est les degrés de liberté,
+logLik est la log-vraisemblance, et
+delta est la différence AICc avec la valeur la plus basse
+
+```{r quizInteraction}
+quiz(
+  question("En ce qui concerne le R² et les graphiques, quel est le meilleur modèle ?",
+    answer("Modèle M3",correct = TRUE),
+    answer("Modèle M1"),
+    answer("Modèle M4"),
+    answer("Tous les modèles sont les meilleurs")
+  )
+)
+```
+
+  </details>
+  
+### **13. REPRODUCTIBILITÉ**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+Les graphiques et les résultats présentés dans ce tutoriel ont été obtenus en utilisant des données historiques sur la température du sol et des ensembles de données sur la diversité vasculaire des sites de Hondo. Les données sont disponibles à l'adresse  [https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP3/PZCAVE].Nous avons importé les ensembles de données originaux à partir de la fonction Import dans R Studio.
+
+```
+Hondo_VascularCover_1980_2015 # Historical
+str(Hondo_VascularCover_1980_2015)
+Hondo_SoilTemp_1980_2010 # Historical soil temperature
+str(Hondo_SoilTemp_1980_2010)
+```
+**13.1 Manipulation de données**
+
+1.Générer un sous-ensemble de données ne considérant que les données de 2010 pour simplifier les analyses statistiques. Il est important de se concentrer sur le cœur de la richesse des espèces : concept écologique lié à l'espace et à l'environnement.
+
+```
+Hondo_VascularCover_2010 <- subset(Hondo_VascularCover_1980_2015,year== "2010" )  # Selecting from one category in rows
+Hondo_SoilTemp_2010 <- subset(Hondo_SoilTemp_1980_2010,year== "2010" )
+```
+
+2. Sauvegardez les données des sous-ensembles 2010 dans l'ordinateur pour les nettoyer et les rendre propres à travailler dans R.
+```
+write.csv(x=Hondo_VascularCover_2010,file="Hondo_VascularCover_2010.csv", row.names=FALSE) # Export data in csv format
+write.csv(x=Hondo_SoilTemp_2010,file="Hondo_SoilTemp_2010.csv", row.names=FALSE) 
+```
+
+3. Ouvrez les sous-ensembles 2010 dans excel et ordonnez les données par peuplement (stand) et quarant (quad), puis corroborer la correspondance parfaite dans l'ordre.
+
+```{r,message=FALSE, echo=FALSE}
+Hondo_VascularCover_2010_CLEAN<-read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_VascularCover_2010_CLEAN.csv", sep=";")
+Hondo_SoilTemp_2010_CLEAN<- read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_SoilTemp_2010_CLEAN.csv", sep=";")
+
+```
+
+4. Générer un nouveau table de données résumant le peuplement, le quadrant, la température du sol et la richesse des espèces. Vous pouvez voir ici que les quadrants et les peuplements ont été fusionnés de manière adéquate.
+
+```{r,message=FALSE, echo=FALSE}
+SR_SoilTemp <- data.frame(stand=as.factor(Hondo_SoilTemp_2010_CLEAN$stand),
+                          stand2=as.factor(Hondo_VascularCover_2010_CLEAN$stand),
+                          quad=Hondo_SoilTemp_2010_CLEAN$quad,
+                          quad2=Hondo_VascularCover_2010_CLEAN$quad,
+                          SR=Hondo_VascularCover_2010_CLEAN$SR,
+                          temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
+```
+
+</details>
+  
+### **14. RÉFÉRENCES**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+Hesketh, A., Loesberg, J., Bledsoe, E., Karst, J., & Macdonald, E. (2021). Seasonal and annual dynamics of western Canadian boreal forest plant communities: A legacy dataset spanning four decades [Data set]. Scholars Portal Dataverse. https://doi.org/10.5683/SP3/PZCAVE
+
+Canadian Endangered Species Conservation Council(CESCC). 2010. Wild Species 2010: The general status of Species in Canada.
+
+Jin, Y., and Qian, H. 2019. V.PhyloMaker: an R package that can generate very large phylogenies for vascular plants. Ecography, 42: 1353: 1359.
+
+Packer, J.G., and Gould, A.J. 2017. Vascular plants of Alberta, part 1: Ferns, Fern Allies, Gymnosperms, and monocots. University of Calgary Press. 281 pages.
+
+Earle, C.J. 2021.The Gymnossperm Database. Consulted on April 7, 2022:[https://www.conifers.org/zz/gymnosperms.php].
+Go Botany (3.7). 2022. Native Plant Trust. Consulted on April 7, 2022: [https://gobotany.nativeplanttrust.org]
+  </details>
+  
+  
+## **Sujet 2 : LES ANNEAUX DE CROISSANCE DES ARBRES AU FIL DU TEMPS**
+
+### **1. AUDIENCE : FORESTERIE** 
+
+Histoires d'arbres : Comment les anneaux des arbres révèlent les cycles météorologiques extrêmes? *Video de Brigham Young University, Utah*
+
+```{r, message=FALSE, echo=FALSE}
+embed_url("https://www.youtube.com/watch?v=xmZO7aRgcW4")%>%
+use_align("center")
+```
+                 
+
+### **2. OBJECTIFS D'APPRENTISSAGE**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+ 1. À la fin de ce tutoriel, vous serez en mesure d'explorer les modèles d'anneaux des arbres au fil du temps. Peut-être, quelque chose de caché se trouve là ! 
+
+ 2. Ce tutoriel a pour but d'aider les étudiants à se familiariser avec les données et à appliquer leur bagage académique en examinant des données traitées qui aboutissent à un questionnement.
+ 
+</details>
+
+### **3. LA DENDROCHRONOLOGIE : DE QUOI S'AGIT-IL ?**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+  
+Un concept intéressant en biologie, et plus encore en foresterie, est la dynamique des cernes de croissance des arbres dans le temps. La dendrochronologie est la datation et l'étude des cernes de croissance annuels des arbres (voir https://ltrr.arizona.edu/about/treerings). La datation et l'étude des cernes de croissance annuels nous permettent de faire des inférences dans d'autres domaines d'étude des arbres, par exemple en reliant la dendrochronologie à la météo. Ici, la dendroclimatologie étudie et utilise les cernes de croissance pour reconstituer les variations passées du climat (Fritts. 1987). Étant donné que des cernes de croissance annuels bien définis peuvent être observés dans le bois (cernes) de nombreuses espèces d'arbres de forêts tempérées à travers le monde, dans certaines circonstances, ces cernes de croissance contiennent des informations utiles sur les conditions environnementales variables qui affectent leur croissance comme les changements de température et l'humidité ainsi que les caractéristiques de l'arbre (âge et taille), selon l'espèce et la latitude pour lesquelles d'autres analyses de données (données climatiques) doivent être incluses (Tumajer, J., & Lehejček, J. 2019).  
+
+</details>
+
+### **4. ANALYSE DES ANNEAUX DE CROISSANCE D'ARBRES DANS LE TEMPS**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+
+Traçons quelques graphiques. C'est possible de tracer la largeur moyenne des anneux de croissance (mm) dans l'axe y en fonction du temps (année) dans l'axe x (voir ligne rouge). Mais nous pouvons également tracer la largeur moyenne des anneux (mm) dans l'axe y en fonction du temps (année) dans l'axe x, en considérant simultanément les peuplements (voir lignes grises). Avez-vous des idées sur ce que ces tendances pourraient nous dire ?
+
+   </details>
+
+**4.1 DONNEES SUR LES ANNEAUX DE CROISSANCE D'ARBRES DE LA REGION DE Hondo-Slave Lake (Hondo) en Alberta**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+
+```{r AOS_plot, exercise=TRUE, exercise.lines = 37, message=FALSE}
+
+# Bibliothèques
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# Sites AOS
+# for BP, JS, LF, ML, OI, SA, WO, WY peuplements
+
+# Fichiers
+aos_files <- c("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20BP.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20JS.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20LF.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20ML.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20OI.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20SA.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20WO.csv",
+               "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/AOS_Dendrochronology_1983%20-%20WY.csv"
+               )
+
+# Visualisation
+aos_dt <-
+  do.call(rbind,
+          lapply(aos_files, read.csv))
+summary(aos_dt)
+table(aos_dt$stand)
+aos_dt %>% group_by(year, stand) %>%
+  summarise(avg_ring_width_mm = mean(ring_width_mm),
+            n = n()) %>%
+  ggplot(aes(x = year, y = avg_ring_width_mm)) +
+  geom_point(data = aos_dt, aes(x = year, y = ring_width_mm), shape = 21,
+             size= 2, color = 'gray50', alpha = .2) + geom_smooth(aes(group = stand), alpha = .2, color = 'gray40') +
+  theme_bw() +
+  facet_grid(~stand) +
+  geom_smooth(data = aos_dt %>% select(-stand), aes(x = year, y = ring_width_mm),
+              color = 'red', linetype = 'dashed')
+
+```
+</details>
+
+
+**4.2 DONNEES SUR LES ANNEAUX DE CROISSANCE D'ARBRES de la région des sables bitumineux de l'Athabasca (AOS) dans le nord-est de l'Alberta**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+```{r Hondo_plot, exercise=TRUE, exercise.lines = 33, message=FALSE}
+
+
+# Bibliothèques
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+## Même chose pour HONDO
+#n=1, 2, 3 peuplements
+
+# Fichiers
+hondo_files <- c("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_Dendrochronology_1983%20-%20STAND%201.csv",
+                 "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_Dendrochronology_1983%20-%20STAND%202.csv",
+                 "https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-04-07-alberta-trees-tutorial/Hondo_Dendrochronology_1983%20-%20STAND%203.csv"
+                 )
+# Visualisation
+hondo_dt <-
+  do.call(rbind,
+          lapply(hondo_files, read.csv)) %>%
+  mutate(stand = factor(stand))
+
+hondo_dt %>% group_by(year, stand) %>%
+  summarise(avg_ring_width_mm = mean(ring_width_mm),
+            n = n()) %>%
+  ggplot(aes(x = year, y = avg_ring_width_mm)) +
+  geom_point(data = hondo_dt, aes(x = year, y = ring_width_mm, group = stand), shape = 21,
+             size= 2, color = 'gray50', alpha = .2) + 
+  geom_smooth(aes(group = stand), alpha = .2, color = 'gray40') +
+  theme_bw() +
+  facet_grid(~stand) +
+  geom_smooth(data = hondo_dt %>% select(-stand), aes(x = year, y = ring_width_mm),
+              color = 'red', linetype = 'dashed')
+
+
+
+```
+</details>
+
+### **5. EXERCICES**
+
+<details>
+  <summary> **Que peut-on déduire de ces graphiques ?** (Réponses ouvertes) </summary>
+  <p> BINGO!!!: 
+  
+     1. La largeur des anneux de croissance des arbres diminue au fil du temps et les modèles changent selon un comportement oscillant, ce qui suggère que des facteurs externes (température, humidité) et internes (âge, latitude, espèces) affectent la croissance des arbres. 
+     2.  Il semble que les peuplements suivent des tendances différents, peut-être ont-ils une composition différente?, ou pourquoi pas?, ils peuvent être plus ou moins diversifiés en espèces vasculaires affectant la croissance globale des arbres. 
+     
+  Comme vous pouvez le constater, les informations observées dans les graphiques peuvent nous apporter une réponse sur ce qui se passe dans la dynamique des anneux de croissance des arbres.   
+  
+</details>
+
+<details>
+  <summary> **Questions à choix multiple** </summary>
+  <p>  
+```{r quiz1}
+quiz(
+  question("**Qu'est-ce que la dendrochronologie?**",
+    answer("Elle étudie la croissance en hauteur des plantes"),
+    answer("Elle étudie les caractéristiques des anneaux de croissance en fonction des variations climatiques passées."),
+    answer("Elle étudie et date les anneaux annuels des arbres", correct = TRUE),
+    answer("Elle étudie la variation des espèces d'arbres dans le temps")
+  ),
+  question("Que signifient les lignes de regression grises dans les graphiques utilisés dans ce tutoriel ?",
+    answer("Il s'agit de la tendance moyenne de la largeur de l'anneau variant dans le temps"),
+    answer("Il s'agit de la tendance moyenne de la largeur de l'anneau qui varie au fil du temps."),
+    answer("Il s'agit de la tendance moyenne de la largeur de l'anneau qui varie au fil du temps et des stands.", correct = TRUE),
+    answer("Aucune des réponses ci-dessus n'est correcte")
+  )
+)
+```
+</details>
+
+
+### **6. COMMENTAIRES**
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>
+  
+Ce tutoriel a été créé en utilisant RStudio et RMarkdown. Le code complet permettant de reproduire les résultats et les graphiques fournis dans ce tutoriel est disponible dans le projet «the Living Data project» via la page GitHub.
+
+```
+library(learnr)
+library(htmlwidgets)
+library(vembedr)
+library(tidyverse)
+library(readr)
+library(ggplot2)
+library(multcompView)
+library(MuMIn)
+library(rpart)
+library(rpart.plot)
+library(plotly)
+library(dplyr)
+library(jtools)
+library(interactions)
+```
+<details>
+
+### **7. RÉFÉRENCES**
+
+
+<details>
+  <summary> **Cliquez ici** </summary>
+  <p>  
+Fritts, H. C. (1987). TREE-RING ANALYSISTree-ring analysis. In Climatology (pp. 858–875). Springer US. https://doi.org/10.1007/0-387-30749-4_182
+
+Tumajer, J., & Lehejček, J. (2019). Boreal tree-rings are influenced by temperature up to two years prior to their formation: A trade-off between growth and reproduction? Environmental Research Letters, 14(12), 124024. https://doi.org/10.1088/1748-9326/ab5134
+
+NOAA. . Picture Climate: How Can We Learn from Tree Rings? | National Centers for Environmental Information (NCEI) formerly known as National Climatic Data Center (NCDC). (n.d.). Retrieved 8 April 2022, from https://www.ncdc.noaa.gov/news/picture-climate-how-can-we-learn-tree-rings
+
+Rivet, A., Payette, S., Berteaux, D., & Girard, F. (2017). Pines and porcupines: A tree-ring analysis of browsing and dynamics of an overmature pine forest. Canadian Journal of Forest Research, 47, 257–268. https://doi.org/10.1139/cjfr-2016-0214  
+  </details>
+## **English**
+
+English version available on https://rtrejo.shinyapps.io/Biodiversity_Alberta
