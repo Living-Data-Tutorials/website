@@ -65,10 +65,10 @@
     ],
     "date": "2022-04-07",
     "categories": [],
-    "contents": "\n\n\n\nWelcome to the Alberta trees tutorial. This tutorial was built using rescued data by Amelia Hesketh, Jenna Loesberg, Ellen Bledsoe, Justine Karst, and Ellen Macdonald in 2021 from an Alberta legacy dataset spanning four decades (1980-2015). Dataset is available in Borealis\nThe tutorial is divided into two ecological topics. The first topic corresponds to vascular diversity, and the second topic is related to tree rings. More precisely, the Alberta trees tutorial focuses on i) the vascular plant diversity variation along space and environment and ii) the tree ring dynamics over time.\nThis tutorial was created with the open-source software R using learnr package and deployed using Shiny. The entire code to reproduce the results and graphics provided in this tutorial is available in the Living Data Working Group project through this GitHub repository. Other packages used in this tutorial were htmlwidgets,vembedr, tidyverse, readr, ggplot2, multcompView, MuMIn, rpart, rpart.plot, plotly, dplyr, jtools, and interactions.\n\n\n\n",
+    "contents": "\nWelcome to the Alberta trees tutorial. This tutorial was built using rescued data by Amelia Hesketh, Jenna Loesberg, Ellen Bledsoe, Justine Karst, and Ellen Macdonald in 2021 from an Alberta legacy dataset spanning four decades (1980-2015). Dataset is available in Borealis.\nThe tutorial is divided into two ecological topics. The first topic corresponds to vascular diversity, and the second topic is related to tree rings. More precisely, the Alberta trees tutorial focuses on i) the vascular plant diversity variation along space and environment and ii) the tree ring dynamics over time.\nThis tutorial was created with the open-source software R using learnr package and deployed using Shiny. The entire code to reproduce the results and graphics provided in this tutorial is available in the Living Data Working Group project through this GitHub repository. Other packages used in this tutorial were htmlwidgets,vembedr, tidyverse, readr, ggplot2, multcompView, MuMIn, rpart, rpart.plot, plotly, dplyr, jtools, and interactions.\n\n\n\n\n\n\n",
     "preview": {},
-    "last_modified": "2022-09-25T00:15:37-04:00",
-    "input_file": "alberta-trees-tutorial.knit.md"
+    "last_modified": "2022-09-25T16:36:45-04:00",
+    "input_file": {}
   },
   {
     "path": "lessons/2022-04-07-anticosti-historical-data-tutorial/",

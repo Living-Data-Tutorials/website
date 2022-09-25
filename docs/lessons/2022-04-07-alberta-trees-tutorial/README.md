@@ -1,2 +1,0 @@
-# LDP_Alberta_Trees_Group
-LDP_Alberta_Trees_Group

@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2022-09-24" />
+<meta name="date" content="2022-09-25" />
 
 <meta name="progressive" content="false" />
 <meta name="allow-skip" content="false" />
@@ -112,29 +112,82 @@ if (window.hljs) {
 
 <div id="section-tutorial-objectives" class="section level2">
 <h2><strong>Tutorial objectives</strong></h2>
+<p>Forestry and ecology students are the optimal audience to follow this
+tutorial. Some prerequisites are necessary but not essential, i.e. <a
+href="https://www.youtube.com/watch?v=gb4qqX4uhYA">an introduction to
+linear regression</a>, <a
+href="https://www.youtube.com/watch?v=7UK2DK7rblw">how to read a
+boxplot?</a>, <a href="https://www.youtube.com/watch?v=DJzmb7hGmeM">the
+Bell Curve (Normal/Gaussian Distribution)</a>, <a
+href="https://www.youtube.com/watch?v=J5gRckrv44c">what is a residual
+plot?</a>.</p>
+<p>At the end of this tutorial you will be able to:</p>
+<ol style="list-style-type: decimal">
+<li>Contextualize the global and boreal plant diversity
+distribution.</li>
+<li>Understand the basis of the linear model approach linking plant
+diversity, space and environment.</li>
+<li>Introduce yourself to the non-linear model relationship in
+ecological data.</li>
+<li>Debut into the dendrochronology concept in forestry and
+ecology.</li>
+<li>Explore the tree analysis over time using multiple datasets through
+graphic visualization.</li>
+</ol>
+<p>We will focus on the plant vascular cover diversity and soil
+temperature in 2010. We will also use the dendrochronology historical
+datasets.</p>
 </div>
 <div id="section-learning-objectives" class="section level2">
 <h2>Learning objectives</h2>
+<p>Through this tutorial you will acquire the following skills:</p>
 <ol style="list-style-type: decimal">
-<li><p>You will be able to understand why biology and statistics do a
-nice match.</p></li>
-<li><p>You will be able to understand how implement linear regression
-applied to species richness in function of at least of a couple of
-independent variables.</p></li>
-<li><p>At the end of this tutorial you will be able to explore patterns
-of rings over time. Perhaps, something hidden is there!</p></li>
-<li><p>This tutorial aims to help students get familiarized with data
-and apply academic background by looking at processed data ending up in
-questioning.</p></li>
+<li><p>A global understanding of plant biodiversity and dendrochronology
+concepts.</p></li>
+<li><p>Use real data coming from the Alberta legacy dataset, a project
+monitoring diversity in Western Canadian forest, to implement a linear
+model approach between diversity and space and environment.</p></li>
+<li><p>Explore and interpret data patterns using data exploration, model
+codification, selection and validation.</p></li>
+<li><p>Familiarize and code by yourself by adapting R code proposed in
+this tutorial.</p></li>
 </ol>
 </div>
-<div
-id="section-topic-1-vascular-plant-diversity-variation-along-stands-and-soil-temperature"
+<div id="section-alberta-legacy-dataset-background"
+class="section level2">
+<h2><strong>Alberta legacy dataset background</strong></h2>
+<p>An interesting project monitoring diversity was the Seasonal and
+annual dynamics of western Canadian boreal forest plant communities: a
+legacy dataset spanning four decades. The primary purpose of the
+Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research
+projects was to document seasonal changes in the vegetative composition
+during the snow-free season (May through October) and longer-term
+changes in vegetation and forest mensuration for boreal forest stands in
+Alberta, Canada dominated by Pinus banksiana (Lamb.) (see central image
+in the below figure).</p>
+<p>Two regions were used for this study: one in the Hondo-Slave Lake
+(hereafter, Hondo) region of Alberta, which was surveyed from 1980 to
+2015, and a second location in the Athabasca Oil Sands (hereafter, AOS)
+region in northeastern Alberta, which was surveyed from 1981 to 1984 and
+thought to have substantial atmospheric pollution due to regional
+industrial development (oil sands mining and processing).</p>
+<img src="https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Images/Alberta_Project.png?raw=true" height="500px" width="100%" data-external="1"/>
+<p><em>Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics
+(ANNDYN) research projects metadata, Alberta</em></p>
+<div id="section-experimental-design" class="section level3">
+<h3><strong>Experimental design</strong></h3>
+<p>The experimental design consisted of plots of 50x50 m subdivided into
+50 5x5 m quadrants. Data coming from Hondo monitoring can allow us to
+state tree questions concerning soil temperature and stands.</p>
+<img src="https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Location.png?raw=true" height="500px" width="100%" data-external="1"/>
+<p><em>Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics
+(ANNDYN) research projects metadata, Alberta</em></p>
+</div>
+</div>
+<div id="section-global-and-boreal-plant-diversity-distribution."
 class="section level2" data-progressive="TRUE">
-<h2><strong>Topic 1: VASCULAR PLANT DIVERSITY VARIATION ALONG STANDS AND
-SOIL TEMPERATURE</strong></h2>
-<div id="section-audience-forestry-and-ecology" class="section level3">
-<h3><strong>1. AUDIENCE: FORESTRY AND ECOLOGY</strong></h3>
+<h2><strong>Global and boreal plant diversity
+distribution.</strong></h2>
 <p>How BIG is Canada’s Boreal Forest? <em>Video from Boreal Conservation
 [<a href="https://www.borealconservation.org"
 class="uri">https://www.borealconservation.org</a>]</em></p>
@@ -143,25 +196,9 @@ class="uri">https://www.borealconservation.org</a>]</em></p>
 <iframe src="https://www.youtube.com/embed/_XjpzlVVdW8" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
-</div>
-<div id="section-prerequisites" class="section level3">
-<h3><strong>3. PREREQUISITES</strong></h3>
-<p><strong>3.1 An introduction to linear regression</strong>:<a
-href="https://www.youtube.com/watch?v=gb4qqX4uhYA"
-class="uri">https://www.youtube.com/watch?v=gb4qqX4uhYA</a></p>
-<p><strong>3.2 How to read a boxplot?</strong>:<a
-href="https://www.youtube.com/watch?v=7UK2DK7rblw"
-class="uri">https://www.youtube.com/watch?v=7UK2DK7rblw</a></p>
-<p><strong>3.3 The Bell Curve (Normal/Gaussian Distribution)</strong>:<a
-href="https://www.youtube.com/watch?v=DJzmb7hGmeM"
-class="uri">https://www.youtube.com/watch?v=DJzmb7hGmeM</a></p>
-<p><strong>3.4 What is a residual plot?</strong>:<a
-href="https://www.youtube.com/watch?v=J5gRckrv44c"
-class="uri">https://www.youtube.com/watch?v=J5gRckrv44c</a></p>
-</div>
 <div id="section-vascular-plant-diversity-what-it-is"
 class="section level3">
-<h3><strong>4. VASCULAR PLANT DIVERSITY: WHAT IT IS?</strong></h3>
+<h3><strong>Vascular plant diversity: what it is?</strong></h3>
 <p>A key concept in biology is Diversity. If you have wondered what is
 the connection between species richness of plants versus space and
 environment, this is the right place to achieve basic biological and
@@ -178,43 +215,12 @@ in nature.</p>
 <img src="https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Vascular_Plants.png?raw=true" height="500px" width="100%" data-external="1"/>
 <p><em>Photos from The Gymnosperm Database and Go Botany (3.7)</em></p>
 </div>
-<div id="section-seadyn-and-anndyn-research-projects-background"
-class="section level3">
-<h3><strong>5. SEADYN AND ANNDYN RESEARCH PROJECTS
-BACKGROUND</strong></h3>
-<p>An interesting project monitoring diversity was the Seasonal and
-annual dynamics of western Canadian boreal forest plant communities: a
-legacy dataset spanning four decades. The primary purpose of the
-Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research
-projects was to document seasonal changes in the vegetative composition
-during the snow-free season (May through October) and longer-term
-changes in vegetation and forest mensuration for boreal forest stands in
-Alberta, Canada dominated by Pinus banksiana (Lamb.) (see central image
-in the below figure).</p>
-<p>Two regions were used for this study: one in the Hondo-Slave Lake
-(hereafter, Hondo) region of Alberta, which was surveyed from 1980 to
-2015, and a second location in the Athabasca Oil Sands (hereafter, AOS)
-region in northeastern Alberta, which was surveyed from 1981 to 1984 and
-thought to have substantial atmospheric pollution due to regional
-industrial development (oil sands mining and processing).</p>
-<img src="https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Alberta_Project.png?raw=true" height="500px" width="100%" data-external="1"/>
-<p><em>Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics
-(ANNDYN) research projects metadata, Alberta</em></p>
-</div>
-<div id="section-experimental-design" class="section level3">
-<h3><strong>5.1 EXPERIMENTAL DESIGN</strong></h3>
-<p>The experimental design consisted of plots of 50x50 m subdivided into
-50 5x5 m quadrants. Data coming from Hondo monitoring can allow us to
-state tree questions concerning soil temperature and stands.</p>
-<img src="https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Location.png?raw=true" height="500px" width="100%" data-external="1"/>
-<p><em>Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics
-(ANNDYN) research projects metadata, Alberta</em></p>
 </div>
 <div
-id="section-vascular-plant-diversity-variation-along-sites-and-soil-temperature"
-class="section level3">
-<h3><strong>6. VASCULAR PLANT DIVERSITY VARIATION ALONG SITES AND SOIL
-TEMPERATURE</strong></h3>
+id="section-linear-model-approach-linking-plant-diversity-space-and-environment."
+class="section level2">
+<h2><strong>Linear model approach linking plant diversity, space and
+environment.</strong></h2>
 <p>Alberta, including 660 000 km2, is a diverse Canadian province.
 Almost 2000 species of vascular plants have been recorded (almost 1500
 native) (Packer and Gould, 2017). In order to reveal how biodiversity
@@ -231,9 +237,8 @@ can state the following questions:</p>
  B. Are stands a better predictor than soil temperature? 
 
  C. Do we need to consider both variables together to understand vascular plant diversity variation? </code></pre>
-</div>
 <div id="section-data-exploration" class="section level3">
-<h3><strong>7. DATA EXPLORATION</strong></h3>
+<h3><strong>Data exploration</strong></h3>
 <p>In order to answer our questions, we will use data from two different
 datasets from long-term tree and plant surveys in Alberta. We can
 respond to our questions using data from a specific year. In this
@@ -243,29 +248,29 @@ richness. It basically follows a negative correlation (more species,
 less soil temperature). Regarding the boxplot graphic, we can see that
 stand 5 and 6 contain more species than stand 3 and 4. In stands 7 and 8
 we can visualize outlines (extreme values).</p>
-<p><strong>7.1. Species richness variation by soil temperature
+<p><strong>Species richness variation by soil temperature
 (°C)</strong></p>
-<div id="htmlwidget-7ba2b81a1e5e7a1caa03" style="width:624px;height:384px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7ba2b81a1e5e7a1caa03">{"x":{"visdat":{"25cd651e263f":["function () ","plotlyVisDat"]},"cur_data":"25cd651e263f","attrs":{"25cd651e263f":{"x":{},"y":{},"color":"Paired","size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"","xaxis":{"domain":[0,1],"automargin":true,"title":"Soil temperature (C)","showgrid":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"Species richness","showgrid":false},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[16.66666667,15.55555556,15,15,15,16.11111111,16.11111111,15.55555556,15.55555556,15,16.66666667,15,16.66666667,16.11111111,16.66666667,17.77777778,17.77777778,17.22222222,17.22222222,17.22222222,18.88888889,17.77777778,18.33333333,18.33333333,17.22222222,18.88888889,18.88888889,19.44444444,17.22222222,18.33333333,17.77777778,18.33333333,18.88888889,19.44444444,18.88888889,18.33333333,18.33333333,17.77777778,16.11111111,16.66666667,16.66666667,15.55555556,16.66666667,16.11111111,15.55555556,16.66666667,17.22222222,17.22222222,17.22222222,17.77777778,17.77777778,18.33333333,18.33333333,18.33333333,17.77777778,18.88888889,18.33333333,19.44444444,19.44444444,19.44444444,18.33333333,18.88888889,21.66666667,17.77777778,17.77777778,26.66666667,23.33333333,20.55555556,20,17.77777778,29.44444444,23.33333333,20.55555556,22.22222222,21.66666667,18.33333333,18.88888889,18.88888889,19.44444444,18.88888889,18.88888889,17.22222222,17.77777778,19.44444444,19.44444444,19.44444444,20,18.33333333,18.33333333,17.77777778,18.33333333,19.44444444,18.88888889,19.44444444,18.88888889,18.33333333,18.88888889,17.22222222,18.88888889,17.77777778,15.55555556,15,15.55555556,16.66666667,16.11111111,16.11111111,16.11111111,16.11111111,16.11111111,16.66666667,17.77777778,18.33333333,17.22222222,15.55555556,19.44444444,19.44444444,19.44444444,16.66666667,17.22222222,18.33333333,22.22222222,18.88888889,18.33333333,20.55555556,18.33333333,13.88888889,15.55555556,15.55555556,15,14.44444444,14.44444444,13.88888889,17.77777778,15,14.44444444,15.55555556,16.66666667,16.11111111,15,13.88888889,15,15.55555556,16.11111111,15.55555556,16.11111111,15,15.55555556,15.55555556,13.33333333,16.11111111,18.88888889,16.66666667,18.88888889,15,13.88888889,17.22222222,15.55555556,19.44444444,16.66666667,15.55555556,21.66666667,19.44444444,17.77777778,20,18.88888889,17.22222222,18.33333333,18.88888889,20.55555556,21.11111111,17.77777778,21.11111111,19.44444444,17.22222222,18.88888889],"y":[21,12,16,19,17,19,17,22,18,22,19,18,23,20,22,19,19,20,16,16,15,18,16,16,20,15,16,15,15,14,13,16,17,14,16,17,17,12,13,11,15,15,13,13,11,15,17,13,13,12,15,14,11,7,10,14,11,13,7,9,12,9,13,10,9,9,11,14,6,13,17,14,12,17,14,19,23,24,23,19,23,23,23,22,20,25,21,20,20,18,21,21,21,21,19,22,19,19,24,21,19,24,21,20,29,22,20,25,23,28,23,25,21,27,20,18,21,22,24,25,23,24,26,24,25,18,24,20,20,19,20,18,19,20,24,14,20,17,18,20,17,19,18,18,20,17,18,16,14,18,23,16,16,15,19,17,15,19,24,19,21,16,23,20,21,17,19,15,17,17,17,18,18,15,18],"type":"scatter","mode":"markers","name":"Paired","marker":{"color":"rgba(252,141,98,1)","size":[68.695652173913,33.4782608695652,49.1304347826087,60.8695652173913,53.0434782608696,60.8695652173913,53.0434782608696,72.6086956521739,56.9565217391304,72.6086956521739,60.8695652173913,56.9565217391304,76.5217391304348,64.7826086956522,72.6086956521739,60.8695652173913,60.8695652173913,64.7826086956522,49.1304347826087,49.1304347826087,45.2173913043478,56.9565217391304,49.1304347826087,49.1304347826087,64.7826086956522,45.2173913043478,49.1304347826087,45.2173913043478,45.2173913043478,41.304347826087,37.3913043478261,49.1304347826087,53.0434782608696,41.304347826087,49.1304347826087,53.0434782608696,53.0434782608696,33.4782608695652,37.3913043478261,29.5652173913043,45.2173913043478,45.2173913043478,37.3913043478261,37.3913043478261,29.5652173913043,45.2173913043478,53.0434782608696,37.3913043478261,37.3913043478261,33.4782608695652,45.2173913043478,41.304347826087,29.5652173913043,13.9130434782609,25.6521739130435,41.304347826087,29.5652173913043,37.3913043478261,13.9130434782609,21.7391304347826,33.4782608695652,21.7391304347826,37.3913043478261,25.6521739130435,21.7391304347826,21.7391304347826,29.5652173913043,41.304347826087,10,37.3913043478261,53.0434782608696,41.304347826087,33.4782608695652,53.0434782608696,41.304347826087,60.8695652173913,76.5217391304348,80.4347826086957,76.5217391304348,60.8695652173913,76.5217391304348,76.5217391304348,76.5217391304348,72.6086956521739,64.7826086956522,84.3478260869565,68.695652173913,64.7826086956522,64.7826086956522,56.9565217391304,68.695652173913,68.695652173913,68.695652173913,68.695652173913,60.8695652173913,72.6086956521739,60.8695652173913,60.8695652173913,80.4347826086957,68.695652173913,60.8695652173913,80.4347826086957,68.695652173913,64.7826086956522,100,72.6086956521739,64.7826086956522,84.3478260869565,76.5217391304348,96.0869565217391,76.5217391304348,84.3478260869565,68.695652173913,92.1739130434783,64.7826086956522,56.9565217391304,68.695652173913,72.6086956521739,80.4347826086957,84.3478260869565,76.5217391304348,80.4347826086957,88.2608695652174,80.4347826086957,84.3478260869565,56.9565217391304,80.4347826086957,64.7826086956522,64.7826086956522,60.8695652173913,64.7826086956522,56.9565217391304,60.8695652173913,64.7826086956522,80.4347826086957,41.304347826087,64.7826086956522,53.0434782608696,56.9565217391304,64.7826086956522,53.0434782608696,60.8695652173913,56.9565217391304,56.9565217391304,64.7826086956522,53.0434782608696,56.9565217391304,49.1304347826087,41.304347826087,56.9565217391304,76.5217391304348,49.1304347826087,49.1304347826087,45.2173913043478,60.8695652173913,53.0434782608696,45.2173913043478,60.8695652173913,80.4347826086957,60.8695652173913,68.695652173913,49.1304347826087,76.5217391304348,64.7826086956522,68.695652173913,53.0434782608696,60.8695652173913,45.2173913043478,53.0434782608696,53.0434782608696,53.0434782608696,56.9565217391304,56.9565217391304,45.2173913043478,56.9565217391304],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[68.695652173913,33.4782608695652,49.1304347826087,60.8695652173913,53.0434782608696,60.8695652173913,53.0434782608696,72.6086956521739,56.9565217391304,72.6086956521739,60.8695652173913,56.9565217391304,76.5217391304348,64.7826086956522,72.6086956521739,60.8695652173913,60.8695652173913,64.7826086956522,49.1304347826087,49.1304347826087,45.2173913043478,56.9565217391304,49.1304347826087,49.1304347826087,64.7826086956522,45.2173913043478,49.1304347826087,45.2173913043478,45.2173913043478,41.304347826087,37.3913043478261,49.1304347826087,53.0434782608696,41.304347826087,49.1304347826087,53.0434782608696,53.0434782608696,33.4782608695652,37.3913043478261,29.5652173913043,45.2173913043478,45.2173913043478,37.3913043478261,37.3913043478261,29.5652173913043,45.2173913043478,53.0434782608696,37.3913043478261,37.3913043478261,33.4782608695652,45.2173913043478,41.304347826087,29.5652173913043,13.9130434782609,25.6521739130435,41.304347826087,29.5652173913043,37.3913043478261,13.9130434782609,21.7391304347826,33.4782608695652,21.7391304347826,37.3913043478261,25.6521739130435,21.7391304347826,21.7391304347826,29.5652173913043,41.304347826087,10,37.3913043478261,53.0434782608696,41.304347826087,33.4782608695652,53.0434782608696,41.304347826087,60.8695652173913,76.5217391304348,80.4347826086957,76.5217391304348,60.8695652173913,76.5217391304348,76.5217391304348,76.5217391304348,72.6086956521739,64.7826086956522,84.3478260869565,68.695652173913,64.7826086956522,64.7826086956522,56.9565217391304,68.695652173913,68.695652173913,68.695652173913,68.695652173913,60.8695652173913,72.6086956521739,60.8695652173913,60.8695652173913,80.4347826086957,68.695652173913,60.8695652173913,80.4347826086957,68.695652173913,64.7826086956522,100,72.6086956521739,64.7826086956522,84.3478260869565,76.5217391304348,96.0869565217391,76.5217391304348,84.3478260869565,68.695652173913,92.1739130434783,64.7826086956522,56.9565217391304,68.695652173913,72.6086956521739,80.4347826086957,84.3478260869565,76.5217391304348,80.4347826086957,88.2608695652174,80.4347826086957,84.3478260869565,56.9565217391304,80.4347826086957,64.7826086956522,64.7826086956522,60.8695652173913,64.7826086956522,56.9565217391304,60.8695652173913,64.7826086956522,80.4347826086957,41.304347826087,64.7826086956522,53.0434782608696,56.9565217391304,64.7826086956522,53.0434782608696,60.8695652173913,56.9565217391304,56.9565217391304,64.7826086956522,53.0434782608696,56.9565217391304,49.1304347826087,41.304347826087,56.9565217391304,76.5217391304348,49.1304347826087,49.1304347826087,45.2173913043478,60.8695652173913,53.0434782608696,45.2173913043478,60.8695652173913,80.4347826086957,60.8695652173913,68.695652173913,49.1304347826087,76.5217391304348,64.7826086956522,68.695652173913,53.0434782608696,60.8695652173913,45.2173913043478,53.0434782608696,53.0434782608696,53.0434782608696,56.9565217391304,56.9565217391304,45.2173913043478,56.9565217391304]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p><strong>7.2. Species richness variation along stands</strong></p>
-<div id="htmlwidget-10c552955cf917a118c4" style="width:624px;height:384px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-10c552955cf917a118c4">{"x":{"visdat":{"25cd7c03490e":["function () ","plotlyVisDat"]},"cur_data":"25cd7c03490e","attrs":{"25cd7c03490e":{"y":{},"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"color":{},"symbol":"stand","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"","xaxis":{"domain":[0,1],"automargin":true,"title":"Stand","showgrid":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"Species richness","showgrid":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(102,194,165,0.5)","y":[21,12,16,19,17,19,17,22,18,22,19,18,23,20,22,19,19,20,16,16,15,18,16,16,20],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"1<br />stand","marker":{"color":"rgba(102,194,165,1)","symbol":"circle","line":{"color":"rgba(102,194,165,1)"}},"mode":"+markers","line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(252,141,98,0.5)","y":[15,16,15,15,14,13,16,17,14,16,17,17,12,13,11,15,15,13,13,11,15,17,13,13,12],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"3<br />stand","marker":{"color":"rgba(252,141,98,1)","symbol":"circle","line":{"color":"rgba(252,141,98,1)"}},"mode":"+markers","line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","y":[15,14,11,7,10,14,11,13,7,9,12,9,13,10,9,9,11,14,6,13,17,14,12,17,14],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"4<br />stand","marker":{"color":"rgba(141,160,203,1)","symbol":"circle","line":{"color":"rgba(141,160,203,1)"}},"mode":"+markers","line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(231,138,195,0.5)","y":[19,23,24,23,19,23,23,23,22,20,25,21,20,20,18,21,21,21,21,19,22,19,19,24,21],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"5<br />stand","marker":{"color":"rgba(231,138,195,1)","symbol":"circle","line":{"color":"rgba(231,138,195,1)"}},"mode":"+markers","line":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(166,216,84,0.5)","y":[19,24,21,20,29,22,20,25,23,28,23,25,21,27,20,18,21,22,24,25,23,24,26,24,25],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"6<br />stand","marker":{"color":"rgba(166,216,84,1)","symbol":"circle","line":{"color":"rgba(166,216,84,1)"}},"mode":"+markers","line":{"color":"rgba(166,216,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(255,217,47,0.5)","y":[18,24,20,20,19,20,18,19,20,24,14,20,17,18,20,17,19,18,18,20,17,18,16,14,18],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"7<br />stand","marker":{"color":"rgba(255,217,47,1)","symbol":"circle","line":{"color":"rgba(255,217,47,1)"}},"mode":"+markers","line":{"color":"rgba(255,217,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(229,196,148,0.5)","y":[23,16,16,15,19,17,15,19,24,19,21,16,23,20,21,17,19,15,17,17,17,18,18,15,18],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"8<br />stand","marker":{"color":"rgba(229,196,148,1)","symbol":"circle","line":{"color":"rgba(229,196,148,1)"}},"mode":"+markers","line":{"color":"rgba(229,196,148,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p><strong>7.3. Counts of the number of species frequencies in each
-abundance class</strong></p>
+<div id="htmlwidget-60f8362cd111b456dbd8" style="width:624px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-60f8362cd111b456dbd8">{"x":{"visdat":{"324d34d34a67":["function () ","plotlyVisDat"]},"cur_data":"324d34d34a67","attrs":{"324d34d34a67":{"x":{},"y":{},"color":"Paired","size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"","xaxis":{"domain":[0,1],"automargin":true,"title":"Soil temperature (C)","showgrid":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"Species richness","showgrid":false},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[16.66666667,15.55555556,15,15,15,16.11111111,16.11111111,15.55555556,15.55555556,15,16.66666667,15,16.66666667,16.11111111,16.66666667,17.77777778,17.77777778,17.22222222,17.22222222,17.22222222,18.88888889,17.77777778,18.33333333,18.33333333,17.22222222,18.88888889,18.88888889,19.44444444,17.22222222,18.33333333,17.77777778,18.33333333,18.88888889,19.44444444,18.88888889,18.33333333,18.33333333,17.77777778,16.11111111,16.66666667,16.66666667,15.55555556,16.66666667,16.11111111,15.55555556,16.66666667,17.22222222,17.22222222,17.22222222,17.77777778,17.77777778,18.33333333,18.33333333,18.33333333,17.77777778,18.88888889,18.33333333,19.44444444,19.44444444,19.44444444,18.33333333,18.88888889,21.66666667,17.77777778,17.77777778,26.66666667,23.33333333,20.55555556,20,17.77777778,29.44444444,23.33333333,20.55555556,22.22222222,21.66666667,18.33333333,18.88888889,18.88888889,19.44444444,18.88888889,18.88888889,17.22222222,17.77777778,19.44444444,19.44444444,19.44444444,20,18.33333333,18.33333333,17.77777778,18.33333333,19.44444444,18.88888889,19.44444444,18.88888889,18.33333333,18.88888889,17.22222222,18.88888889,17.77777778,15.55555556,15,15.55555556,16.66666667,16.11111111,16.11111111,16.11111111,16.11111111,16.11111111,16.66666667,17.77777778,18.33333333,17.22222222,15.55555556,19.44444444,19.44444444,19.44444444,16.66666667,17.22222222,18.33333333,22.22222222,18.88888889,18.33333333,20.55555556,18.33333333,13.88888889,15.55555556,15.55555556,15,14.44444444,14.44444444,13.88888889,17.77777778,15,14.44444444,15.55555556,16.66666667,16.11111111,15,13.88888889,15,15.55555556,16.11111111,15.55555556,16.11111111,15,15.55555556,15.55555556,13.33333333,16.11111111,18.88888889,16.66666667,18.88888889,15,13.88888889,17.22222222,15.55555556,19.44444444,16.66666667,15.55555556,21.66666667,19.44444444,17.77777778,20,18.88888889,17.22222222,18.33333333,18.88888889,20.55555556,21.11111111,17.77777778,21.11111111,19.44444444,17.22222222,18.88888889],"y":[21,12,16,19,17,19,17,22,18,22,19,18,23,20,22,19,19,20,16,16,15,18,16,16,20,15,16,15,15,14,13,16,17,14,16,17,17,12,13,11,15,15,13,13,11,15,17,13,13,12,15,14,11,7,10,14,11,13,7,9,12,9,13,10,9,9,11,14,6,13,17,14,12,17,14,19,23,24,23,19,23,23,23,22,20,25,21,20,20,18,21,21,21,21,19,22,19,19,24,21,19,24,21,20,29,22,20,25,23,28,23,25,21,27,20,18,21,22,24,25,23,24,26,24,25,18,24,20,20,19,20,18,19,20,24,14,20,17,18,20,17,19,18,18,20,17,18,16,14,18,23,16,16,15,19,17,15,19,24,19,21,16,23,20,21,17,19,15,17,17,17,18,18,15,18],"type":"scatter","mode":"markers","name":"Paired","marker":{"color":"rgba(252,141,98,1)","size":[68.695652173913,33.4782608695652,49.1304347826087,60.8695652173913,53.0434782608696,60.8695652173913,53.0434782608696,72.6086956521739,56.9565217391304,72.6086956521739,60.8695652173913,56.9565217391304,76.5217391304348,64.7826086956522,72.6086956521739,60.8695652173913,60.8695652173913,64.7826086956522,49.1304347826087,49.1304347826087,45.2173913043478,56.9565217391304,49.1304347826087,49.1304347826087,64.7826086956522,45.2173913043478,49.1304347826087,45.2173913043478,45.2173913043478,41.304347826087,37.3913043478261,49.1304347826087,53.0434782608696,41.304347826087,49.1304347826087,53.0434782608696,53.0434782608696,33.4782608695652,37.3913043478261,29.5652173913043,45.2173913043478,45.2173913043478,37.3913043478261,37.3913043478261,29.5652173913043,45.2173913043478,53.0434782608696,37.3913043478261,37.3913043478261,33.4782608695652,45.2173913043478,41.304347826087,29.5652173913043,13.9130434782609,25.6521739130435,41.304347826087,29.5652173913043,37.3913043478261,13.9130434782609,21.7391304347826,33.4782608695652,21.7391304347826,37.3913043478261,25.6521739130435,21.7391304347826,21.7391304347826,29.5652173913043,41.304347826087,10,37.3913043478261,53.0434782608696,41.304347826087,33.4782608695652,53.0434782608696,41.304347826087,60.8695652173913,76.5217391304348,80.4347826086957,76.5217391304348,60.8695652173913,76.5217391304348,76.5217391304348,76.5217391304348,72.6086956521739,64.7826086956522,84.3478260869565,68.695652173913,64.7826086956522,64.7826086956522,56.9565217391304,68.695652173913,68.695652173913,68.695652173913,68.695652173913,60.8695652173913,72.6086956521739,60.8695652173913,60.8695652173913,80.4347826086957,68.695652173913,60.8695652173913,80.4347826086957,68.695652173913,64.7826086956522,100,72.6086956521739,64.7826086956522,84.3478260869565,76.5217391304348,96.0869565217391,76.5217391304348,84.3478260869565,68.695652173913,92.1739130434783,64.7826086956522,56.9565217391304,68.695652173913,72.6086956521739,80.4347826086957,84.3478260869565,76.5217391304348,80.4347826086957,88.2608695652174,80.4347826086957,84.3478260869565,56.9565217391304,80.4347826086957,64.7826086956522,64.7826086956522,60.8695652173913,64.7826086956522,56.9565217391304,60.8695652173913,64.7826086956522,80.4347826086957,41.304347826087,64.7826086956522,53.0434782608696,56.9565217391304,64.7826086956522,53.0434782608696,60.8695652173913,56.9565217391304,56.9565217391304,64.7826086956522,53.0434782608696,56.9565217391304,49.1304347826087,41.304347826087,56.9565217391304,76.5217391304348,49.1304347826087,49.1304347826087,45.2173913043478,60.8695652173913,53.0434782608696,45.2173913043478,60.8695652173913,80.4347826086957,60.8695652173913,68.695652173913,49.1304347826087,76.5217391304348,64.7826086956522,68.695652173913,53.0434782608696,60.8695652173913,45.2173913043478,53.0434782608696,53.0434782608696,53.0434782608696,56.9565217391304,56.9565217391304,45.2173913043478,56.9565217391304],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[68.695652173913,33.4782608695652,49.1304347826087,60.8695652173913,53.0434782608696,60.8695652173913,53.0434782608696,72.6086956521739,56.9565217391304,72.6086956521739,60.8695652173913,56.9565217391304,76.5217391304348,64.7826086956522,72.6086956521739,60.8695652173913,60.8695652173913,64.7826086956522,49.1304347826087,49.1304347826087,45.2173913043478,56.9565217391304,49.1304347826087,49.1304347826087,64.7826086956522,45.2173913043478,49.1304347826087,45.2173913043478,45.2173913043478,41.304347826087,37.3913043478261,49.1304347826087,53.0434782608696,41.304347826087,49.1304347826087,53.0434782608696,53.0434782608696,33.4782608695652,37.3913043478261,29.5652173913043,45.2173913043478,45.2173913043478,37.3913043478261,37.3913043478261,29.5652173913043,45.2173913043478,53.0434782608696,37.3913043478261,37.3913043478261,33.4782608695652,45.2173913043478,41.304347826087,29.5652173913043,13.9130434782609,25.6521739130435,41.304347826087,29.5652173913043,37.3913043478261,13.9130434782609,21.7391304347826,33.4782608695652,21.7391304347826,37.3913043478261,25.6521739130435,21.7391304347826,21.7391304347826,29.5652173913043,41.304347826087,10,37.3913043478261,53.0434782608696,41.304347826087,33.4782608695652,53.0434782608696,41.304347826087,60.8695652173913,76.5217391304348,80.4347826086957,76.5217391304348,60.8695652173913,76.5217391304348,76.5217391304348,76.5217391304348,72.6086956521739,64.7826086956522,84.3478260869565,68.695652173913,64.7826086956522,64.7826086956522,56.9565217391304,68.695652173913,68.695652173913,68.695652173913,68.695652173913,60.8695652173913,72.6086956521739,60.8695652173913,60.8695652173913,80.4347826086957,68.695652173913,60.8695652173913,80.4347826086957,68.695652173913,64.7826086956522,100,72.6086956521739,64.7826086956522,84.3478260869565,76.5217391304348,96.0869565217391,76.5217391304348,84.3478260869565,68.695652173913,92.1739130434783,64.7826086956522,56.9565217391304,68.695652173913,72.6086956521739,80.4347826086957,84.3478260869565,76.5217391304348,80.4347826086957,88.2608695652174,80.4347826086957,84.3478260869565,56.9565217391304,80.4347826086957,64.7826086956522,64.7826086956522,60.8695652173913,64.7826086956522,56.9565217391304,60.8695652173913,64.7826086956522,80.4347826086957,41.304347826087,64.7826086956522,53.0434782608696,56.9565217391304,64.7826086956522,53.0434782608696,60.8695652173913,56.9565217391304,56.9565217391304,64.7826086956522,53.0434782608696,56.9565217391304,49.1304347826087,41.304347826087,56.9565217391304,76.5217391304348,49.1304347826087,49.1304347826087,45.2173913043478,60.8695652173913,53.0434782608696,45.2173913043478,60.8695652173913,80.4347826086957,60.8695652173913,68.695652173913,49.1304347826087,76.5217391304348,64.7826086956522,68.695652173913,53.0434782608696,60.8695652173913,45.2173913043478,53.0434782608696,53.0434782608696,53.0434782608696,56.9565217391304,56.9565217391304,45.2173913043478,56.9565217391304]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p><strong>Species richness variation along stands</strong></p>
+<div id="htmlwidget-9a0bfe95c1ba66273bc6" style="width:624px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a0bfe95c1ba66273bc6">{"x":{"visdat":{"324d42d133d7":["function () ","plotlyVisDat"]},"cur_data":"324d42d133d7","attrs":{"324d42d133d7":{"y":{},"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"color":{},"symbol":"stand","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"","xaxis":{"domain":[0,1],"automargin":true,"title":"Stand","showgrid":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"Species richness","showgrid":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(102,194,165,0.5)","y":[21,12,16,19,17,19,17,22,18,22,19,18,23,20,22,19,19,20,16,16,15,18,16,16,20],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"1<br />stand","marker":{"color":"rgba(102,194,165,1)","symbol":"circle","line":{"color":"rgba(102,194,165,1)"}},"mode":"+markers","line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(252,141,98,0.5)","y":[15,16,15,15,14,13,16,17,14,16,17,17,12,13,11,15,15,13,13,11,15,17,13,13,12],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"3<br />stand","marker":{"color":"rgba(252,141,98,1)","symbol":"circle","line":{"color":"rgba(252,141,98,1)"}},"mode":"+markers","line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","y":[15,14,11,7,10,14,11,13,7,9,12,9,13,10,9,9,11,14,6,13,17,14,12,17,14],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"4<br />stand","marker":{"color":"rgba(141,160,203,1)","symbol":"circle","line":{"color":"rgba(141,160,203,1)"}},"mode":"+markers","line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(231,138,195,0.5)","y":[19,23,24,23,19,23,23,23,22,20,25,21,20,20,18,21,21,21,21,19,22,19,19,24,21],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"5<br />stand","marker":{"color":"rgba(231,138,195,1)","symbol":"circle","line":{"color":"rgba(231,138,195,1)"}},"mode":"+markers","line":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(166,216,84,0.5)","y":[19,24,21,20,29,22,20,25,23,28,23,25,21,27,20,18,21,22,24,25,23,24,26,24,25],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"6<br />stand","marker":{"color":"rgba(166,216,84,1)","symbol":"circle","line":{"color":"rgba(166,216,84,1)"}},"mode":"+markers","line":{"color":"rgba(166,216,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(255,217,47,0.5)","y":[18,24,20,20,19,20,18,19,20,24,14,20,17,18,20,17,19,18,18,20,17,18,16,14,18],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"7<br />stand","marker":{"color":"rgba(255,217,47,1)","symbol":"circle","line":{"color":"rgba(255,217,47,1)"}},"mode":"+markers","line":{"color":"rgba(255,217,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(229,196,148,0.5)","y":[23,16,16,15,19,17,15,19,24,19,21,16,23,20,21,17,19,15,17,17,17,18,18,15,18],"boxpoints":"all","jitter":0.4,"pointpos":-1.8,"type":"box","name":"8<br />stand","marker":{"color":"rgba(229,196,148,1)","symbol":"circle","line":{"color":"rgba(229,196,148,1)"}},"mode":"+markers","line":{"color":"rgba(229,196,148,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p><strong>Counts of the number of species frequencies in each abundance
+class</strong></p>
 <p>We already know the patterns among stands, soil temperature, and
 interaction. But, what do continuous variables (species richness and
 soil temperature) tell us regarding their frequency distributions?</p>
 <p>Species richness clearly follows a normal distribution.</p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-6-1.png" width="624" /></p>
-<p><strong>7.4. Counts of the number of soil temperature frequencies in
-each abundance class</strong></p>
+<p><strong>Counts of the number of soil temperature frequencies in each
+abundance class</strong></p>
 <p>Soil temperature not necessarily follows a normal distribution, but
 it seems like can assume it.</p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-7-1.png" width="624" /></p>
 </div>
 <div id="section-model-codification-gets-started"
 class="section level3">
-<h3><strong>8. MODEL CODIFICATION: GET’S STARTED</strong></h3>
+<h3><strong>Model codification: Get’s started!</strong></h3>
 <p>In order to understand how soil temperature in Celsius and stand (x =
 independent variable) can affect biodiversity we can create five
 different models containing Species richness as response variable (y =
@@ -282,7 +287,7 @@ M4 &lt;- lm(SR ~ temp_C+stand,data = SR_SoilTemp)
 M5 &lt;- lm(SR ~ temp_C:stand,data = SR_SoilTemp)</code></pre>
 </div>
 <div id="section-model-selection" class="section level3">
-<h3><strong>9. MODEL SELECTION</strong></h3>
+<h3><strong>Model selection</strong></h3>
 <p>Regarding patterns associated to species richness in function of soil
 temperature and stand, can we use these results to formulate our
 ecological conclusions? Does putting together both soil temperature and
@@ -309,8 +314,8 @@ M2 &lt;-lm(SR ~ stand,data = SR_SoilTemp)  </code></pre>
 </details>
 </div>
 <div id="section-model-validation" class="section level3">
-<h3><strong>10. MODEL VALIDATION</strong></h3>
-<p><strong>10.1. Homogeneity of the variance</strong></p>
+<h3><strong>Model validation</strong></h3>
+<p><strong>Homogeneity of the variance</strong></p>
 <p>Plot predicted values vs residual values</p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-10-1.png" width="624" /></p>
 <p>Homogeneity of variance test</p>
@@ -322,13 +327,13 @@ M2 &lt;-lm(SR ~ stand,data = SR_SoilTemp)  </code></pre>
 <p>There is a homogeneous dispersion of the residuals regarding the
 graphic and the homogeneity of variance test(p-value = 0.1793). <em>The
 assumption is respected!</em></p>
-<p><strong>10.2. Independence of the model residuals</strong></p>
+<p><strong>Independence of the model residuals</strong></p>
 <p>Check the independence of the model residuals with stands</p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-12-1.png" width="624" /></p>
 <p>Homogeneous dispersion of the residuals around 0 and no pattern of
 residuals depending on the variable. <em>The assumption is
 respected!!</em></p>
-<p><strong>10.3. Normality of the model residuals</strong></p>
+<p><strong>Normality of the model residuals</strong></p>
 <p>Histogram of model residuals
 <img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-13-1.png" width="624" /></p>
 <p>Shapiro test to check residuals normality</p>
@@ -343,7 +348,7 @@ and the Shapiro test(p-value = 0.2401). <em>The assumption is respected
 </div>
 <div id="section-model-interpretation-and-visualization"
 class="section level3">
-<h3><strong>11. MODEL INTERPRETATION AND VISUALIZATION</strong></h3>
+<h3><strong>Model interpretation and visualization</strong></h3>
 <p><strong>Species richness as a function of stand</strong></p>
 <p>Once we have corroborated the linear regression model assumption we
 can continue with model interpretation and visualization. There are
@@ -359,9 +364,56 @@ are associated with less species richness than stands 5 and 6.</p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-16-1.png" width="624" /></p>
 <p>Different colours in the stands mean statistical differences.</p>
 </div>
-<div id="section-exercises" class="section level3">
-<h3><strong>12. EXERCISES</strong></h3>
-<p><strong>12.1. SPECIES RICHNESS AS A FUNCTION OF SOIL TEMPERATURE
+</div>
+<div id="section-non-linear-model-relationship-in-ecological-data"
+class="section level2" data-progressive="TRUE">
+<h2><strong>Non-linear model relationship in ecological
+data</strong></h2>
+<p>Run the following code. Then observe the AIC table and the graphic
+visualization.</p>
+<div class="tutorial-exercise" data-label="Linear_not_linear"
+data-completion="1" data-diagnostics="1" data-startover="1"
+data-lines="25">
+<pre class="text"><code># Data
+x &lt;- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)
+y_response &lt;- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)
+Linear_not_linear &lt;- data.frame(x,y_response)
+
+# Linear model or not?
+library(mgcv)
+linear_model &lt;- gam(y_response  ~ x, data = Linear_not_linear)
+smooth_model &lt;- gam(y_response  ~ s(x), data = Linear_not_linear)
+AIC(linear_model, smooth_model)
+
+# Visualization
+library(ggplot2)
+p1&lt;-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +
+  geom_point() +
+  geom_line(colour = &quot;red&quot;, size = 1.2,
+            aes(y = fitted(linear_model))) +
+  xlab(&quot;x&quot;) +
+  ylab(&quot;y&quot;) +
+  labs(title = &quot;Linear model or not?&quot;)+
+  geom_line(colour = &quot;blue&quot;, size = 1.2,
+            aes(y = fitted(smooth_model))) +
+  theme_bw()
+
+p1</code></pre>
+<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
+</div>
+<details>
+<summary>
+<strong>Linear model or not?</strong>
+</summary>
+<p>
+You can see that the AIC and the trend of the smooth GAM justify that
+adding a smoothing function improves model performance. Non linearity is
+then supported by these data.
+<p>
+</div>
+<div id="section-exercises" class="section level2">
+<h2><strong>Exercises</strong></h2>
+<p><strong>Species richness as a function of soil temperature
 (°C)</strong></p>
 <p>Run the following code and answer the question below. Here, we use
 model one (M1) corresponding to species richness as a function of soil
@@ -419,47 +471,10 @@ Respond to the following question:</p>
 <script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
 </div>
 </div>
-<p><strong>12.2 LINEAR OR NOT LINEAR RELATIONSHIP</strong></p>
-<p>Run the following code. Then observe the AIC table and the graphic
-visualization.</p>
-<div class="tutorial-exercise" data-label="Linear_not_linear"
-data-completion="1" data-diagnostics="1" data-startover="1"
-data-lines="25">
-<pre class="text"><code># Data
-x &lt;- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)
-y_response &lt;- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)
-Linear_not_linear &lt;- data.frame(x,y_response)
-
-# Linear model or not?
-library(mgcv)
-linear_model &lt;- gam(y_response  ~ x, data = Linear_not_linear)
-smooth_model &lt;- gam(y_response  ~ s(x), data = Linear_not_linear)
-AIC(linear_model, smooth_model)
-
-# Visualization
-library(ggplot2)
-p1&lt;-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +
-  geom_point() +
-  geom_line(colour = &quot;red&quot;, size = 1.2,
-            aes(y = fitted(linear_model))) +
-  xlab(&quot;x&quot;) +
-  ylab(&quot;y&quot;) +
-  labs(title = &quot;Linear model or not?&quot;)+
-  geom_line(colour = &quot;blue&quot;, size = 1.2,
-            aes(y = fitted(smooth_model))) +
-  theme_bw()
-
-p1</code></pre>
-<script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
-</div>
-<p>You can see that the AIC and the trend of the smooth GAM justify that
-adding a smoothing function improves model performance. Non linearity is
-then supported by these data.</p>
 <p>Now, let’s explore our real species richness and soil temperature
 data relationship. Follow the next steps:</p>
 <ol style="list-style-type: decimal">
-<li>Code by yourself: Use and adapt R code from section 12.1 and 12.2 to
-check linearity.</li>
+<li>Code by yourself: Use and adapt R code to check linearity.</li>
 <li>Use code from Hint: Click on Hint to review and paste the code. The
 run the code.</li>
 </ol>
@@ -517,21 +532,21 @@ Linear</code></pre>
 <script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
 </div>
 </div>
-<p><strong>12.3. INTERACTION MODEL</strong></p>
+<p><strong>Interaction model</strong></p>
 <p>Situation: we are interested to model the species richness of Hondo
 as a function of temperature (this is our main predictor of interest)
 but we don’t know if we need to consider the stand as another important
 variable in the model. Observe the following graphics (M1, M3 and M4
 model) and then the r squared and AICc into the summary table. Respond
 to the questions below.</p>
-<p><strong>12.3.1. Species richness as a function of soil temperature
-(°C) plus stand, and soil temperature-stand interaction</strong></p>
+<p><strong>Species richness as a function of soil temperature (°C) plus
+stand, and soil temperature-stand interaction</strong></p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-17-1.png" width="624" /></p>
-<p><strong>12.3.2. Species richness as a function of soil temperature
-(°C) plus stand, and soil temperature-stand interaction</strong></p>
+<p><strong>Species richness as a function of soil temperature (°C) plus
+stand, and soil temperature-stand interaction</strong></p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-18-1.png" width="624" /></p>
-<p><strong>12.3.3. Species richness as a function of soil temperature
-(°C) and stand</strong></p>
+<p><strong>Species richness as a function of soil temperature (°C) and
+stand</strong></p>
 <p><img src="Biodiversity_Alberta_files/figure-html/unnamed-chunk-19-1.png" width="624" /></p>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -549,9 +564,8 @@ is the AICc difference with the lowest value</p>
 <script>if (Tutorial.triggerMathJax) Tutorial.triggerMathJax()</script>
 </div>
 </div>
-</div>
 <div id="section-reproducibility" class="section level3">
-<h3><strong>13. REPRODUCIBILITY</strong></h3>
+<h3><strong>Reproducibility</strong></h3>
 <p>The graphics and results presented in this tutorial were obtained
 using historical soil temperature data, and vascular diversity datasets
 from Hondo stands. Data is available at [<a
@@ -563,7 +577,7 @@ Studio.</p>
 str(Hondo_VascularCover_1980_2015)
 Hondo_SoilTemp_1980_2010 # Historical soil temperature
 str(Hondo_SoilTemp_1980_2010)</code></pre>
-<p><strong>13.1 Dataset manipulation</strong></p>
+<p><strong>Dataset manipulation</strong></p>
 <p>1.Generate a subset of data considering only 2010 data to simplify
 the statistical analyses. It is important to focus on the heart of
 species richness ecological concept connected to space and
@@ -584,35 +598,10 @@ temperature and species richness. You can see here that quadrants and
 stands were merged adequately.</p></li>
 </ol>
 </div>
-<div id="section-references" class="section level3">
-<h3><strong>14. REFERENCES</strong></h3>
-<p>Hesketh, A., Loesberg, J., Bledsoe, E., Karst, J., &amp; Macdonald,
-E. (2021). Seasonal and annual dynamics of western Canadian boreal
-forest plant communities: A legacy dataset spanning four decades [Data
-set]. Scholars Portal Dataverse. <a
-href="https://doi.org/10.5683/SP3/PZCAVE"
-class="uri">https://doi.org/10.5683/SP3/PZCAVE</a></p>
-<p>Canadian Endangered Species Conservation Council(CESCC). 2010. Wild
-Species 2010: The general status of Species in Canada.</p>
-<p>Jin, Y., and Qian, H. 2019. V.PhyloMaker: an R package that can
-generate very large phylogenies for vascular plants. Ecography, 42:
-1353: 1359.</p>
-<p>Packer, J.G., and Gould, A.J. 2017. Vascular plants of Alberta, part
-1: Ferns, Fern Allies, Gymnosperms, and monocots. University of Calgary
-Press. 281 pages.</p>
-<p>Earle, C.J. 2021.The Gymnossperm Database. Consulted on April 7,
-2022:[<a href="https://www.conifers.org/zz/gymnosperms.php"
-class="uri">https://www.conifers.org/zz/gymnosperms.php</a>]. Go Botany
-(3.7). 2022. Native Plant Trust. Consulted on April 7, 2022: [<a
-href="https://gobotany.nativeplanttrust.org"
-class="uri">https://gobotany.nativeplanttrust.org</a>]</p>
 </div>
-</div>
-<div id="section-topic-2-tree-ring-analysis-over-time"
-class="section level2">
-<h2><strong>Topic 2: TREE RING ANALYSIS OVER TIME</strong></h2>
-<div id="section-audience-forestry" class="section level3">
-<h3><strong>1. AUDIENCE: FORESTRY</strong></h3>
+<div id="section-dendrochonology-what-it-is" class="section level2"
+data-progressive="TRUE">
+<h2><strong>Dendrochonology: what it is?</strong></h2>
 <p>Tree Stories: How Tree Rings Reveal Extreme Weather Cycles? <em>Video
 from Brigham Young University, Utah</em></p>
 <div class="vembedr" align="center">
@@ -620,9 +609,6 @@ from Brigham Young University, Utah</em></p>
 <iframe src="https://www.youtube.com/embed/xmZO7aRgcW4" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
-</div>
-<div id="section-dendrochronology-what-it-is" class="section level3">
-<h3><strong>3. DENDROCHRONOLOGY: WHAT IT IS?</strong></h3>
 <p>An interesting concept in biology, and more in forestry, is the ring
 dynamics of trees over time. Dendrochronology is the dating and study of
 annual rings in trees (see <a
@@ -641,15 +627,15 @@ size), depending on the species and latitude for what other data
 analysis (climate data) should be included (Tumajer, J., &amp; Lehejček,
 J. 2019).</p>
 </div>
-<div id="section-tree-ring-analysis-over-time" class="section level3">
-<h3><strong>4. TREE RING ANALYSIS OVER TIME</strong></h3>
+<div id="section-tree-ring-analysis-over-time" class="section level2">
+<h2><strong>Tree ring analysis over time</strong></h2>
 <p>Let’s plot some graphics. We can plot the average ring width (mm) in
 axe y in the function of time (year) in axe x (see red line). But, we
 can also plot the average ring width (mm) in axe y as a function of time
 (year) in axe x, simultaneously considering the stands (see gray lines).
 Do you have some ideas about what these trends might be telling us?</p>
-<p><strong>4.1 RINGS DATA FROM Hondo-Slave Lake (hereafter, Hondo)
-region of Alberta</strong></p>
+<p><strong>Rings data from Hondo-Slave Lake (hereafter, Hondo) region of
+Alberta</strong></p>
 <div class="tutorial-exercise" data-label="AOS_plot" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="37">
 <pre class="text"><code># Libraries
@@ -690,8 +676,8 @@ aos_dt %&gt;% group_by(year, stand) %&gt;%
               color = &#39;red&#39;, linetype = &#39;dashed&#39;)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
-<p><strong>4.2 RINGS DATA FROM Athabasca Oil Sands (hereafter, AOS)
-region in northeastern Alberta</strong></p>
+<p><strong>Rings data from Athabasca Oil Sands (hereafter, AOS) region
+in northeastern Alberta</strong></p>
 <div class="tutorial-exercise" data-label="Hondo_plot"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="33">
@@ -729,8 +715,8 @@ hondo_dt %&gt;% group_by(year, stand) %&gt;%
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
-<div id="section-exercises-1" class="section level3">
-<h3><strong>5. EXERCISES</strong></h3>
+<div id="section-exercises-1" class="section level2">
+<h2><strong>Exercises</strong></h2>
 <details>
 <summary>
 <strong>What can we deduce from the graphics?</strong> (Open responses)
@@ -768,9 +754,28 @@ some insights about what is going on with ring tree dynamics.</p>
 </div>
 </details>
 </div>
-</div>
-<div id="section-references-1" class="section level2">
-<h2><strong>7. References</strong></h2>
+<div id="section-references" class="section level2">
+<h2><strong>References</strong></h2>
+<p>Hesketh, A., Loesberg, J., Bledsoe, E., Karst, J., &amp; Macdonald,
+E. (2021). Seasonal and annual dynamics of western Canadian boreal
+forest plant communities: A legacy dataset spanning four decades [Data
+set]. Scholars Portal Dataverse. <a
+href="https://doi.org/10.5683/SP3/PZCAVE"
+class="uri">https://doi.org/10.5683/SP3/PZCAVE</a></p>
+<p>Canadian Endangered Species Conservation Council(CESCC). 2010. Wild
+Species 2010: The general status of Species in Canada.</p>
+<p>Jin, Y., and Qian, H. 2019. V.PhyloMaker: an R package that can
+generate very large phylogenies for vascular plants. Ecography, 42:
+1353: 1359.</p>
+<p>Packer, J.G., and Gould, A.J. 2017. Vascular plants of Alberta, part
+1: Ferns, Fern Allies, Gymnosperms, and monocots. University of Calgary
+Press. 281 pages.</p>
+<p>Earle, C.J. 2021.The Gymnossperm Database. Consulted on April 7,
+2022:[<a href="https://www.conifers.org/zz/gymnosperms.php"
+class="uri">https://www.conifers.org/zz/gymnosperms.php</a>]. Go Botany
+(3.7). 2022. Native Plant Trust. Consulted on April 7, 2022: [<a
+href="https://gobotany.nativeplanttrust.org"
+class="uri">https://gobotany.nativeplanttrust.org</a>]</p>
 <p>Fritts, H. C. (1987). TREE-RING ANALYSISTree-ring analysis. In
 Climatology (pp. 858–875). Springer US. <a
 href="https://doi.org/10.1007/0-387-30749-4_182"
@@ -791,6 +796,9 @@ and porcupines: A tree-ring analysis of browsing and dynamics of an
 overmature pine forest. Canadian Journal of Forest Research, 47,
 257–268. <a href="https://doi.org/10.1139/cjfr-2016-0214"
 class="uri">https://doi.org/10.1139/cjfr-2016-0214</a></p>
+</div>
+<div id="section-glossary" class="section level2">
+<h2><strong>Glossary</strong></h2>
 </div>
 <div id="section-français" class="section level2">
 <h2><strong>Français</strong></h2>
@@ -815,6 +823,55 @@ learnr:::i18n_observe_tutorial_language(input, session)
 session$onSessionEnded(function() {
         learnr:::event_trigger(session, "session_stop")
       })
+</script>
+
+
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-Linear_not_linear-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-Linear_not_linear-code-editor`)), session)
+output$`tutorial-exercise-Linear_not_linear-output` <- renderUI({
+  `tutorial-exercise-Linear_not_linear-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::store_exercise_cache(structure(list(label = "Linear_not_linear", global_setup = NULL, 
+    setup = NULL, chunks = list(list(label = "Linear_not_linear", 
+        code = "\n# Data\nx <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)\ny_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)\nLinear_not_linear <- data.frame(x,y_response)\n\n# Linear model or not?\nlibrary(mgcv)\nlinear_model <- gam(y_response  ~ x, data = Linear_not_linear)\nsmooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)\nAIC(linear_model, smooth_model)\n\n# Visualization\nlibrary(ggplot2)\np1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +\n  geom_point() +\n  geom_line(colour = \"red\", size = 1.2,\n            aes(y = fitted(linear_model))) +\n  xlab(\"x\") +\n  ylab(\"y\") +\n  labs(title = \"Linear model or not?\")+\n  geom_line(colour = \"blue\", size = 1.2,\n            aes(y = fitted(smooth_model))) +\n  theme_bw()\n\np1\n", 
+        opts = list(label = "\"Linear_not_linear\"", exercise = "TRUE", 
+            exercise.lines = "25", message = "FALSE"), engine = "r")), 
+    code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
+    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "Biodiversity_Alberta_cache/html/", cache.vars = NULL, 
+        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
+        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
+        fig.align = "default", fig.path = "Biodiversity_Alberta_files/figure-html/", 
+        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
+        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
+        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
+        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
+        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
+        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
+        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
+        max.print = 1000, label = "Linear_not_linear", exercise = TRUE, 
+        exercise.lines = 25, code = c("", "# Data", "x <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)", 
+        "y_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)", 
+        "Linear_not_linear <- data.frame(x,y_response)", "", 
+        "# Linear model or not?", "library(mgcv)", "linear_model <- gam(y_response  ~ x, data = Linear_not_linear)", 
+        "smooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)", 
+        "AIC(linear_model, smooth_model)", "", "# Visualization", 
+        "library(ggplot2)", "p1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +", 
+        "  geom_point() +", "  geom_line(colour = \"red\", size = 1.2,", 
+        "            aes(y = fitted(linear_model))) +", "  xlab(\"x\") +", 
+        "  ylab(\"y\") +", "  labs(title = \"Linear model or not?\")+", 
+        "  geom_line(colour = \"blue\", size = 1.2,", "            aes(y = fitted(smooth_model))) +", 
+        "  theme_bw()", "", "p1", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "Linear_not_linear, exercise=TRUE, exercise.lines = 25, message=FALSE", 
+        fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
+    engine = "r", version = "3"), class = "tutorial_exercise"))
 </script>
 
 
@@ -875,19 +932,19 @@ learnr:::store_exercise_cache(structure(list(label = "M1_plot", global_setup = N
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "quizM1-1", question = structure("<strong>What is the relationship beween species richness and soil temperature?<\u002fstrong>", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_247bf8d", 
+"character")), answers = list(structure(list(id = "lnr_ans_a160af6", 
     option = "More species richness, more soil temperature", 
     value = "More species richness, more soil temperature", label = structure("More species richness, more soil temperature", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_da28b1", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f4f8c2a", 
     option = "More species richness, less soil temperature", 
     value = "More species richness, less soil temperature", label = structure("More species richness, less soil temperature", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_90b8ea7", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f936df3", 
     option = "The relationship is not significant", value = "The relationship is not significant", 
     label = structure("The relationship is not significant", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_51a8e1", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_6e2c1ae", 
     option = "None of the above answers is correct", value = "None of the above answers is correct", 
     label = structure("None of the above answers is correct", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
@@ -898,58 +955,9 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "quizM1-1-answer", question = "quizM1-1"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = FALSE, seed = 1477391978.81204, 
+    random_answer_order = FALSE, allow_retry = FALSE, seed = 870887445.594461, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
-</script>
- 
-<script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-Linear_not_linear-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-Linear_not_linear-code-editor`)), session)
-output$`tutorial-exercise-Linear_not_linear-output` <- renderUI({
-  `tutorial-exercise-Linear_not_linear-result`()
-})
-</script>
-
-
-<script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache(structure(list(label = "Linear_not_linear", global_setup = NULL, 
-    setup = NULL, chunks = list(list(label = "Linear_not_linear", 
-        code = "\n# Data\nx <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)\ny_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)\nLinear_not_linear <- data.frame(x,y_response)\n\n# Linear model or not?\nlibrary(mgcv)\nlinear_model <- gam(y_response  ~ x, data = Linear_not_linear)\nsmooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)\nAIC(linear_model, smooth_model)\n\n# Visualization\nlibrary(ggplot2)\np1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +\n  geom_point() +\n  geom_line(colour = \"red\", size = 1.2,\n            aes(y = fitted(linear_model))) +\n  xlab(\"x\") +\n  ylab(\"y\") +\n  labs(title = \"Linear model or not?\")+\n  geom_line(colour = \"blue\", size = 1.2,\n            aes(y = fitted(smooth_model))) +\n  theme_bw()\n\np1\n", 
-        opts = list(label = "\"Linear_not_linear\"", exercise = "TRUE", 
-            exercise.lines = "25", message = "FALSE"), engine = "r")), 
-    code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
-    tests = NULL, options = list(eval = FALSE, echo = TRUE, results = "markup", 
-        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
-        comment = NA, highlight = FALSE, size = "normalsize", 
-        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
-        cache.path = "Biodiversity_Alberta_cache/html/", cache.vars = NULL, 
-        cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
-        cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
-        fig.align = "default", fig.path = "Biodiversity_Alberta_files/figure-html/", 
-        dev = "png", dev.args = NULL, dpi = 192, fig.ext = "png", 
-        fig.width = 6.5, fig.height = 4, fig.env = "figure", 
-        fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
-        fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
-        fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
-        engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
-        max.print = 1000, label = "Linear_not_linear", exercise = TRUE, 
-        exercise.lines = 25, code = c("", "# Data", "x <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)", 
-        "y_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)", 
-        "Linear_not_linear <- data.frame(x,y_response)", "", 
-        "# Linear model or not?", "library(mgcv)", "linear_model <- gam(y_response  ~ x, data = Linear_not_linear)", 
-        "smooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)", 
-        "AIC(linear_model, smooth_model)", "", "# Visualization", 
-        "library(ggplot2)", "p1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +", 
-        "  geom_point() +", "  geom_line(colour = \"red\", size = 1.2,", 
-        "            aes(y = fitted(linear_model))) +", "  xlab(\"x\") +", 
-        "  ylab(\"y\") +", "  labs(title = \"Linear model or not?\")+", 
-        "  geom_line(colour = \"blue\", size = 1.2,", "            aes(y = fitted(smooth_model))) +", 
-        "  theme_bw()", "", "p1", ""), out.width.px = 624, out.height.px = 384, 
-        params.src = "Linear_not_linear, exercise=TRUE, exercise.lines = 25, message=FALSE", 
-        fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
-    engine = "r", version = "3"), class = "tutorial_exercise"))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -993,19 +1001,19 @@ learnr:::store_exercise_cache(structure(list(label = "print-linearityTest", glob
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "quizLinearity-1", 
     question = structure("<strong>Can we use linear regression to model species richness and soil temperature relationship?<\u002fstrong>", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_9b5e602", 
+    "character")), answers = list(structure(list(id = "lnr_ans_52112ae", 
         option = "Non linearity is supported by these data", 
         value = "Non linearity is supported by these data", label = structure("Non linearity is supported by these data", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_127a30b", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_3bb4867", 
         option = "It is difficul to make conclusions", value = "It is difficul to make conclusions", 
         label = structure("It is difficul to make conclusions", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_ee1c3d3", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4956274", 
         option = "Linearity is supported by these data", value = "Linearity is supported by these data", 
         label = structure("Linearity is supported by these data", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4caabc6", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_a4db25f", 
         option = "None of the above answers is correct", value = "None of the above answers is correct", 
         label = structure("None of the above answers is correct", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
@@ -1017,7 +1025,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "quizLinearity-1-answer", question = "quizLinearity-1"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = FALSE, 
-    seed = 1543620301.7812, options = list()), class = c("learnr_radio", 
+    seed = 1860976510.63342, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
 
@@ -1025,16 +1033,16 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "quizInteraction-1", 
     question = structure("Regarding R squared and graphics, which is the best model?", html = TRUE, class = c("html", 
-    "character")), answers = list(structure(list(id = "lnr_ans_635c881", 
+    "character")), answers = list(structure(list(id = "lnr_ans_69c1334", 
         option = "M3 model", value = "M3 model", label = structure("M3 model", html = TRUE, class = c("html", 
         "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_93f90d5", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_4bba5ec", 
         option = "M1 model", value = "M1 model", label = structure("M1 model", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_6b1725a", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_62660f2", 
         option = "M4 model", value = "M4 model", label = structure("M4 model", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_c7a1e68", 
+    "tutorial_quiz_answer")), structure(list(id = "lnr_ans_d7275f0", 
         option = "All the models are the best", value = "All the models are the best", 
         label = structure("All the models are the best", html = TRUE, class = c("html", 
         "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
@@ -1046,7 +1054,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
     "character")), message = NULL, post_message = NULL), ids = list(
         answer = "quizInteraction-1-answer", question = "quizInteraction-1"), 
     loading = NULL, random_answer_order = FALSE, allow_retry = FALSE, 
-    seed = 1795971900.66369, options = list()), class = c("learnr_radio", 
+    seed = 152931332.928786, options = list()), class = c("learnr_radio", 
 "tutorial_question")), session = session)
 </script>
  
@@ -1161,20 +1169,20 @@ learnr:::store_exercise_cache(structure(list(label = "Hondo_plot", global_setup 
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "quiz1-1", question = structure("<strong>What dendrochronology is?<\u002fstrong>", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_68c42e4", 
+"character")), answers = list(structure(list(id = "lnr_ans_c0c67ee", 
     option = "It studies the plant height growth", value = "It studies the plant height growth", 
     label = structure("It studies the plant height growth", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_19f2142", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_7abf11b", 
     option = "It studies the growht ring patterns regarding past variation in climate", 
     value = "It studies the growht ring patterns regarding past variation in climate", 
     label = structure("It studies the growht ring patterns regarding past variation in climate", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_4a2d7fc", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_333e3fd", 
     option = "It studies and dates annual rings in trees", value = "It studies and dates annual rings in trees", 
     label = structure("It studies and dates annual rings in trees", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_7a4b086", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_dcda487", 
     option = "It studies the variation of tree species over time", 
     value = "It studies the variation of tree species over time", 
     label = structure("It studies the variation of tree species over time", html = TRUE, class = c("html", 
@@ -1186,7 +1194,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "quiz1-1-answer", question = "quiz1-1"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = FALSE, seed = 512805194.261206, 
+    random_answer_order = FALSE, allow_retry = FALSE, seed = 19769076.4907943, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -1194,22 +1202,22 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label = "quiz1-2", question = structure("What does it gray lines mean in graphics used in this tutorial?", html = TRUE, class = c("html", 
-"character")), answers = list(structure(list(id = "lnr_ans_2b5f09c", 
+"character")), answers = list(structure(list(id = "lnr_ans_1f9fc20", 
     option = "It is the average ring width trend varying over time", 
     value = "It is the average ring width trend varying over time", 
     label = structure("It is the average ring width trend varying over time", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_29e0713", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_c9d374d", 
     option = "It is the average ring width trend varying over stand", 
     value = "It is the average ring width trend varying over stand", 
     label = structure("It is the average ring width trend varying over stand", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_f889008", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_22c96c0", 
     option = "It is the average ring width trend varying over time and stand", 
     value = "It is the average ring width trend varying over time and stand", 
     label = structure("It is the average ring width trend varying over time and stand", html = TRUE, class = c("html", 
     "character")), correct = TRUE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
-"tutorial_quiz_answer")), structure(list(id = "lnr_ans_90726f4", 
+"tutorial_quiz_answer")), structure(list(id = "lnr_ans_e017030", 
     option = "None of the above answers is correct", value = "None of the above answers is correct", 
     label = structure("None of the above answers is correct", html = TRUE, class = c("html", 
     "character")), correct = FALSE, message = NULL, type = "literal"), class = c("tutorial_question_answer", 
@@ -1220,7 +1228,7 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 "character")), incorrect = structure("Incorrect", html = TRUE, class = c("html", 
 "character")), message = NULL, post_message = NULL), ids = list(
     answer = "quiz1-2-answer", question = "quiz1-2"), loading = NULL, 
-    random_answer_order = FALSE, allow_retry = FALSE, seed = 1671058417.22185, 
+    random_answer_order = FALSE, allow_retry = FALSE, seed = 1954883064.08969, 
     options = list()), class = c("learnr_radio", "tutorial_question"
 )), session = session)
 </script>
@@ -1248,8 +1256,8 @@ learnr:::question_prerendered_chunk(structure(list(type = "learnr_radio", label 
 <div id="doc-metadata">
 <h1 class="title toc-ignore" style="display:none;"><strong>Alberta Trees
 Tutorial</strong></h1>
-<h4 class="author"><em><div class="line-block"><strong>Zihaohan
-Sang</strong> (University of Alberta)<br />
+<h4 class="author"><em><div class="line-block">Contact us:<br />
+<strong>Zihaohan Sang</strong> (University of Alberta)<br />
 <a href="mailto:zihaohan@ualberta.ca"
 class="email">zihaohan@ualberta.ca</a><br />
 <strong>Rolando Trejo</strong> (Université de Montréal)<br />
@@ -1259,7 +1267,7 @@ class="email">rolando.trejo.perez@umontreal.ca</a><br />
 Columbia)<br />
 <a href="mailto:chavez@unbc.ca"
 class="email">chavez@unbc.ca</a></div></em></h4>
-<h4 class="date"><em>September 24, 2022</em></h4>
+<h4 class="date"><em>September 25, 2022</em></h4>
 </div>
 <!-- end doc-metadata -->
 
