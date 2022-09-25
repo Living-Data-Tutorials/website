@@ -1,10 +1,16 @@
 ---
-title: Alberta Trees Tutorial
-author: "Zihaohan Sang (University of Alberta),
-        Rolando Trejo (Université de Montréal),
-        Jhoan Chavez (University of Northern British Columbia)"
+title: "**Alberta Trees Tutorial**"
+author: |
+  | Contact us:
+  | **Zihaohan Sang** (University of Alberta)
+  | zihaohan@ualberta.ca
+  | **Rolando Trejo** (Université de Montréal)
+  | rolando.trejo.perez@umontreal.ca
+  | **Jhoan Chavez** (University of Northern British Columbia)
+  | chavez@unbc.ca
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: learnr::tutorial
+progressive: true
 runtime: shiny_prerendered
 ---
 
@@ -34,10 +40,59 @@ library(shiny)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## **Tutorial objectives**
 
-## **Topic 1: VASCULAR PLANT DIVERSITY VARIATION ALONG STANDS AND SOIL TEMPERATURE**
+Forestry and ecology students are the optimal audience to follow this tutorial. Some prerequisites are necessary but not essential, i.e. [an introduction to linear regression](https://www.youtube.com/watch?v=gb4qqX4uhYA), [how to read a boxplot?](https://www.youtube.com/watch?v=7UK2DK7rblw), [the Bell Curve (Normal/Gaussian Distribution)](https://www.youtube.com/watch?v=DJzmb7hGmeM), [what is a residual plot?](https://www.youtube.com/watch?v=J5gRckrv44c).
 
-### **1. AUDIENCE: FORESTRY AND ECOLOGY** 
+At the end of this tutorial you will be able to:
+
+1. Contextualize the global and boreal plant diversity distribution.
+2. Understand the basis of the linear model approach linking plant diversity, space and environment.
+3. Introduce yourself to the non-linear model relationship in ecological data.
+4. Debut into the dendrochronology concept in forestry and ecology.
+5. Explore the tree analysis over time using multiple datasets through graphic visualization.
+
+We will focus on the plant vascular cover diversity and soil temperature in 2010. We will also use the dendrochronology historical datasets.
+
+## Learning objectives
+
+Through this tutorial you will acquire the following skills:
+
+1. A global understanding of plant biodiversity and dendrochronology concepts.
+
+2. Use real data coming from the Alberta legacy dataset, a project monitoring diversity in Western Canadian forest, to implement a linear model approach between diversity and space and environment.
+
+3. Explore and interpret data patterns using data exploration, model codification, selection and validation.
+
+4. Familiarize and code by yourself by adapting R code proposed in this tutorial.
+
+
+## **Alberta legacy dataset background**
+
+An interesting project monitoring diversity was the Seasonal and annual dynamics of western Canadian boreal forest plant communities: a legacy dataset spanning four decades. The primary purpose of the Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects was to document seasonal changes in the vegetative composition during the snow-free season (May through October) and longer-term changes in vegetation and forest mensuration for boreal forest stands in Alberta, Canada dominated by Pinus banksiana (Lamb.) (see central image in the below figure). 
+
+Two regions were used for this study: one in the Hondo-Slave Lake (hereafter, Hondo) region of Alberta, which was surveyed from 1980 to 2015, and a second location in the Athabasca Oil Sands (hereafter, AOS) region in northeastern Alberta, which was surveyed from 1981 to 1984 and thought to have substantial atmospheric pollution due to regional industrial development (oil sands mining and processing). 
+
+```{r fig2, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
+htmltools::img(
+				src = "https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Images/Alberta_Project.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+			)
+```
+*Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects metadata, Alberta*
+
+### **Experimental design** 
+
+The experimental design consisted of plots of 50x50 m subdivided into 50 5x5 m quadrants. Data coming from Hondo monitoring can allow us to state tree questions concerning soil temperature and stands.
+
+```{r fig3, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
+htmltools::img(
+				src = "https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Location.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
+			)
+```
+*Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects metadata, Alberta*
+
+
+## **Global and boreal plant diversity distribution.**{data-progressive=TRUE}
 
 How BIG is Canada's Boreal Forest? *Video from Boreal Conservation [https://www.borealconservation.org]*
 
@@ -50,44 +105,9 @@ embed_url("https://www.youtube.com/watch?v=_XjpzlVVdW8")%>%
 use_align("center")
 ```
 
-
-### **2. LEARNING OBJECTIVES**
-  
-  <details>
-  <summary> **Click here** </summary>
-  <p>  
-  
-  1. You will be able to understand why biology and statistics do a nice match. 
- 
-  2. You will be able to understand how implement linear regression applied to species richness in function of at least of a couple of independent variables.
-
-</details>
-
-### **3. PREREQUISITES**
-
-  <details>
-  <summary> **Click here** </summary>
-  <p> 
-  
-   **3.1 An introduction to linear regression**:https://www.youtube.com/watch?v=gb4qqX4uhYA
+### **Vascular plant diversity: what it is?**
 
 
-   **3.2 How to read a boxplot?**:https://www.youtube.com/watch?v=7UK2DK7rblw
-
-
-   **3.3 The Bell Curve (Normal/Gaussian Distribution)**:https://www.youtube.com/watch?v=DJzmb7hGmeM
-
-
-   **3.4 What is a residual plot?**:https://www.youtube.com/watch?v=J5gRckrv44c
-
-</details>
-
-
-### **4. VASCULAR PLANT DIVERSITY: WHAT IT IS?**
-
-<details>
-  <summary> **Click here** </summary>
-  <p>  
 A key concept in biology is Diversity. If you have wondered what is the connection between species richness of plants versus space  and environment, this is the right place to achieve basic biological and statistical concepts. There are over 352 000 (391 000 according to Jin and Qian, 2019) species of vascular plants in the world. More than 95% of vascular plants are flowering plants, also called angiosperms (e.g. grasses, orchids, maple trees). The other types of vascular plants are gymnosperms (cone-bearing trees, e.g. pine trees, spruce trees) and seedless plants (e.g. ferns, horsetails) (see figure of vascular plants below) . 5111 species of vascular plants have been found in Canada(CESCC, 2010). Such an amazing quantity of types and forms of life definitely invite biologists to wander them selves how diversity works in nature.
 
 ```{r fig1, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
@@ -97,53 +117,9 @@ htmltools::img(
 ```
 *Photos from The Gymnosperm Database and Go Botany (3.7)*
 
-  </details>
-
-### **5. SEADYN AND ANNDYN RESEARCH PROJECTS BACKGROUND**
-
-<details>
-  <summary> **Click here** </summary>
-  <p> 
-  
-An interesting project monitoring diversity was the Seasonal and annual dynamics of western Canadian boreal forest plant communities: a legacy dataset spanning four decades. The primary purpose of the Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects was to document seasonal changes in the vegetative composition during the snow-free season (May through October) and longer-term changes in vegetation and forest mensuration for boreal forest stands in Alberta, Canada dominated by Pinus banksiana (Lamb.) (see central image in the below figure). 
-
-Two regions were used for this study: one in the Hondo-Slave Lake (hereafter, Hondo) region of Alberta, which was surveyed from 1980 to 2015, and a second location in the Athabasca Oil Sands (hereafter, AOS) region in northeastern Alberta, which was surveyed from 1981 to 1984 and thought to have substantial atmospheric pollution due to regional industrial development (oil sands mining and processing). 
-
-```{r fig2, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
-htmltools::img(
-				src = "https://github.com/RolandoTrejo/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Alberta_Project.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
-			)
-```
-*Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects metadata, Alberta*
-
-  </details>
-  
-### **5.1 EXPERIMENTAL DESIGN** 
-
-<details>
-  <summary> **Click here** </summary>
-  <p>  
-  
-The experimental design consisted of plots of 50x50 m subdivided into 50 5x5 m quadrants. Data coming from Hondo monitoring can allow us to state tree questions concerning soil temperature and stands.
+## **Linear model approach linking plant diversity, space and environment.**
 
 
-
-
-```{r fig3, echo = FALSE, out.width = "100%", fig.cap = "Photo from "}
-htmltools::img(
-				src = "https://github.com/Living-Data-Tutorials/website/blob/main/_lessons/2022-04-07-alberta-trees-tutorial/Location.png?raw=true", height = "500px", width = "100%", `data-external` = "1"
-			)
-```
-*Photo from Seasonal Dynamics (SEADYN) and later Annual Dynamics (ANNDYN) research projects metadata, Alberta*
-
-  </details>
-
-### **6. VASCULAR PLANT DIVERSITY VARIATION ALONG SITES AND SOIL TEMPERATURE**
-
-<details>
-  <summary> **Click here** </summary>
-  <p> 
-  
 Alberta, including 660 000 km2, is a diverse Canadian province. Almost 2000 species of vascular plants have been recorded (almost 1500 native) (Packer and Gould, 2017). In order to reveal how biodiversity connects with space and at least one environmental variable, we will focus on understanding the effect of stands and soil temperature in species richness in 2010 regarding only Hondo stands of this project.Hondo stands are north of Edmonton and east of Lesser Slave Lake, Alberta (AB), Canada (bottom right map panel). 2010 Hondo vascular plant is composed by 131 species. In this sites the maximum number of species found between 1980-2015 was 215. Regarding species diversity, we can state the following questions:
 
      A. Can we explain vascular diversity regarding soil temperature? 
@@ -152,17 +128,14 @@ Alberta, including 660 000 km2, is a diverse Canadian province. Almost 2000 spec
  
      C. Do we need to consider both variables together to understand vascular plant diversity variation? 
  
-  </details>
 
-### **7. DATA EXPLORATION**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
+### **Data exploration**
+
   
 In order to answer our questions, we will use data from two different datasets from long-term tree and plant surveys in Alberta. We can respond to our questions using data from a specific year. In this tutorial, we will use 2010 data. Now we can better understand the regression line provided by graphing soil temperature and species richness. It basically follows a negative correlation (more species, less soil temperature). Regarding the boxplot graphic, we can see that stand 5 and 6 contain more species than stand 3 and 4. In stands 7 and 8 we can visualize outlines (extreme values). 
 
-**7.1. Species richness variation by soil temperature (°C)**
+**Species richness variation by soil temperature (°C)**
 
 ```{r,message=FALSE,warning=FALSE}
 # Species richness variation by soil temperature (°C)
@@ -181,7 +154,7 @@ bc <- plot_ly(SR_SoilTemp, x=~temp_C, y=~SR, type = "scatter", size=~SR,
 bc
 ```
 
-**7.2. Species richness variation along stands**
+**Species richness variation along stands**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 # Species richness variation along stands
@@ -196,7 +169,7 @@ bp <- plot_ly(SR_SoilTemp, y=~SR, color = ~as.factor(stand),symbol="stand",
 bp
 ```
 
-**7.3. Counts of the number of species frequencies in each abundance class**
+**Counts of the number of species frequencies in each abundance class**
 
 We already know the patterns among stands, soil temperature, and interaction. But, what do continuous variables (species richness and soil temperature) tell us regarding their frequency distributions? 
 
@@ -210,7 +183,7 @@ barplot(ab, las = 1, # make axis labels perpendicular to axis
         col = grey(5:0/5)) # 5-colour gradient for the bars
 ```
 
-**7.4. Counts of the number of soil temperature frequencies in each abundance class**
+**Counts of the number of soil temperature frequencies in each abundance class**
 
 Soil temperature not necessarily follows a normal distribution, but it seems like can assume it.
 
@@ -222,14 +195,10 @@ barplot(ab, las = 1, # make axis labels perpendicular to axis
         col = grey(5:0/5)) # 5-colour gradient for the bars
 ```
 
-  </details>
 
-### **8. MODEL CODIFICATION: GET'S STARTED**
 
-<details>
-  <summary> **Click here** </summary>
-  <p> 
-  
+### **Model codification: Get's started!**
+
 In order to understand how soil temperature in Celsius and stand (x = independent variable) can affect biodiversity we can create five different models containing Species richness as response variable (y = dependent variable). 
 
 ```{r,message=FALSE, echo=FALSE}
@@ -257,14 +226,10 @@ M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp)
 # Species richness as function of soil temperature-stand interaction alone
 M5 <- lm(SR ~ temp_C:stand,data = SR_SoilTemp)
 ```
-  </details>
 
-###  **9. MODEL SELECTION**
 
-<details>
-  <summary> **Click here** </summary>
-  <p> 
-  
+###  **Model selection**
+
 Regarding  patterns associated to species richness in function of soil temperature and stand, can we use these results to formulate our ecological conclusions? Does putting together both soil temperature and stand can reveal a pattern hidden by modeling both variable independently? We can use AICc and R squared approach to select the best model. Here we can see that model M2 and M4 are the best options following a lm approach with fixed effects. However, M4 model presented a reduced R squared. M2 model, only species richness as function of stand, presented a lower AIC and a higher R squared. 
 
 ```{r,message=FALSE, echo=FALSE}
@@ -298,13 +263,10 @@ M2 <-lm(SR ~ stand,data = SR_SoilTemp)
   </details>
 
 
-### **10. MODEL VALIDATION**
+### **Model validation**
 
-<details>
-  <summary> **Click here** </summary>
-  <p> 
   
-**10.1. Homogeneity of the variance**
+**Homogeneity of the variance**
 
 Plot predicted values vs residual values
 
@@ -325,7 +287,7 @@ bartlett.test(SR ~ stand,data = SR_SoilTemp) # We have homogeneity of variance (
 
 There is a homogeneous dispersion of the residuals regarding the graphic and the homogeneity of variance test(p-value = 0.1793). *The assumption is respected!*
 
-**10.2. Independence of the model residuals**
+**Independence of the model residuals**
 
 Check the independence of the model residuals with stands
 
@@ -338,7 +300,7 @@ abline(h = 0, lty = 2)
 
 Homogeneous dispersion of the residuals around 0 and no pattern of residuals depending on the variable. *The assumption is respected!!*
 
-**10.3. Normality of the model residuals**
+**Normality of the model residuals**
 
 Histogram of model residuals
 ```{r,message=FALSE, echo=FALSE}
@@ -356,13 +318,8 @@ shapiro.test(ANOVA_M2$residuals) # The errors follow a normal distribution (p-va
 
 The residuals follow a normal distribution regarding the histogram and the Shapiro test(p-value = 0.2401). *The assumption is respected !!!*
 
-  </details>
   
-### **11. MODEL INTERPRETATION AND VISUALIZATION**
-
-<details>
-  <summary> **Click here** </summary>
-  <p> 
+### **Model interpretation and visualization**
   
 **Species richness as a function of  stand**
 
@@ -421,15 +378,49 @@ over <- 0.1*max( a$stats[nrow(a$stats),] )
 
 Different colours in the stands mean statistical differences.
 
-  </details>
-  
-### **12. EXERCISES**
+## **Non-linear model relationship in ecological data**{data-progressive=TRUE}
+
+Run the following code. Then observe the AIC table and the graphic visualization. 
+
+```{r Linear_not_linear, exercise=TRUE, exercise.lines = 25, message=FALSE}
+
+# Data
+x <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)
+y_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)
+Linear_not_linear <- data.frame(x,y_response)
+
+# Linear model or not?
+library(mgcv)
+linear_model <- gam(y_response  ~ x, data = Linear_not_linear)
+smooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)
+AIC(linear_model, smooth_model)
+
+# Visualization
+library(ggplot2)
+p1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +
+  geom_point() +
+  geom_line(colour = "red", size = 1.2,
+            aes(y = fitted(linear_model))) +
+  xlab("x") +
+  ylab("y") +
+  labs(title = "Linear model or not?")+
+  geom_line(colour = "blue", size = 1.2,
+            aes(y = fitted(smooth_model))) +
+  theme_bw()
+
+p1
+
+```
 
 <details>
-  <summary> **Click here** </summary>
+  <summary> **Linear model or not?** </summary>
   <p>  
+  You can see that the AIC and the trend of the smooth GAM justify that adding a smoothing function improves model performance. Non linearity is then supported by these data.
+  <p>
+## **Exercises**
+
   
-**12.1. SPECIES RICHNESS AS A FUNCTION OF SOIL TEMPERATURE (°C)**
+**Species richness as a function of soil temperature (°C)**
 
 Run the following code and answer the question below. Here, we use model one (M1) corresponding to species richness as a function of soil temperature (C) to verify if there is any relationship between species richness and soil temperature alone. We will consider that model assumption are respected.
 
@@ -487,45 +478,9 @@ quiz(
   )
 ```
 
-**12.2 LINEAR OR NOT LINEAR RELATIONSHIP**
-
-Run the following code. Then observe the AIC table and the graphic visualization. 
-
-```{r Linear_not_linear, exercise=TRUE, exercise.lines = 25, message=FALSE}
-
-# Data
-x <- c(1.1,1.2,0.7,3.4,3.6,2.7,5.2,5.3,4.7,7.3,7.5,6.7,9.4,9.1,8.9,11.3,10.7,11)
-y_response <- c(0.8,0.7,1.2,9.1,8.7,9.3,25.3,25.8,24.2,50,48.5,51,81.1,80.8,81.2,121.5,121,120.7)
-Linear_not_linear <- data.frame(x,y_response)
-
-# Linear model or not?
-library(mgcv)
-linear_model <- gam(y_response  ~ x, data = Linear_not_linear)
-smooth_model <- gam(y_response  ~ s(x), data = Linear_not_linear)
-AIC(linear_model, smooth_model)
-
-# Visualization
-library(ggplot2)
-p1<-ggplot(Linear_not_linear, aes(x = x, y = y_response )) +
-  geom_point() +
-  geom_line(colour = "red", size = 1.2,
-            aes(y = fitted(linear_model))) +
-  xlab("x") +
-  ylab("y") +
-  labs(title = "Linear model or not?")+
-  geom_line(colour = "blue", size = 1.2,
-            aes(y = fitted(smooth_model))) +
-  theme_bw()
-
-p1
-
-```
-
-You can see that the AIC and the trend of the smooth GAM justify that adding a smoothing function improves model performance. Non linearity is then supported by these data.
-
 Now, let's explore our real species richness and soil temperature data relationship. Follow the next steps:
 
-1. Code by yourself: Use and adapt R code from section 12.1 and 12.2 to check linearity.
+1. Code by yourself: Use and adapt R code to check linearity.
 2. Use code from Hint: Click on Hint to review and paste the code. The run the code.
 
 ```{r print-linearityTest, exercise=TRUE,exercise.lines = 25, message=FALSE, exercise.eval=TRUE}
@@ -582,11 +537,11 @@ quiz(
   )
 ```
 
-**12.3. INTERACTION MODEL**
+**Interaction model**
 
 Situation: we are interested to model the species richness of Hondo as a function of temperature (this is our main predictor of interest) but we don't know if we need to consider the stand as another important variable in the model. Observe the following graphics (M1, M3 and M4 model) and then the r squared and AICc into the summary table. Respond to the questions below.
 
-**12.3.1. Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
+**Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 # Species richness as function of soil temperature (C)
@@ -613,7 +568,7 @@ Plot_AllData +
               slope     = -0.3346, col = "coral2")
 ```
 
-**12.3.2. Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
+**Species richness as a function of soil temperature (°C) plus stand, and soil temperature-stand interaction**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 M3 <- lm(SR ~ temp_C*stand,data = SR_SoilTemp)
@@ -623,7 +578,7 @@ interact_plot(M3, pred = temp_C, modx = stand, x.label = "Soil temperature (C)",
 
 ```
 
-**12.3.3. Species richness as a function of soil temperature (°C) and stand**
+**Species richness as a function of soil temperature (°C) and stand**
 
 ```{r, message=FALSE, echo=FALSE,warning=FALSE}
 M4 <- lm(SR ~ temp_C+stand,data = SR_SoilTemp) 
@@ -660,14 +615,9 @@ quiz(
 )
 ```
 
-  </details>
   
-### **13. REPRODUCIBILITY**
+### **Reproducibility**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
-  
 The graphics and results presented in this tutorial were obtained using historical soil temperature data, and vascular diversity datasets from Hondo stands. Data is available at  [https://dataverse.scholarsportal.info/dataset.xhtml?persistentId=doi:10.5683/SP3/PZCAVE]. We imported the original datasets from the Import dataset in R Studio.
 
 ```
@@ -676,7 +626,7 @@ str(Hondo_VascularCover_1980_2015)
 Hondo_SoilTemp_1980_2010 # Historical soil temperature
 str(Hondo_SoilTemp_1980_2010)
 ```
-**13.1 Dataset manipulation**
+**Dataset manipulation**
 
 1.Generate a subset of data considering only 2010 data to simplify the statistical analyses. It is important to focus on the heart of species richness ecological concept connected to space and environment.
 
@@ -710,30 +660,8 @@ SR_SoilTemp <- data.frame(stand=as.factor(Hondo_SoilTemp_2010_CLEAN$stand),
                           temp_C=Hondo_SoilTemp_2010_CLEAN$temp_C)
 ```
 
-</details>
-  
-### **14. REFERENCES**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
-  
-Hesketh, A., Loesberg, J., Bledsoe, E., Karst, J., & Macdonald, E. (2021). Seasonal and annual dynamics of western Canadian boreal forest plant communities: A legacy dataset spanning four decades [Data set]. Scholars Portal Dataverse. https://doi.org/10.5683/SP3/PZCAVE
-
-Canadian Endangered Species Conservation Council(CESCC). 2010. Wild Species 2010: The general status of Species in Canada.
-
-Jin, Y., and Qian, H. 2019. V.PhyloMaker: an R package that can generate very large phylogenies for vascular plants. Ecography, 42: 1353: 1359.
-
-Packer, J.G., and Gould, A.J. 2017. Vascular plants of Alberta, part 1: Ferns, Fern Allies, Gymnosperms, and monocots. University of Calgary Press. 281 pages.
-
-Earle, C.J. 2021.The Gymnossperm Database. Consulted on April 7, 2022:[https://www.conifers.org/zz/gymnosperms.php].
-Go Botany (3.7). 2022. Native Plant Trust. Consulted on April 7, 2022: [https://gobotany.nativeplanttrust.org]
-  </details>
-  
-  
-## **Topic 2: TREE RING ANALYSIS OVER TIME**
-
-### **1. AUDIENCE: FORESTRY** 
+## **Dendrochonology: what it is?**{data-progressive=TRUE}
 
 Tree Stories: How Tree Rings Reveal Extreme Weather Cycles? *Video from Brigham Young University, Utah*
 
@@ -742,45 +670,16 @@ embed_url("https://www.youtube.com/watch?v=xmZO7aRgcW4")%>%
 use_align("center")
 ```
                  
-
-### **2. LEARNING OBJECTIVES**
-
-<details>
-  <summary> **Click here** </summary>
-  <p>  
-  
- 1. At the end of this tutorial you will be able to explore patterns of rings over time. Perhaps, something hidden is there! 
-
- 2. This tutorial aims to help students get familiarized with data and apply academic background by looking at processed data ending up in questioning.
- 
-</details>
-
-### **3. DENDROCHRONOLOGY: WHAT IT IS?**
-
-<details>
-  <summary> **Click here** </summary>
-  <p>  
-  
 An interesting concept in biology, and more in forestry, is the ring dynamics of trees over time. Dendrochronology is the dating and study of annual rings in trees (see https://ltrr.arizona.edu/about/treerings). Dating and studying annual rings allow us to do inferences in other tree fields of study, for example, linking dendrochronology with the weather. Here, Dendroclimatology studies and uses the growth ring patterns to reconstruct past variations in climate (Fritts. 1987). Since well-defined annual-growth rings can be observed in the wood (rings) from many species of temperate forest trees throughout the world, in certain circumstances, these growth rings contain useful information about varying environmental conditions affecting their growth like temperature changes and humidity as well as tree features (age and size), depending on the species and latitude for what other data analysis (climate data) should be included (Tumajer, J., & Lehejček, J. 2019). 
 
-</details>
 
-### **4. TREE RING ANALYSIS OVER TIME**
-
-<details>
-  <summary> **Click here** </summary>
-  <p>  
+## **Tree ring analysis over time**
 
 Let's plot some graphics. We can plot the average ring width (mm) in axe y in the function of time (year) in axe x (see red line). But, we can also plot the average ring width (mm) in axe y as a function of time (year) in axe x, simultaneously considering the stands (see gray lines). Do you have some ideas about what these trends might be telling us?
 
-  
-   </details>
 
-**4.1 RINGS DATA FROM Hondo-Slave Lake (hereafter, Hondo) region of Alberta**
+**Rings data from Hondo-Slave Lake (hereafter, Hondo) region of Alberta**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
 
 ```{r AOS_plot, exercise=TRUE, exercise.lines = 37, message=FALSE}
 
@@ -822,14 +721,10 @@ aos_dt %>% group_by(year, stand) %>%
               color = 'red', linetype = 'dashed')
 
 ```
-</details>
 
 
-**4.2 RINGS DATA FROM Athabasca Oil Sands (hereafter, AOS) region in northeastern Alberta**
+**Rings data from Athabasca Oil Sands (hereafter, AOS) region in northeastern Alberta**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
 ```{r Hondo_plot, exercise=TRUE, exercise.lines = 33, message=FALSE}
 
 
@@ -868,9 +763,8 @@ hondo_dt %>% group_by(year, stand) %>%
 
 
 ```
-</details>
 
-### **5. EXERCISES**
+## **Exercises**
 
 <details>
   <summary> **What can we deduce from the graphics?** (Open responses) </summary>
@@ -905,38 +799,19 @@ quiz(
 ```
 </details>
 
-### **6. COMMENTS**
+## **References**
 
-<details>
-  <summary> **Click here** </summary>
-  <p>
-  
-This tutorial was created using RStudio and RMarkdown. The entire code to reproduce the results and graphics provided in this tutorial is available in the Living Data Working Group project through the GitHub page.
+Hesketh, A., Loesberg, J., Bledsoe, E., Karst, J., & Macdonald, E. (2021). Seasonal and annual dynamics of western Canadian boreal forest plant communities: A legacy dataset spanning four decades [Data set]. Scholars Portal Dataverse. https://doi.org/10.5683/SP3/PZCAVE
 
-```
-library(learnr)
-library(htmlwidgets)
-library(vembedr)
-library(tidyverse)
-library(readr)
-library(ggplot2)
-library(multcompView)
-library(MuMIn)
-library(rpart)
-library(rpart.plot)
-library(plotly)
-library(dplyr)
-library(jtools)
-library(interactions)
-```
-<details>
+Canadian Endangered Species Conservation Council(CESCC). 2010. Wild Species 2010: The general status of Species in Canada.
 
-### **7. REFERENCES**
+Jin, Y., and Qian, H. 2019. V.PhyloMaker: an R package that can generate very large phylogenies for vascular plants. Ecography, 42: 1353: 1359.
 
+Packer, J.G., and Gould, A.J. 2017. Vascular plants of Alberta, part 1: Ferns, Fern Allies, Gymnosperms, and monocots. University of Calgary Press. 281 pages.
 
-<details>
-  <summary> **Click here** </summary>
-  <p>  
+Earle, C.J. 2021.The Gymnossperm Database. Consulted on April 7, 2022:[https://www.conifers.org/zz/gymnosperms.php].
+Go Botany (3.7). 2022. Native Plant Trust. Consulted on April 7, 2022: [https://gobotany.nativeplanttrust.org]
+
 Fritts, H. C. (1987). TREE-RING ANALYSISTree-ring analysis. In Climatology (pp. 858–875). Springer US. https://doi.org/10.1007/0-387-30749-4_182
 
 Tumajer, J., & Lehejček, J. (2019). Boreal tree-rings are influenced by temperature up to two years prior to their formation: A trade-off between growth and reproduction? Environmental Research Letters, 14(12), 124024. https://doi.org/10.1088/1748-9326/ab5134
@@ -944,7 +819,9 @@ Tumajer, J., & Lehejček, J. (2019). Boreal tree-rings are influenced by tempera
 NOAA. . Picture Climate: How Can We Learn from Tree Rings? | National Centers for Environmental Information (NCEI) formerly known as National Climatic Data Center (NCDC). (n.d.). Retrieved 8 April 2022, from https://www.ncdc.noaa.gov/news/picture-climate-how-can-we-learn-tree-rings
 
 Rivet, A., Payette, S., Berteaux, D., & Girard, F. (2017). Pines and porcupines: A tree-ring analysis of browsing and dynamics of an overmature pine forest. Canadian Journal of Forest Research, 47, 257–268. https://doi.org/10.1139/cjfr-2016-0214  
-  </details>
+
+## **Glossary**
+
 ## **Français**
 
 Version en français disponible sur https://rtrejo.shinyapps.io/Biodiversite_Arbres_Alberta
