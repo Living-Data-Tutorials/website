@@ -37,7 +37,7 @@ Using historical data from a freshwater lake ecosystem, by the end of this tutor
 
 1.  Identify, calculate, and implement commonly used metrics to quantify biodiversity
 2.  Understand and create figures uses to display biodiversity data
-3.  Analyze biodiversity change over multiple disturbance levels and years
+3.  Analyze biodiversity change in benthic invertebrates over multiple disturbance levels and years
 
 # Why biodiversity matters
 
@@ -47,15 +47,15 @@ Not only is biodiversity important for ecosystems to function properly, it is al
 When there is high biodiversity, there is a higher chance of some organisms surviving ecosystems that are changing due to disturbance or climate change.
 Biodiversity therefore increases the resiliency of these ecosystems and the likelihood that they will be able to persist beyond this change.
 
-*R Code that is hidden is not part of the learning objectives, but if you want to recreate any of the figures, you can click the "Show Code" button*
+*We have hidden the R code that is not part of the learning objectives, but if you want to view or recreate this code, click the "Show Code" button*
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Importance of biodiversity for downstream effects on ecosystem success, structure, and function. Reproduced from [@loreau2001].", out.width = "600px", fig.align='center'}
-knitr::include_graphics("biodiv_scheme.png")
+knitr::include_graphics("biodiv_scheme.png") # including an image
 ```
 
-Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.
-However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
-With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of Rank-Abundance curves.
+Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
+With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of rank-abundance curves.
+
 First, we will teach you how to calculate these metrics using equations and abundance data, and then we will teach you how to use the `codyn` package to calculate these biodiversity metrics quickly and easily.
 
 You will then have the option to learn to calculate biodiversity metrics yourself using an R package called codyn.
@@ -63,14 +63,14 @@ You will then have the option to learn to calculate biodiversity metrics yoursel
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Species biodiversity across the globe, downloaded from the Global Biodiversity Information Facility [@GBIF]."}
 library(leaflet)
 
-prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?'
+prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' # downloading global species occurrence data
 style = 'style=purpleYellow.point'
 tile = paste0(prefix,style)
 
-leaflet() %>%
-setView(lng = 20, lat = 20, zoom = 01) %>%
+leaflet() %>% # making an interactive map
+setView(lng = 20, lat = 20, zoom = 01) %>% # setting the coordinates
 addTiles() %>%  
-addTiles(urlTemplate=tile)
+addTiles(urlTemplate=tile) # adding our biodiversity layer
 ```
 
 # Types of data typically collected
@@ -79,7 +79,7 @@ Biodiversity is a broad term, and can be difficult to quantify.
 Biologists have created several standard measures of biodiversity that convey different information about ecosystems and the species living there.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Schematic of freshwater lake ecosystem demonstrating the different information biologists to collect to understand biodiversity"}
-knitr::include_graphics("species_scheme.png")
+knitr::include_graphics("species_scheme.png") # adding an image
 ```
 
 Often times, biologists interested in collecting biodiversity data collect a standard set of responses.
@@ -103,7 +103,7 @@ pacman::p_load(leaflet)
 
 leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=-84.4110, lat=47.0515, popup="Turkey Lakes") %>%
+  addMarkers(lng=-84.4110, lat=47.0515, popup="Turkey Lakes") %>% # putting a point on the Turkey Lakes site
   setView(lng=-84.4110, lat=47.0515, zoom=2)
 ```
 
@@ -115,7 +115,7 @@ An experiment was conducted in 1997 where certain sampling sites experienced dif
 Due to their interaction with the terrestrial realm, we can hypothesize that the biodiversity of benthic invertebrate communities might be affected by logging.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Various benthic macroinvertebrates under a stereo microscope [@EPA]"}
-knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg")
+knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # include image
 ```
 
 ## Data collection and structure
@@ -130,18 +130,21 @@ Later in the tutorial, we will using the subsetted data with the `codyn` package
 ## Downloading and tidying the data
 
 The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Government" Portal on the "Turkey Lakes Watershed" page](https://open.canada.ca/data/dataset/576f1b52-3fce-497e-8e4c-0899acfdca1f) can be downloaded and saved as a `data.frame` object using the `read.csv` function.
-We can take a look at the data using the `head()` function.
+We can look at all the columns of the dataset using the `colnames()` function.
 
 ```{r}
-df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv")
-dplyr::glimpse(df.read) # take a look at the data
+df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") # load Turkey Lakes invertebrate density data from the website
+colnames(df.read) # take a look at the columns
 ```
 
-As you can see, the columns of the dataset are: - Catchment number.There are 11 catchments (stream study areas), and each has an alphanumeric code.
+As you can see, the columns of the dataset are:
+
+-   Catchment number.
+    There are 11 catchments (stream study areas), and each has an alphanumeric code.
 
 -   Year and month that the data was collected - A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundance of each benthic invertebrate 10 times for each stream on each sampling date)
 
--   Many columns for each of the species with their densities (the density is measured as .....)
+-   A column for each of the species with their densities (the density is measured as .....)
 
 First, in order to quantify biodiversity, we will convert the species densities reported in the dataset to the raw counts (i.e. abundances) to obtain whole numbers of individuals.
 To do this, it is helpful to transform the "wide" format `data.frame` (where each species is a column) to "long" format, where species names are all found in a single column using the `tidyr::pivot_longer()` function.
@@ -152,13 +155,12 @@ df.count <-
   df.read %>% 
   # Convert from wide to long format to simplify the operation
   tidyr::pivot_longer( 
-    "Aeshna":"Trichoptera", 
-    names_to = "Species", 
-    values_to = "Density" ) %>%
+    "Aeshna":"Trichoptera", # Select the columns we want in long format (i.e. the columns with invertebrate species)
+    names_to = "Species", # Name the column that we are creating for the invertebrate species
+    values_to = "Density" ) %>% # Name the column that we want the density values to do to
   mutate(
-    # Densities to counts
-    Count = Density * 0.33, 
-    Count = tidyr::replace_na(Count, 0) # Replace NAs with 0.
+    Count = Density * 0.33, # Change densities to counts
+    Count = tidyr::replace_na(Count, 0) # Replace NAs with 0 because NA signifies there are none of that species present
     )
 ```
 
@@ -180,7 +182,8 @@ Each of these metrics allow us to look at different aspects of the biodiversity 
 3.  ***Simpson's Diversity Index*** also takes into account species richness and evenness, but puts more emphasis on rare species.
 4.  The ***Evenness Index*** assesses the evenness of the abundances of each species.
 
-Click through the tabs to learn how to calculate these different measures of biodiversity.
+Each of these metrics can be calculated by hand using an equation.
+Click through the tabs to learn how to calculate these different measures of biodiversity!
 
 ::: panelset
 ::: panel
@@ -200,17 +203,17 @@ Then you can look at how the number of different species in a community changes 
 **Interpretation:** A higher number means there are more species, and therefore species richness is higher.
 
 ```{r, message=FALSE, warning=FALSE, code_folding=T}
-#loading necessary libraries
+#loading necessary libraries (kableExtra makes tables)
 pacman::p_load(kableExtra)
 richness_table <- df.count %>%
-  # Avoid counting species that had zero observations
+  # Removing species that had 0 observations
   filter(Count > 0,
          year %in% c(1995, 1997, 2001, 2009)) %>%
   group_by(year) %>%
-  summarise(richness=length(unique(Species)), 
+  summarise(richness=length(unique(Species)), # counting the number of species that were observed in each year
             # Check how many catchments were sampled in each year
             catchments = length(unique(catchment)))
-#Nice looking kable
+#Nice looking table using the kable() function
 kable(richness_table, col.names=c("Year", "Richness", "Catchments Sampled"), align="c")%>%
   kable_classic(full_width = F, html_font = "Cambria")
 ```
@@ -251,7 +254,6 @@ Where $n_i$ is the number of individuals of species $i$ and $N$ is the total num
 The values increase as the number of species increase, and is maximized at a given number of species when is an equal abundance of each species.
 
 ```{r, , code_folding=T}
-
 shannon <- 
   df.count %>%
   filter(year %in% c(1995, 1997, 2001, 2009)) %>%
