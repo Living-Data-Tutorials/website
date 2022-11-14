@@ -508,7 +508,7 @@ plot1 =
   xlab("Taxon") +
   ylab("Total count (sum of replicates)") + 
   theme_classic(base_size=16) +  # Aesthetic
-  theme(axis.text.x = element_text(face="italic", size=9, angle=90)) # Use italics for species names
+  theme(axis.text.x = element_text(face="italic", size=9, angle=90)) # Use italics for genus names
 plot1
 ```
 
