@@ -358,7 +358,7 @@ On the y-axis we have the species (numbered), and on the y axis we have the abun
 The plots are organized from high to low abundance.
 Using RACs, we can visualize the change in relative abundance and species dominance over time.
 
-Here, we have selected 7 species across 2 years from the Turkey Lakes dataset to make a simple RAC.
+As an example, we have use a subset of data from the Turkey Lakes dataset to make an RAC plot.
 
 ```{r, code_folding=T, fig.cap="Simple RAC with 6 species from the Turkey Lakes dataset, with counts from 1995 and 2001. Colour and shape indicate a unique species, with y axis representing abundance."}
 #loading necessary libraries
@@ -400,6 +400,10 @@ a / b
 We can see here between 1995 and 2001 in our benthic community, there were small differences in absolute counts, with the most abundant species (*Chrironomidae*) decreasing \~5000 in abundance of individuals, but still remaining the most abundance species overall across both years.
 However, *Baetis* was the 2nd most abundant species in 1995, but dropped to 5th most abundant by 2001.
 
+```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="A) *Chironomus plumosus*, a type of chironomid, also called nonbiting midges, or lake flies [@wiki:Chironomidae]. B) *Baetis intercalaris*, a type of mayfly, also known as blue-winged olives [@wiki:Baetis].", out.width = "787px", fig.align='center'}
+knitr::include_graphics("TopSpecies.png")
+```
+
 ## Rank abundance curves with Turkey lakes invertebrate data {.panelset}
 
 ::: panelset
@@ -407,7 +411,7 @@ However, *Baetis* was the 2nd most abundant species in 1995, but dropped to 5th 
 ### Additional data wrangling {.panel-name}
 
 The dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
-You can visualize Rank Abundances for any subset of the dataset using [the following Shiny App](https://ekatko1.shinyapps.io/TurkeyLakesInverts/){target="_blank"}.
+You can visualize Rank Abundances for any subset of the dataset using the following [**Shiny App**](https://ekatko1.shinyapps.io/TurkeyLakesInverts/){target="_blank"}.
 
 Using information obtained from the [metadata of this dataset](https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrate_metaEN.csv), we can add some interesting details to the data (for at least a few catchments and years).
 For the purposes of this portion of the tutorial, we also select a different subset of the data to work with.
