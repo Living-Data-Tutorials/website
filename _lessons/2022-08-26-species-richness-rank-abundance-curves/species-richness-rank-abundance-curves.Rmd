@@ -29,40 +29,17 @@ knitr::opts_chunk$set(error = TRUE)
 # Tutorial Overview
 
 Biodiversity is a hot topic in the fact of unprecedented global change in the 21st century.
-With a publicly available dataset, [from the Turkey Lakes Watershed](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using `R`.
+With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, Canada](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using `R`.
 
 # Learning objectives
 
-Utilizing historical data from a freshwater lake ecosystem, by the end of this tutorial you will be able to:
+Using historical data from a freshwater lake ecosystem, by the end of this tutorial you will be able to:
 
 1.  Identify, calculate, and implement commonly used metrics to quantify biodiversity
 2.  Understand and create figures uses to display biodiversity data
-3.  Apply this concepts to other aspects of the dataset used in this tutorial
-
-```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Occurrences of species across the globe from the Global Biodiversity Information Facility [@GBIF]."}
-library(leaflet)
-
-prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?'
-style = 'style=purpleYellow.point'
-tile = paste0(prefix,style)
-
-leaflet() %>%
-setView(lng = 20, lat = 20, zoom = 01) %>%
-addTiles() %>%  
-addTiles(urlTemplate=tile)
-```
-
-Ecologists are often interested in the effects of perturbations (e.g. fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.
-However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
-With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of Rank-Abundance curves.
-
-You will then have the option to learn to calculate biodiversity metrics yourself using an R package called codyn.
+3.  Analyze biodiversity change in benthic invertebrates over multiple disturbance levels and years
 
 # Why biodiversity matters
-
-```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Importance of biodiversity for downstream effects on ecosystem success, structure, and function. Reproduced from [@loreau2001].", out.width = "600px", fig.align='center'}
-knitr::include_graphics("biodiv_scheme.png")
-```
 
 In an ever-changing world, we are often concerned with how organisms will be able to cope with disturbances and increasingly, global climate change.
 Biodiversity is the variety of life at all levels, from genes to ecosystems.
@@ -70,13 +47,39 @@ Not only is biodiversity important for ecosystems to function properly, it is al
 When there is high biodiversity, there is a higher chance of some organisms surviving ecosystems that are changing due to disturbance or climate change.
 Biodiversity therefore increases the resiliency of these ecosystems and the likelihood that they will be able to persist beyond this change.
 
+*We have hidden the R code that is not part of the learning objectives, but if you want to view or recreate this code, click the "Show Code" button*
+
+```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Importance of biodiversity for downstream effects on ecosystem success, structure, and function. Reproduced from [@loreau2001].", out.width = "600px", fig.align='center'}
+knitr::include_graphics("biodiv_scheme.png") # including an image
+```
+
+Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
+With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of rank-abundance curves.
+
+First, we will teach you how to calculate these metrics using equations and abundance data, and then we will teach you how to use the `codyn` package to calculate these biodiversity metrics quickly and easily.
+
+You will then have the option to learn to calculate biodiversity metrics yourself using an R package called codyn.
+
+```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Species biodiversity across the globe, downloaded from the Global Biodiversity Information Facility [@GBIF]."}
+library(leaflet)
+
+prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' # downloading global species occurrence data
+style = 'style=purpleYellow.point'
+tile = paste0(prefix,style)
+
+leaflet() %>% # making an interactive map
+setView(lng = 20, lat = 20, zoom = 01) %>% # setting the coordinates
+addTiles() %>%  
+addTiles(urlTemplate=tile) # adding our biodiversity layer
+```
+
 # Types of data typically collected
 
 Biodiversity is a broad term, and can be difficult to quantify.
 Biologists have created several standard measures of biodiversity that convey different information about ecosystems and the species living there.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Schematic of freshwater lake ecosystem demonstrating the different information biologists to collect to understand biodiversity"}
-knitr::include_graphics("species_scheme.png")
+knitr::include_graphics("species_scheme.png") # adding an image
 ```
 
 Often times, biologists interested in collecting biodiversity data collect a standard set of responses.
@@ -90,21 +93,21 @@ These often include:
 
 # Real-world biodiversity data
 
-The Turkey Lakes watershed is located in Ontario, Canada, approximately 50 km North of Sault Ste.
+The Turkey Lakes watershed is located in Ontario, Canada, approximately 50 km north of Sault Ste.
 Marie.
 It is 10 km^2^ in area and contains a chain of 4 lakes.
 The Turkey Lakes Watershed Study (see map) is an initiative by several agencies of the government of Canada, initially designed to study the effects of acid rain on forest ecosystems.
-From 1995 to 2009, scientists collected, identified and counted benthic invertebrates from various stream beds around the Turkey Lakes catchment.
 
 ```{r include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Interactive map of the Turkey Lakes study site"}
 pacman::p_load(leaflet)
 
 leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=-84.4110, lat=47.0515, popup="Turkey Lakes") %>%
+  addMarkers(lng=-84.4110, lat=47.0515, popup="Turkey Lakes") %>% # putting a point on the Turkey Lakes site
   setView(lng=-84.4110, lat=47.0515, zoom=2)
 ```
 
+From 1995 to 2009, scientists collected, identified and counted benthic invertebrates from various stream beds around the Turkey Lakes catchment.
 Benthic invertebrates are small, often microscopic organisms (see Fig. 5), but form an important link between aquatic and terrestrial habitats.
 They can decompose terrestrial matter such as leaves, or consume periphyton (algae and cyanobacteria) growing on rocks within their streams.
 Benthic invertebrates can be a food source for aquatic animals, like small fish, or terrestrial animals such as birds.
@@ -112,7 +115,7 @@ An experiment was conducted in 1997 where certain sampling sites experienced dif
 Due to their interaction with the terrestrial realm, we can hypothesize that the biodiversity of benthic invertebrate communities might be affected by logging.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Various benthic macroinvertebrates under a stereo microscope [@EPA]"}
-knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg")
+knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # include image
 ```
 
 ## Data collection and structure
@@ -120,35 +123,44 @@ knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg")
 These data are from the Turkey Lakes watershed experiment.
 This dataset contains the abundances of benthic invertebrate species measured in the May and June from 1995 to 2001.
 They recorded the type and number of invertebrates in a catchment area of the stream, with 10 replicate sites per catchment.
-These forests next to these streams were logged in 1997 with varying harvest intensities, with low, medium, and high intensity harvest and a control stream with no forest harvest.
-First, we will subset the data, clean an process it in order to visualize and compare Rank-Abundance curves (RACs).
+These forests next to these streams were logged in 1997 with varying harvest intensities of low, medium, and high intensity harvest and a control stream with no forest harvest.
+First, we will subset the data, clean an process it in order to visualize and compare rank-abundance curves.
 Later in the tutorial, we will using the subsetted data with the `codyn` package to analyze the diversity of these benthic invertebrates over time.
 
 ## Downloading and tidying the data
 
-The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Government" Portal on the "Turkey Lakes Watershed" page](https://open.canada.ca/data/dataset/576f1b52-3fce-497e-8e4c-0899acfdca1f).
-We can download and save the data as a `data.frame` object using the following command:
+The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Government" Portal on the "Turkey Lakes Watershed" page](https://open.canada.ca/data/dataset/576f1b52-3fce-497e-8e4c-0899acfdca1f) can be downloaded and saved as a `data.frame` object using the `read.csv` function.
+We can look at all the columns of the dataset using the `colnames()` function.
 
 ```{r}
-df.read = read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv")
+df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") # load Turkey Lakes invertebrate density data from the website
+colnames(df.read) # take a look at the columns
 ```
+
+As you can see, the columns of the dataset are:
+
+-   Catchment number.
+    There are 11 catchments (stream study areas), and each has an alphanumeric code.
+
+-   Year and month that the data was collected - A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundance of each benthic invertebrate 10 times for each stream on each sampling date)
+
+-   A column for each of the species with their densities (the density is measured as .....)
 
 First, in order to quantify biodiversity, we will convert the species densities reported in the dataset to the raw counts (i.e. abundances) to obtain whole numbers of individuals.
 To do this, it is helpful to transform the "wide" format `data.frame` (where each species is a column) to "long" format, where species names are all found in a single column using the `tidyr::pivot_longer()` function.
 
 ```{r}
 library(dplyr)
-df.count = 
+df.count <- 
   df.read %>% 
   # Convert from wide to long format to simplify the operation
   tidyr::pivot_longer( 
-    "Aeshna":"Trichoptera", 
-    names_to = "Species", 
-    values_to = "Density" ) %>%
+    "Aeshna":"Trichoptera", # Select the columns we want in long format (i.e. the columns with invertebrate species)
+    names_to = "Species", # Name the column that we are creating for the invertebrate species
+    values_to = "Density" ) %>% # Name the column that we want the density values to do to
   mutate(
-    # Densities to counts
-    Count = Density * 0.33, 
-    Count = tidyr::replace_na(Count, 0) # Replace NAs with 0.
+    Count = Density * 0.33, # Change densities to counts
+    Count = tidyr::replace_na(Count, 0) # Replace NAs with 0 because NA signifies there are none of that species present
     )
 ```
 
@@ -170,6 +182,9 @@ Each of these metrics allow us to look at different aspects of the biodiversity 
 3.  ***Simpson's Diversity Index*** also takes into account species richness and evenness, but puts more emphasis on rare species.
 4.  The ***Evenness Index*** assesses the evenness of the abundances of each species.
 
+Each of these metrics can be calculated by hand using an equation.
+Click through the tabs to learn how to calculate these different measures of biodiversity!
+
 ::: panelset
 ::: panel
 ## *Species richness* {.panel-name}
@@ -188,17 +203,17 @@ Then you can look at how the number of different species in a community changes 
 **Interpretation:** A higher number means there are more species, and therefore species richness is higher.
 
 ```{r, message=FALSE, warning=FALSE, code_folding=T}
-#loading necessary libraries
+#loading necessary libraries (kableExtra makes tables)
 pacman::p_load(kableExtra)
 richness_table <- df.count %>%
-  # Avoid counting species that had zero observations
+  # Removing species that had 0 observations
   filter(Count > 0,
          year %in% c(1995, 1997, 2001, 2009)) %>%
   group_by(year) %>%
-  summarise(richness=length(unique(Species)), 
+  summarise(richness=length(unique(Species)), # counting the number of species that were observed in each year
             # Check how many catchments were sampled in each year
             catchments = length(unique(catchment)))
-#Nice looking kable
+#Nice looking table using the kable() function
 kable(richness_table, col.names=c("Year", "Richness", "Catchments Sampled"), align="c")%>%
   kable_classic(full_width = F, html_font = "Cambria")
 ```
@@ -239,7 +254,6 @@ Where $n_i$ is the number of individuals of species $i$ and $N$ is the total num
 The values increase as the number of species increase, and is maximized at a given number of species when is an equal abundance of each species.
 
 ```{r, , code_folding=T}
-
 shannon <- 
   df.count %>%
   filter(year %in% c(1995, 1997, 2001, 2009)) %>%
@@ -353,14 +367,14 @@ As with previous biodiversity metrics, we find that evenness is lowest in 1997, 
 # Visualizing Biodiversity
 
 Apart from calculating biodiversity using the metrics above, visualizing differences using graphs is another tool we have.
-One way to visualize biodiversity data is to make a Rank-Abundance Curve (RAC).
+One way to visualize biodiversity data is to make a rank-abundance curve.
 On the y-axis we have the species (numbered), and on the y axis we have the abundance.
 The plots are organized from high to low abundance.
-Using RACs, we can visualize the change in relative abundance and species dominance over time.
+Using rank-abundance curves, we can visualize the change in relative abundance and species dominance over time.
 
-As an example, we have use a subset of data from the Turkey Lakes dataset to make an RAC plot.
+As an example, we use a subset of the Turkey Lakes data with seven species from the dataset to make a simple rank-abundance curve.
 
-```{r, code_folding=T, fig.cap="Simple RAC with 6 species from the Turkey Lakes dataset, with counts from 1995 and 2001. Colour and shape indicate a unique species, with y axis representing abundance."}
+```{r, code_folding=T, fig.cap="Simple rank-abundance curve with 6 species from the Turkey Lakes dataset, with counts from 1995 and 2001. Colour and shape indicate a unique species, with y axis representing abundance."}
 #loading necessary libraries
 pacman::p_load(tidyverse, patchwork)
 #creating a subset of the full data with just 6 species, across 4 years
@@ -404,7 +418,7 @@ However, *Baetis* was the 2nd most abundant species in 1995, but dropped to 5th 
 knitr::include_graphics("TopSpecies.png")
 ```
 
-## Rank abundance curves with Turkey lakes invertebrate data {.panelset}
+## Rank abundance curves with Turkey Lakes invertebrate data {.panelset}
 
 ::: panelset
 ::: panel
@@ -512,10 +526,10 @@ plot1 =
 plot1
 ```
 
-As you can see, Rank-Abundance Curves (RACs) in nature are rarely as evenly distributed as the simulated data.
+As you can see, rank-abundance curves in nature are rarely as evenly distributed as the simulated data.
 There is often few highly abundant species and many very rare species.
 As a result, a log transform is frequently applied to the y-axis.
-Additionally, when analyzing RACs, the focus is on the shape of the curve, not on the species names.
+Additionally, when analyzing rank-abundance curves, the focus is on the shape of the curve, not on the species names.
 As a result, we can substitute the species name with it's rank.
 This is where the term *rank*-abundance comes from.
 This also has the added benefit of simplifying the code:
@@ -532,13 +546,13 @@ df.summary1 %>%
 :::
 
 ::: panel
-### Comparing RACs {.panel-name}
+### Comparing rank-abundance curves {.panel-name}
 
 Instead of using bars to represent abundances, we can simply use lines to trace the distribution.
 This allows us to compare multiple distributions.
 First, let's compare the different replicates (i.e., sites) within a single catchment area (34L).
 
-```{r, code_folding=T, fig.cap="Comparison of RAC changes across different sites (replicate)"}
+```{r, code_folding=T, fig.cap="Comparison of rank-abundance curve changes across different sites (replicate)"}
 df.subset1 %>%
   group_by(replicate) %>% 
   # Order by rank, for each catchment (.by_group=T)
@@ -558,15 +572,15 @@ df.subset1 %>%
   
 ```
 
-Notice that there is some variation in the shape and the "evenness" (i.e., slope) of the different RACs.
+Notice that there is some variation in the shape and the "evenness" (i.e., slope) of the different rank-abundance curves.
 Furthermore, the highest rank in the summary bar plot was 40, whereas the single site with the highest rank has only 29 species.
 This demonstrates that the more we sample, the more rare species we can find.
 
-Alternatively, we can compare RACs from three different catchments, each of which has a different logging intensity.
+Alternatively, we can compare rank-abundance curves from three different catchments, each of which has a different logging intensity.
 Note that all catchments have 10 replicate sites, which allows us to sum across replicates.
-Also note that differences in sampling can affect the shape of the RACs, which means that one has to be careful to account for sampling effort when comparing RACs from different studies.
+Also note that differences in sampling can affect the shape of the rank-abundance curves, which means that one has to be careful to account for sampling effort when comparing rank-abundance curves from different studies.
 
-```{r, code_folding=T, fig.cap="Comparison of RAC changes across sites with different logging intensity"}
+```{r, code_folding=T, fig.cap="Comparison of rank-abundance curve changes across sites with different logging intensity"}
 plot = 
   df.subset %>% 
   # Subset
@@ -597,7 +611,7 @@ plot
 ```
 
 Notice that we can rapidly see that the catchment with high intensity logging had the highest species richness (highest maximum rank).
-The catchment that we logged with medium intensity also appears to have a less "even" RAC compared to the other two.
+The catchment that we logged with medium intensity also appears to have a less "even" rank-abundance curve compared to the other two.
 In other words, the slope is slightly steeper for the "medium" intensity site than for the "high" and "none" (no logging) catchments.
 Of course, many more sites over several years need to be compared in order to make any generalizable claims about the effects of logging on invertebrate biodiversity in the Turkey Lakes area.
 
@@ -608,7 +622,7 @@ The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html)
 
 # Measure and Visualize Biodiversity with `codyn`
 
-Now that we have calculated different biodiversity metrics and rank abundance curves by hand, we can also use existing functions in the `R` package `codyn` [@hallett2016] to quantify and visualizing changes in biodiversity with the Turkey Lakes dataset .
+Now that we have calculated different biodiversity metrics and rank abundance curves by hand, we can also use existing functions in the `R` package `codyn` [@hallett2016] to quantify and visualizing changes in biodiversity with the Turkey Lakes dataset.
 
 ```{r setup2, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(include = T, warning=F, message=F, echo=T)
@@ -625,7 +639,7 @@ library(codyn)
 library(dplyr)
 ```
 
-Load, subset and clean the data (see "Rank abundance curves with Turkey lakes invertebrate data" above for details) :
+Load, subset and clean the data (see "Rank abundance curves with Turkey Lakes invertebrate data" above for details) :
 
 ```{r}
 data  <- 

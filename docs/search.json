@@ -5,7 +5,7 @@
       "title": "Meet our team!",
       "author": [],
       "contents": "\nThis series of tutorials were produced during a working group hosted by the Living Data Project, lead by Jennifer Sunday and Joey Bernhardt.\nThey are based on Canadian open datasets with accompanying R code that can be used to teach/illustrate ecological and evolution concepts, and are designed to illustrate and support exploration on a variety of core concepts aimed for undergraduate courses in ecology and evolution.\nThese are the amazing folks who are working on this project:\n\n\nJoey Bernhardt\n\n\nMaxime Fraser Franco\n \n\nGracielle Higino\nOpen Science mentor and consultant, science communicator, specialist in ecology and evolution.\n   \n\nEgor Katkov\n  \n\nMaggie Slein\n\n\nJenn Sunday\n\n\nBryn Wiley\n\n\nAmy Forsythe\n\n\nElizabeth Houghton\n\n\nKirsten Palmier\n\n\n\n\n",
-      "last_modified": "2022-10-19T15:07:39-06:00"
+      "last_modified": "2022-11-03T17:09:33-06:00"
     },
     {
       "path": "index.html",
@@ -13,7 +13,7 @@
       "description": "Open educational resources from the Living Data Project.\n",
       "author": [],
       "contents": "\nWe are a group of early career researchers from Canada creating a series of curated datasets with accompanying R-based tutorials that can be used to teach/illustrate ecological and evolution concepts, based on Canadian-generated data sources.\n\n\n\n",
-      "last_modified": "2022-10-19T15:07:40-06:00"
+      "last_modified": "2022-11-03T17:09:35-06:00"
     }
   ],
   "collections": ["lessons/lessons.json"]

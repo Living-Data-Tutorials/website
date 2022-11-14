@@ -10,7 +10,9 @@ output:
   distill::distill_article:
     self_contained: false
     code_folding: ~
-
+    toc: true
+    theme: united
+    toc_float: true
 ---
 
 
@@ -41,15 +43,15 @@ xfun::embed_dir('TRES/', text = 'Download required data')
 In this tutorial you will explore:
 
 - Whether sexual dimorphism is present in a population of Tree Swallows found in Long Point, Ontario
-- Life history traits of Tree Swallow
-- Trade offs between the number of clutches a bird may have and the number of eggs in each clutch
+- Life history traits of Tree Swallows
+- Trade-offs between the number of clutches a bird may have and the number of eggs in each clutch
 - How the sampled population of Tree Swallow's birth rates have changed over time
 
 
 ## Background of datasets
 Before we jump into the weeds, let's get to know our dataset!  
 
-The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest’ boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
+The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
 
 Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
 
@@ -76,7 +78,7 @@ Established in 1987, the Mud Creek site is located 3.25 km north-northeast of Se
 
 ![Mud Creek colony area. Location of bird boxes outlined in black.](TRES/mudCreek.png){.external}
 
-For this tutorial we will be looking at the banding dataset which adults were trapped sometime between the first young hatch and when they were 12 days old. All adult birds are banded, unless previously banded. It was also recorded if the bird had a brood patch (BP) or cloacal protuberance (CP). Plumage color was recorded as blue (BLU), Brown (BRN), or Intermediate (INT). Furthermore, plumage categories and age/sex designations were assigned and a variety of size measurements were taken: 
+For this tutorial we will be looking at the banding dataset which adults were trapped sometime between the first young hatch and when they were 12 days old. All adult birds are banded, unless previously banded. Plumage color was recorded as blue (BLU), Brown (BRN), or Intermediate (INT). Furthermore, plumage categories and age/sex designations were assigned and a variety of size measurements were taken. 
 
 *Plumage Categories*
 
@@ -113,7 +115,8 @@ First year females may be brownish above with hints of blue-green; adult females
 ## Importing data and packages
 In this tutorial, we will be working with Tree Swallow data collected by Bird Studies Canada, Long Point Bird Observatory as well as a few additional packages. Run the following code to import the required packages and pull in the dataset that we will be working with throughout this tutorial.
 
-```{r echo = TRUE, warnings = FALSE, message = FALSE, code_folding=TRUE}
+```{r echo = TRUE, warnings = FALSE, message = FALSE, code_folding=FALSE}
+# load the following packages
 library(dplyr)
 library(ggplot2)
 library(tidyr)
@@ -121,23 +124,29 @@ library(lubridate)
 library(reshape)
 library(readr)
 library(ggpubr)
+
 # Here we are pulling the actual datasets into R
 banding <- read.csv("TRES/banding_final.csv")
 banding_nest <- read.csv("TRES/banding_nest_final.csv")
 nest <- read.csv("TRES/nest_final.csv")
 ```
 
+Double check that the class of our data are in the correct format.
 
-```{r echo = TRUE, code_folding=TRUE}
+```{r echo = TRUE, code_folding=FALSE}
 # Now, we want to make sure the class of our data is correct before we move forward:
 str(banding)
+
 # lets go ahead and convert the sex and nest_box column class into factors:
 banding$sex <- as.factor(banding$sex)
 banding$nest_box <- as.factor(banding$nest_box)
 str(banding_nest)
+```
+
+Now lets go ahead and fix the class of location, nest_code, and location:
+
+```{r echo = TRUE, code_folding=TRUE}
 # fix class
-banding_nest$sex <- as.factor(banding_nest$sex)
-banding_nest$nest_box <- as.factor(banding_nest$nest_box)
 banding_nest$location <- as.factor(banding_nest$location)
 str(banding_nest)
 # fix class
@@ -205,20 +214,20 @@ ggplot(weight, aes(factor(sex), weight, fill=sex)) +
 ```
 
 
-Now, to get a sense of how much the wind chord length, tail length, and weight differs between male and female tree swallows lets find the mean value for each.
+Now, to get a sense of how much the wind chord length, tail length, and weight differs between male (M) and female (F) tree swallows lets find the mean value for each.
 
 
 ```{r echo = TRUE, code_folding=TRUE}
 # can calculate the mean female and male wing flat length like this (using aggregate()) or could subset by sex and then calculate
-wing_chord.avg <- aggregate(wing_chord ~ sex, wing_chord, mean)
+wing_chord.avg <- aggregate(wing_chord ~ sex, banding, mean)
 wing_chord.avg
 ```
 
 Calculate the tail and weight average on your own. Cross reference your calculations with the ones below. 
 
 ```{r echo = FALSE, code_folding=TRUE}
-tail.avg <- aggregate(tail ~ sex, tail, mean)
-weight.avg <- aggregate(weight ~ sex, weight, mean)
+tail.avg <- aggregate(tail ~ sex, banding, mean)
+weight.avg <- aggregate(weight ~ sex, banding, mean)
 tail.avg
 weight.avg
 ```
@@ -241,6 +250,20 @@ embed_url("https://www.youtube.com/watch?v=nPhVOZiPokA")
 
 *What type of pressures could lead to sexual dimorphism in tree swallows?* 
 
+```{r echo = FALSE, code_folding=TRUE}
+# Answers
+
+# Male tree swallows:
+# average wing chord length = 118.18 mm
+# average tail length = 55.70 mm
+# average weight = 20.76 g
+
+# Female tree swallows:
+# average wing chord length = 113.58 mm
+# average tail length = 54.34 mm
+# average weight = 20.41 g
+```
+
 * * *
 ## Aspects of Tree Swallow Life History
 
@@ -251,10 +274,6 @@ How and why do organisms evolve over time? How does natural selection, and other
 
 Trade-offs exist when "*an increase in one life history trait (improving fitness) is coupled to a decrease in another life history trait (reducing fitness), so that the fitness benefit through increasing trait 1 is balanced against a fitness cost through decreasing trait 2*" [Fabian and Flatt, 2012]("https://www.nature.com/scitable/knowledge/library/life-history-evolution-68245673/"). Traits can either be described as negative phenotypic, or genetic correlations between fitness components of individuals in a given population. Trade-offs are generally caused by limited resources, and competition for these resources, to one life history trait verses the other within an individual. For example, an organism might have a relatively short lifespan--but produce many offspring, or vice versa (think about mayflies vs. elephants for example). 
 
-<img src="TRES/trade_offs.png" />
-
-(Image from [Fabian and Flatt 2012]("https://www.nature.com/scitable/knowledge/library/life-history-evolution-68245673/"))
-
 ### Life history trade-offs
 
 (A) A negative genetic (or phenotypic) correlation, i.e. a trade-off, between reproduction (e.g., # of eggs produced) and adult survival, one of the most commonly found negative relationships between life history traits.
@@ -263,13 +282,20 @@ Trade-offs exist when "*an increase in one life history trait (improving fitness
   
 (C) A useful way of thinking about resource allocation trade-offs is to imagine the life history as being a finite pie. 
 
+<img src="TRES/trade_offs.png" />
+
+(Image from [Fabian and Flatt 2012]("https://www.nature.com/scitable/knowledge/library/life-history-evolution-68245673/"))
+
+
+To visualize whether there may be a trade off between clutch size and the number of clutches in a nest lets visualize these factors in a box plot. The 'nest' dataset contains records of the clutch numbers found in nest boxes across Long Point dating back to 1987! Lets take a quick look at the dataset first to figure out what we need to plot.
 
 ```{r echo = TRUE, code_folding=TRUE}
-# to visualize whether there may be a trade off between clutch size and the number of clutches in a nest lets visualize these factors in a box plot
-# the 'nest' dataset contains records of the clutch numbers found in nest boxes across Long Point dating back to 1987!
-# lets take a quick look at the dataset first to figure out what we need to plot
 head(nest)
-# we want to look at how clutch size (clutch_size) may vary between the first and second clutch (clutch_number)
+```
+
+Next, we want to look at how clutch size (clutch_size) may vary between the first and second clutch (clutch_number).
+
+```{r echo = TRUE, code_folding=TRUE}
 ggplot(nest, aes(factor(clutch_number), clutch_size)) + 
   geom_boxplot(outlier.colour="black", outlier.size=0.5, position = position_dodge(preserve = "single")) +
   xlab('Clutch Number') +
@@ -277,8 +303,12 @@ ggplot(nest, aes(factor(clutch_number), clutch_size)) +
   ggtitle("Clutch Size vs. Clutch Number") +
   scale_y_continuous(breaks = seq(0, 13, by = 1)) +
   theme(plot.title = element_text(hjust = 0.5))
-#  example on how to calculate the average clutch size for clutch number 1 and 2
-aggregate(clutch_size ~ clutch_number, nest, mean )
+```
+
+Lets look at how we would calculate the average clutch size for clutch number 1 and 2.
+
+```{r echo = TRUE, code_folding=TRUE, results='hide'}
+aggregate(clutch_size ~ clutch_number, nest, mean)
 ```
 
 ***
@@ -294,12 +324,22 @@ You may have noticed that the second clutches are slightly smaller than the firs
 
 Is the size and weight of the bird at maturity related to the clutch size? Lets look at wing chord length, tail length, and bird weight to investigate this and lets separate our analysis my male and female birds
 
+First, lets find the mean wing chord length when grouped by year, nest_box, sex, clutch_number, clutch_size and band number.
+
 ```{r echo = TRUE, code_folding=TRUE}
-# First, lets find the mean wing chord length when grouped by year, nest_box, sex, clutch_number, clutch_size and band number
 # wing_chord
 banding_nest.wing_chord <- aggregate(wing_chord ~ year + sex + nest_box + clutch_number + band_number + clutch_size, banding_nest, mean)
 head(banding_nest.wing_chord)
-# lets see if we see any patterns between the number of eggs there are per clutch (clutch_size) and the weight or size of the parent tree swallow
+
+# next, you need to double check your data are still in the right class
+str(banding_nest.wing_chord)
+banding_nest.wing_chord$sex <- as.factor(banding_nest.wing_chord$sex)
+banding_nest.wing_chord$nest_box <- as.factor(banding_nest.wing_chord$nest_box )
+```
+
+Lets see if we see any patterns between the number of eggs there are per clutch (clutch_size) and the weight or size of the parent tree swallow.
+
+```{r echo = TRUE, code_folding=TRUE}
 plot(clutch_size ~ wing_chord, banding_nest.wing_chord,
      main="Clutch Size vs Parent Wing Chord Length",
      pch=20,
@@ -319,6 +359,17 @@ Now, you look at tail and weight variables. Compare your results to the results 
 banding_nest.tail <- aggregate(tail ~ year + sex + nest_box + clutch_number + band_number + clutch_size, banding_nest, mean)
 # weight
 banding_nest.weight <- aggregate(weight ~ year + sex + nest_box + clutch_number + band_number + clutch_size, banding_nest, mean)
+
+# next, you need to double check your data are still in the right class
+str(banding_nest.tail)
+banding_nest.tail$sex <- as.factor(banding_nest.tail$sex)
+banding_nest.tail$nest_box <- as.factor(banding_nest.tail$nest_box )
+
+str(banding_nest.weight)
+banding_nest.weight$sex <- as.factor(banding_nest.weight$sex)
+banding_nest.weight$nest_box <- as.factor(banding_nest.weight$nest_box )
+
+
 plot(clutch_size ~ tail, banding_nest.tail,
      main="Clutch Size vs Parent Tail Length",
      pch=20,
@@ -339,10 +390,9 @@ legend("topright", legend= levels(banding_nest.weight$sex),
 
 ## Changes through time
 
-Could bird communities be changing over time as a result of climate change or other environmental shifts? Lets observe if the average clutch size over time is changing.
+Could bird communities be changing over time as a result of climate change or other environmental shifts? Lets observe if the average clutch size over time is changing. First we want to take the average clutch size that was sampled from all of the nest boxes each year.
 
 ```{r echo = TRUE, code_folding=TRUE}
-# first we want to take the average clutch size that was sampled from all of the nest boxes each year
 nest.average <- aggregate(clutch_size ~ year, nest, mean)
 #Then, we'll run a linear regression to test the relationship between clutch size and year. 
 lm_clutch_size <- summary(lm(clutch_size ~ year, data= nest.average))
@@ -359,7 +409,7 @@ abline(lm(clutch_size ~ year, data=nest.average))
 text(2010, 6.2, rlabel_0)
 ```
 
-It may appear that the average clutch size is declining overtime however when looking at the R^2 value of this linear regression we can see that this relationship is not a strong one.
+It may appear that the average clutch size is declining overtime however when looking at the $R^2$ value of this linear regression we can see that this relationship is not a strong one.
 
 ## Take-homes
 

@@ -10,6 +10,9 @@ output:
   distill::distill_article:
     self_contained: false
     code_folding: ~
+    toc: true
+    theme: united
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -49,7 +52,7 @@ In this tutorial you will learn how to:
 ## Tree Swallow Nest Productivity 
 Before we jump into the weeds, let's get to know our dataset!
 
-The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest’ boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
+The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, from 1974 to 2014. Each year, May through June, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
 
 Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
 
@@ -80,9 +83,9 @@ To navigate and complete the following tutorials you will be required to install
 
 `R` is a freely available software and the most recent version of `R` can be downloaded from: https://cran.r-project.org. After you have installed `R`, we encourage you to download R Studio as it provides a more user friendly interface to interact with `R`. R Studio Desktop is freely available from https://rstudio.com/products/rstudio/download/.
 
-The final piece of software that is required for completing the practicals is `rmarkdown`. R Markdown documents weave together narrative text and code to produce formatted, fully reproducible outputs. If you are unfamiliar with R Markdown, a short tutorial is available from https://rmarkdown.rstudio.com/articles_intro.html.
+The final piece of software that is required for completing the practicals is `rmarkdown`. `Rmarkdown` documents weave together narrative text and code to produce formatted, fully reproducible outputs. If you are unfamiliar with `rmarkdown`, a short tutorial is available from https://rmarkdown.rstudio.com/articles_intro.html.
 
-## Overview of R concepts
+## Overview of `R` concepts
 
 In this next section we are going to walk you through a few of the concepts you need to understand in order to work with data in `R`. 
 
@@ -180,9 +183,6 @@ banding3
 
 ```{r, echo = TRUE}
 # Try looking at the mean weight of Tree Swallows grouped by sex and year, call this new data frame 'banding4'
-
-
-
 ```
 
 Now that you have a good handle on basic subsetting, let's dig a little deeper and use logical operators to further subset your data. 
@@ -203,18 +203,20 @@ It is important to note that certain logical operators only work on certain clas
 ```{r, echo = TRUE, code_folding=TRUE}
 # pull out female birds from your banding dataset 
 head(subset(banding, sex == "F")) #the head function limits the amount of rows displayed
+```
 
-# Remember, if you want to store this in a df to look at later I would have to assign it to a vector called "female_birds"
+Remember, if you want to store this in a df to look at later I would have to assign it to a vector called "female_birds"
+
+```{r, echo = FALSE, code_folding=FALSE, results="hide"}
 female_birds <- subset(banding, sex == "F")
 head(female_birds)
 
 # what if you wanted to look at female birds that weighed over 20g?
 female_birds <- subset(banding, sex == "F" & weight > 20)
 head(female_birds)
-
-# Notice how the vector female_birds changed from 853 observations to 495 observations?
 ```
 
+Notice how the vector female_birds changed from 853 observations to 495 observations?
 
 ***
 **Try coding**
@@ -223,14 +225,23 @@ head(female_birds)
 # Try to subset a dataframe called 'male_birds' that consists of male birds with the chord_length less than or equal to 150
 ```
 
-
 ***
 **Question**
 
 *How many male birds have a chord_length less than or equal to 150?*
 
-***
+```{r, echo = TRUE, code_folding=TRUE}
+# Answer = 749
+```
 
+***
+**Try coding**
+
+```{r, echo = TRUE}
+# Try to subset a dataframe called 'male_birds' that consists of male birds with the chord_length less than or equal to 150
+```
+
+***
 
 Having fun yet? I know I am! Let's look at the basics of a plot. This image was pulled from [here]("https://www.open.edu/openlearn/mod/oucontent/view.php?id=90853&section=3.1"). 
 
@@ -266,6 +277,8 @@ ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapt
   theme_classic() #gets rid of grey background
 ```
 
+(If you'd like to learn more about ggplot, [this]("https://www.datanovia.com/en/blog/ggplot-legend-title-position-and-labels/") tutorial is great!)
+
 ***
 **Question**
 
@@ -275,34 +288,36 @@ ggplot(as.data.frame(tbl1), aes(x =factor(year), y = Freq, fill = band_or_recapt
 
 ***
 
-(If you'd like to learn more about ggplot, [this]("https://www.datanovia.com/en/blog/ggplot-legend-title-position-and-labels/") tutorial is great!)
-
 ## More data exploration
 
 Next, let's change gears and take a quick look at the egg nestling dataset.
 
-```{r echo =TRUE, warning = FALSE, code_folding=TRUE}
+```{r echo =TRUE, warning = FALSE, code_folding=FALSE}
 # Lets get a sense of what columns are present in our dataset
 head(nestling)
 
 # Lets look at the structure of our new dataframe, nestling:
 
 str(nestling)
+```
 
-
-#We don't have entries for all rows of our dataframe. They will appear as **NA**s. We see the weight #is a character vector. Let's change that to numeric using the as.numeric() function. Let's start #with the **day_1_weight** column:
+```{r echo =TRUE, warning = FALSE, code_folding=TRUE}
+#We don't have entries for all rows of our dataframe. They will appear as **NA**s. We see the weight is a character vector. Let's change that to numeric using the as.numeric() function. Let's start #with the **day_1_weight** column:
 
 nestling$day_1_weight <- as.numeric(nestling$day_1_weight)
 
 # Now the **day_12_weight** column:
 
 nestling$day_12_weight <- as.numeric(nestling$day_12_weight)
-```
 
+
+# Lets look at the structure of our new dataframe, nestling again:
+str(nestling)
+```
 
 We want to summarize our data so we can calculate the mean of each weight by year
 
-```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
+```{r echo = TRUE, warning = FALSE, code_folding=FALSE}
 nestling_weight <- nestling %>%
   group_by(year) %>% #groups weights by year
   filter(is.na(day_1_weight) == F,  #gets rid of NAs
@@ -335,7 +350,7 @@ Hmm, looks like something is not quite right in our plot. There seems to be an o
 head(nestling_weight2, n = 10)
 ```
 
-Ah ha! The first row contains a mean_day_1 weight of 21.828571. This is likely an error. Let's get rid of it and then re-plot it.
+Ah ha! The first row contains a mean_day_1 weight of 21.8. This is likely an error. Let's get rid of it and then re-plot it.
 
 ```{r echo = TRUE, warning = FALSE, code_folding=TRUE}
 nestling_weight2 <- nestling_weight2[-1,]
