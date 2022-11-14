@@ -377,22 +377,22 @@ ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
   geom_point(size=4)+
   scale_colour_viridis_d()+
   ggtitle("1995")+
-  labs(x="Species", y="Abundance")+
   theme_classic()+
-  #theme(legend.position="none")+
-  labs(x="Species", y="Abundance", color="Species")
+  labs(x="Species", y="Abundance", color="Species")+
+  theme(axis.text.x = element_text(face="italic")) # Use italics for species names
+
 
 #2007
 b<- subset %>%
   filter(year==2001) %>%
-ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
+  ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
   geom_point(size=4)+
   scale_colour_viridis_d()+
   ggtitle("2001")+
-  labs(x="Species", y="Abundance")+
   theme_classic()+
-  #theme(legend.position="none")+
-  labs(x="Species", y="Abundance", color="Species")
+  labs(x="Species", y="Abundance", color="Species") +
+  theme(axis.text.x = element_text(face="italic")) # Use italics for species names
+
 
 a / b
 ```
