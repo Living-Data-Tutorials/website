@@ -119,7 +119,15 @@ These data are from the Turkey Lakes watershed experiment.
 This dataset contains the abundances of benthic invertebrate species measured in the May and June from 1995 to 2001.
 A surber sampler (see video below) was used to collect invertebrates from stream beds.
 
-```{r code_folding=T}
+```{=html}
+<style>
+
+.vembedr iframe {
+  height:398px;
+}
+</style>
+```
+```{r code_folding=T, cache=FALSE}
 pacman::p_load("vembedr")
 embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
   use_bs_responsive()
