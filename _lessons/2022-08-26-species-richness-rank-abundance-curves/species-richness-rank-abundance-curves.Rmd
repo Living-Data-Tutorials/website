@@ -121,7 +121,7 @@ A surber sampler was used to collect invertebrates from stream beds.
 
 ```{r}
 pacman::p_load("vembedr")
-embed_youtube("https://www.youtube.com/watch?v=BNrc9YkPpfA",  ratio="16by9")%>%
+embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
   use_bs_responsive()
 ```
 
