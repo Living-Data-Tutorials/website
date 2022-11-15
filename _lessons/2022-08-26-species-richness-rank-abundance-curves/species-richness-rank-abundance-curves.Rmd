@@ -177,10 +177,6 @@ df.count <-
     )
 ```
 
-# Quantifying biodiversity with real data
-
-To explore these different diversity metrics and how they are calculated, we have subset data from the Turkey Lakes dataset across 4 years and 7 unique species to look at how diversity changes over time.
-
 ```{r panelset, echo=FALSE, include=FALSE}
 xaringanExtra::use_panelset()
 ```
