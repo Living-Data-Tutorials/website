@@ -375,7 +375,7 @@ On the y-axis we have the species (numbered), and on the y axis we have the abun
 The plots are organized from high to low abundance.
 Using rank-abundance curves, we can visualize the change in relative abundance and species dominance over time.
 
-As an example, we use a subset of the Turkey Lakes data with seven species from the dataset to make a simple rank-abundance curve.
+As an example, we use a subset of the Turkey Lakes data with six species from the dataset to make a simple rank-abundance curve.
 
 ```{r, code_folding=T, fig.cap="Simple rank-abundance curve with 6 species from the Turkey Lakes dataset, with counts from 1995 and 2001. Colour and shape indicate a unique species, with y axis representing abundance."}
 #loading necessary libraries
