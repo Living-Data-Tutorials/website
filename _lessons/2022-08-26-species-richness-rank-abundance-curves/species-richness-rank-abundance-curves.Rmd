@@ -117,16 +117,17 @@ knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # in
 
 These data are from the Turkey Lakes watershed experiment.
 This dataset contains the abundances of benthic invertebrate species measured in the May and June from 1995 to 2001.
-A surber sampler was used to collect invertebrates from stream beds.
+A surber sampler (see video below) was used to collect invertebrates from stream beds.
 
-```{r}
+```{r code_folding=T}
 pacman::p_load("vembedr")
 embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
   use_bs_responsive()
 ```
 
-They recorded the type and number of invertebrates in a catchment area of the stream, with 10 replicate sites per catchment.
-These forests next to these streams were logged in 1997 with varying harvest intensities of low, medium, and high intensity harvest and a control stream with no forest harvest.
+Several catchments within the watershed were sampled at ten sites each (for replication).
+In 1997, some catchments were logged with varying harvest intensities (low, medium, and high).
+
 First, we will subset the data, clean an process it in order to visualize and compare rank-abundance curves.
 Later in the tutorial, we will using the subsetted data with the `codyn` package to analyze the diversity of these benthic invertebrates over time.
 
@@ -145,11 +146,12 @@ As you can see, the columns of the dataset are:
 -   Catchment number.
     There are 11 catchments (stream study areas), and each has an alphanumeric code.
 
--   Year and month that the data was collected - A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundance of each benthic invertebrate 10 times for each stream on each sampling date)
+-   Year and month that the data was collected - A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundances of benthic invertebrates from ten sites within each catchment on each sampling date)
 
--   A column for each of the species with their densities (the density is measured as .....)
+-   A column for each of the species with their densities.
+    Densities in units of individuals per m^2^ were calculated by dividing the counts by the area of the surber sampler (see video above; 0.32 m^2^ in this case)
 
-First, in order to quantify biodiversity, we will convert the species densities reported in the dataset to the raw counts (i.e. abundances) to obtain whole numbers of individuals.
+First, in order to quantify biodiversity, we will convert the species densities reported in the dataset back to the raw counts (i.e. abundances) to obtain whole numbers of individuals.
 To do this, it is helpful to transform the "wide" format `data.frame` (where each species is a column) to "long" format, where species names are all found in a single column using the `tidyr::pivot_longer()` function.
 
 ```{r}
@@ -158,12 +160,20 @@ df.count <-
   df.read %>% 
   # Convert from wide to long format to simplify the operation
   tidyr::pivot_longer( 
-    "Aeshna":"Trichoptera", # Select the columns we want in long format (i.e. the columns with invertebrate species)
-    names_to = "Species", # Name the column that we are creating for the invertebrate species
-    values_to = "Density" ) %>% # Name the column that we want the density values to do to
+    # Select the columns we want in long format 
+    #  (i.e. the columns with invertebrate species)
+    "Aeshna":"Trichoptera", 
+    # Name the column that we are creating for 
+    #  the names of the invertebrate species
+    names_to = "Species", 
+    # Name the column that we want the density values to do to
+    values_to = "Density" ) %>% 
   mutate(
-    Count = Density * 0.33, # Change densities to counts
-    Count = tidyr::replace_na(Count, 0) # Replace NAs with 0 because NA signifies there are none of that species present
+     # Change densities to counts
+    Count = Density * 0.33,
+    # Replace NAs with 0 because NA 
+    #  signifies species absnce
+    Count = tidyr::replace_na(Count, 0) 
     )
 ```
 
