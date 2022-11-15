@@ -137,8 +137,17 @@ The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Gove
 We can look at all the columns of the dataset using the `colnames()` function.
 
 ```{r}
-df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") # load Turkey Lakes invertebrate density data from the website
-colnames(df.read) # take a look at the columns
+# load Turkey Lakes invertebrate density data 
+# from the Govornament of Canada website
+df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") 
+
+# Or, if that doesn't work, from our github page:
+if(!exists("df.read")) {
+  readr::read_csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-08-26-species-richness-rank-abundance-curves/Data/TLW_invertebrateDensity.csv")
+} 
+
+# take a look at the columns
+colnames(df.read) 
 ```
 
 As you can see, the columns of the dataset are:
