@@ -1,0 +1,31 @@
+Metadata Name,,Turkey Lakes Watershed - Stream Water Flow
+File Name,,TLW_streamflow.csv
+Date File Generated,,2012-12-31
+File Content,,"This dataset contains annual mean stream water flow/discharge data derived from daily means for headwater streams draining forested hillslopes measured at stream catchments C31, C32, C33, C34, C35, C37, C38, C39, C42, C46, C47, C49, and C50 in the Turkey Lakes Watershed, approximately 60 km northwest of Sault Ste. Marie, Ontario, Canada. This data set is recorded as annual mean flow by calendar year (January-December in litres per second), annual mean flow by water year (October to September in litres per second), and annual number of zero flow days by water year. Daily mean flows that were used to derive this data set were recorded from 1981-2012 by the Great Lakes Forestry Centre, and are reported for 1981-2011 due to some inaccuracies throughout the 2012 data. Hydrological gauging stations employ ""flow-control"" 120 degree V-notch weirs (catchments 31, 33, 34, 37, 39, 42, 46, and 47), 90 degree V-notch weirs (catchments 32, 35, and 49), and 60 degrees V-notch weirs (catchment 38) to facilitate monitoring of stream discharge. Water ""stage"" or depth within the structure (e.g. in the pool behind the weir notch) is automatically and continuously recorded by chart recorders (Leupold & Stevens  A-71 SE Water Level Recorder) from 1981-2003. Capacitance rods (Trutrack WT-HR 1000) installed in stilling wells replaced the chart recorders over the period of 2002 to 2003 and were used until 2012. The capacitance rods logged data at 1 hour intervals for the majority of their use and then averaged to a daily rate. Manual stage measurements have been taken intermittently when synoptic water chemistry samples were taken throughout the years. Stage data are then converted to a continuous record of flow using the relationship between stage and discharge measurements."
+Organization Name,,"Natural Resources Canada, Canadian Forest Service, Great Lakes Forestry Centre, 1219 Queen St. E., Sault Ste. Marie, ON P6A 2E5"
+Program,,Impacts of Forest Practices on Soil and Water
+Principal Investigator,,"Fred Beall, Forest Hydrologist (retired), Natural Resources Canada, Canadian Forest Service, Great Lakes Forestry Centre, 1219 Queen St. E., Sault Ste. Marie, ON P6A 2E5"
+Co-investigator,,
+Recommended Citation,,"Fred Beall. 2012. Data file: TLW_streamflow.csv, version number 1, generated 2012-12-31. DOI: (not yet available). Accessed [YYYY-MM-DD] from the Government of Canada Federal Geospatial Platform at gcgeo.gc.ca/en/"
+Acknowledgment statement,,"The author acknowledges Natural Resources Canada for the provision of:  TLW_streamflow.csv, accessed from the Canada Federal Geospatial Platform."
+Data Steward,,"Jason Leach, Research Scientist, Forest Ecohydrology, Natural Resources Canada, Great Lakes Forestry Centre 1219 Queen Street East, Sault Ste. Marie, ON P6A 2E5, 705-541-5622, jason.leach@canada.ca"
+Quality Assurance Level and Disclaimer,,"Quality assurance and quality control checks and data management procedures for this data time period of 1981-2012 were conducted, and where there was missing data, statistical relationships with other catchments were used. Specific details are not available. NOTE: Recent quality assurance and control efforts have identified the flow data that appears unrealistic and has been coded ""NA""."
+Questions,,For any questions regarding data please send email to jason.leach@canada.ca and reference TLW_streamflow.csv
+,,
+Notes,,
+Notes,,
+Notes,,
+,,
+,,
+,,
+,,
+,,
+Data Dictionary,,
+Attribute,,Definition
+Catchment,,catchment number
+Latitude,,latitude of catchment location in decimal degrees
+Longitude,,longitude of catchment location in decimal degrees
+Year,,Year of measurement
+Stream Flow Cal Yr,,annual mean stream water flow/discharge measured in Litres per second by calendar year from January to December
+Stream Flow Wat Yr,,annual mean stream water flow/discharge measured in Litres per second by water year from October to September
+Stream 0 Flow Days,,total zero stream water flow days by water year from October of the previous year to September of the current year
