@@ -144,17 +144,25 @@ Later in the tutorial, we will using the subsetted data with the `codyn` package
 The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Government" Portal on the "Turkey Lakes Watershed" page](https://open.canada.ca/data/dataset/576f1b52-3fce-497e-8e4c-0899acfdca1f) can be downloaded and saved as a `data.frame` object using the `read.csv` function.
 We can look at all the columns of the dataset using the `colnames()` function.
 
-```{r}
+```{r loadDataReal, include=F}
+df.read <- read.csv(file="Data/TLW_invertebrateDensity.csv") 
+```
+
+``` r
 # load Turkey Lakes invertebrate density data 
 # from the Govornament of Canada website
 df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") 
 
-# Or, if that doesn't work, from our github page:
+# Or, if that doesn't work, from our GitHub:
 if(!exists("df.read")) {
-  readr::read_csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-08-26-species-richness-rank-abundance-curves/Data/TLW_invertebrateDensity.csv")
+  df.read <- 
+  read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-08-26-species-richness-rank-abundance-curves/Data/TLW_invertebrateDensity.csv")
 } 
+```
 
-# take a look at the columns
+Now, take a look at the column names:
+
+```{r}
 colnames(df.read) 
 ```
 
