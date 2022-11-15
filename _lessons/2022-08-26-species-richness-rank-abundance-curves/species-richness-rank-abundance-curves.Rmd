@@ -21,7 +21,7 @@ bibliography: references.bib
 ---
 
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
-knitr::opts_chunk$set(include = T, warning=F, message=F)
+knitr::opts_chunk$set(include = T, warning=F, message=F, cache=T)
 # knitr::opts_knit$set(root.dir = "..")
 knitr::opts_chunk$set(error = TRUE)
 ```
