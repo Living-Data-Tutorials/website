@@ -620,9 +620,10 @@ plot
 ```
 
 Notice that we can rapidly see that the catchment with high intensity logging had the highest species richness (highest maximum rank).
-The catchment that we logged with medium intensity also appears to have a less "even" rank-abundance curve compared to the other two.
+The catchment that was logged with medium intensity also appears to have a less "even" rank-abundance curve compared to the other two.
 In other words, the slope is slightly steeper for the "medium" intensity site than for the "high" and "none" (no logging) catchments.
 Of course, many more sites over several years need to be compared in order to make any generalizable claims about the effects of logging on invertebrate biodiversity in the Turkey Lakes area.
+For more details about the effects of logging at the Turkey Lakes, see @kreutzweiser2005.
 
 Furthermore, several models have been developed to understand rank-abundance curves (e.g. log-normal, broken stick model).
 The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html) function from the `vegan` `R` package allows fitting of these different curve models [@radfit].
