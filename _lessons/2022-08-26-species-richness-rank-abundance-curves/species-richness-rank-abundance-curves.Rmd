@@ -117,6 +117,14 @@ knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # in
 
 These data are from the Turkey Lakes watershed experiment.
 This dataset contains the abundances of benthic invertebrate species measured in the May and June from 1995 to 2001.
+A surber sampler was used to collect invertebrates from stream beds.
+
+```{r}
+pacman::p_load("vembedr")
+embed_youtube("https://www.youtube.com/watch?v=BNrc9YkPpfA",  ratio="16by9")%>%
+  use_bs_responsive()
+```
+
 They recorded the type and number of invertebrates in a catchment area of the stream, with 10 replicate sites per catchment.
 These forests next to these streams were logged in 1997 with varying harvest intensities of low, medium, and high intensity harvest and a control stream with no forest harvest.
 First, we will subset the data, clean an process it in order to visualize and compare rank-abundance curves.
