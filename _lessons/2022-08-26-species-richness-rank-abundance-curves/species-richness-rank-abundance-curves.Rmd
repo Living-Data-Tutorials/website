@@ -98,13 +98,8 @@ Marie.
 It is 10 km^2^ in area and contains a chain of 4 lakes.
 The Turkey Lakes Watershed Study (see map) is an initiative by several agencies of the government of Canada, initially designed to study the effects of acid rain on forest ecosystems.
 
-```{r include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Interactive map of the Turkey Lakes study site"}
-pacman::p_load(leaflet)
-
-leaflet() %>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=-84.4110, lat=47.0515, popup="Turkey Lakes") %>% # putting a point on the Turkey Lakes site
-  setView(lng=-84.4110, lat=47.0515, zoom=2)
+```{r include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Turkey Lakes watershed and catchment areas (labelled as cXX). Map reproduced from @webster2021, which features a summary of the research carried out within this watershed in the past 40 years (*circa* 2020)."}
+knitr::include_graphics("TurkeyMap.jpg")
 ```
 
 From 1995 to 2009, scientists collected, identified and counted benthic invertebrates from various stream beds around the Turkey Lakes catchment.
