@@ -1,5 +1,5 @@
 ---
-title: "Getting familiar with R and the Tree Swallow Dataset"
+title: "R Basics and Data Exploration Using Tree Swallows Life History Open Datasets"
 description: |
   This is a tutorial to get you familiar with R and explore ecological concepts through a Tree Swallow nest productivity dataset. Please download the accompanying RMarkdown file and data to follow along with this tutorial in R.
 author:
