@@ -50,17 +50,16 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { color: #00769e; background-color: #f1f3f5; }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #657422; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #00769e; } /* ControlFlow */
+code span.cf { color: #007ba5; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -74,9 +73,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #00769e; } /* Keyword */
+code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #00769e; } /* Other */
+code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -785,7 +784,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
-    font-size: 100%;
   }
 
   .html-widget {
@@ -1027,6 +1025,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
   }
 
   .figure .caption {
@@ -1858,21 +1860,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        const citeChild = $(this).children()[0]
-        // Do not process if @xyz has been used without escaping and without bibliography activated
-        // https://github.com/rstudio/distill/issues/466
-        if (citeChild === undefined) return true
-
-        if (citeChild.nodeName == "D-FOOTNOTE") {
-          var fn = citeChild
-          $(this).html(fn.shadowRoot.querySelector("sup"))
-          $(this).id = fn.id
-          fn.remove()
-        }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          // Could use CSS.escape too here, we insure backward compatibility in navigator
-          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1884,31 +1874,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
-
-      // fix footnotes in tables (#411)
-      // replacing broken distill.pub feature
-      $('table d-footnote').each(function() {
-        // we replace internal showAtNode methode which is triggered when hovering a footnote
-        this.hoverBox.showAtNode = function(node) {
-          // ported from https://github.com/distillpub/template/pull/105/files
-          calcOffset = function(elem) {
-              let x = elem.offsetLeft;
-              let y = elem.offsetTop;
-              // Traverse upwards until an `absolute` element is found or `elem`
-              // becomes null.
-              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
-                  x += elem.offsetLeft;
-                  y += elem.offsetTop;
-              }
-
-              return { left: x, top: y };
-          }
-          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
-          const bbox = node.getBoundingClientRect();
-          const offset = calcOffset(node);
-          this.show([offset.left + bbox.width, offset.top + bbox.height]);
-        }
-      })
 
       // clear polling timer
       clearInterval(tid);
@@ -2008,8 +1973,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
-      // ignore leaflet img layers (#106)
-      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -2032,7 +1995,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
       });
     }
 
@@ -2412,7 +2375,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2452,11 +2415,11 @@ Tutorials
 <span class="down-arrow">&#x25BE;</span>
 </button>
 <div class="nav-dropdown-content">
-<a href="lessons/2022-06-03-chronic-wasting-disease/index.html">Chronic Wasting Disease</a>
-<a href="lessons/2022-04-07-anticosti-historical-data-tutorial/index.html">Anticosti Historical Data</a>
-<a href="lessons/2022-04-07-alberta-trees-tutorial/index.html">Alberta Trees</a>
-<a href="lessons/2022-04-07-tree-swallow-dataset/index.html">Tree Swallow Dataset</a>
-<a href="lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html">Sexual Dimorphism and Sexual Selection</a>
+<a href="lessons/2022-06-03-chronic-wasting-disease/index.html">Disease Modelling</a>
+<a href="lessons/2022-04-07-anticosti-historical-data-tutorial/index.html">Community Ecology</a>
+<a href="lessons/2022-04-07-alberta-trees-tutorial/index.html">Tree Diversity &amp; Dendrochronology</a>
+<a href="lessons/2022-04-07-tree-swallow-dataset/index.html">R Basics and Data Exploration</a>
+<a href="lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html">Sexual Dimorphism &amp; Sexual Selection</a>
 <a href="lessons/2022-08-26-species-richness-rank-abundance-curves/index.html">Species Richness Rank Abundance Curves</a>
 </div>
 </div>
@@ -2478,10 +2441,15 @@ Tutorials
 
 
 <div class="d-article">
-<p>This series of tutorials were produced during a working group hosted by the Living Data Project, lead by Jennifer Sunday and Joey Bernhardt.</p>
-<p>They are based on Canadian open datasets with accompanying R code that can be used to teach/illustrate ecological and evolution concepts, and are designed to illustrate and support exploration on a variety of core concepts aimed for undergraduate courses in ecology and evolution.</p>
+<p>This series of tutorials were produced during a working group hosted
+by the Living Data Project, lead by Jennifer Sunday and Joey
+Bernhardt.</p>
+<p>They are based on Canadian open datasets with accompanying R code
+that can be used to teach/illustrate ecological and evolution concepts,
+and are designed to illustrate and support exploration on a variety of
+core concepts aimed for undergraduate courses in ecology and
+evolution.</p>
 <p>These are the amazing folks who are working on this project:</p>
-<h3 id="section"></h3>
 <table>
 <colgroup>
 <col style="width: 17%" />
@@ -2489,59 +2457,115 @@ Tutorials
 </colgroup>
 <tbody>
 <tr class="odd">
-<td><img src="profiles/joey-headshot-Zurich.jpg" width="116" /></td>
-<td><h3 id="joey-bernhardt">Joey Bernhardt</h3>
-<p><a href="https://twitter.com/joeybernhardt"><img src="figures/icons8-twitter-100.png" width="24" /></a><a href="https://github.com/joeybernhardt"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
-</tr>
-<tr class="even">
 <td></td>
-<td><h3 id="maxime-fraser-franco">Maxime Fraser Franco</h3>
-<p><a href="https://twitter.com/MFraserFranco"><img src="figures/icons8-twitter-100.png" width="24" /></a> <a href="https://github.com/quantitative-ecologist"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
-</tr>
-<tr class="odd">
-<td><img src="profiles/Gracielle_Higino_2776_500.png" width="116" /></td>
-<td><h3 id="gracielle-higino">Gracielle Higino</h3>
-<p>Open Science mentor and consultant, science communicator, specialist in ecology and evolution.</p>
-<p><a href="https://twitter.com/graciellehigino"><img src="figures/icons8-twitter-100.png" width="24" /></a> <a href="https://github.com/graciellehigino"><img src="figures/icons8-github-64.png" width="24" /></a> <a href="https://graciellehigino.github.io/"><img src="figures/icons8-web-64.png" width="24" /></a> <a href="mailto:graciellehigino@gmail.com"><img src="figures/icons8-gmail-logo-64.png" width="24" /></a></p></td>
+<td><h3 id="joey-bernhardt">Joey Bernhardt</h3>
+<p><a href="https://twitter.com/joeybernhardt"><img
+src="figures/icons8-twitter-100.png" width="24" /></a><a
+href="https://github.com/joeybernhardt"><img
+src="figures/icons8-github-64.png" width="24" /></a></p></td>
 </tr>
 <tr class="even">
-<td><img src="profiles/Egor.jpg" width="116" /></td>
-<td><h3 id="egor-katkov">Egor Katkov</h3>
-<p><a href="https://twitter.com/egorkatkov1"><img src="figures/icons8-twitter-100.png" width="24" /></a> <a href="https://github.com/ekatko1"><img src="figures/icons8-github-64.png" width="24" /></a> <a href="https://www.researchgate.net/profile/Egor-Katkov"><img src="figures/icons8-researchgate-a-social-networking-site-for-scientists-and-researchers-to-share-papers-24.png" /></a></p></td>
-</tr>
-<tr class="odd">
-<td><img src="profiles/maggeislein.jpg" width="116" /></td>
-<td><h3 id="maggie-slein">Maggie Slein</h3>
-<p><a href="https://twitter.com/sleinma"><img src="figures/icons8-twitter-100.png" width="24" /></a><a href="https://github.com/mslein"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
-</tr>
-<tr class="even">
-<td><img src="profiles/Jenn%20head%20and%20shoulders%20smaller.jpg" width="116" /></td>
+<td><img src="profiles/Jenn%20head%20and%20shoulders%20smaller.jpg"
+width="115" /></td>
 <td><h3 id="jenn-sunday">Jenn Sunday</h3>
-<p><a href="https://twitter.com/jennsunday"><img src="figures/icons8-twitter-100.png" width="24" /></a><a href="https://github.com/jennsunday"><img src="figures/icons8-github-64.png" width="24" /></a><a href="http://jennsunday.weebly.com"><img src="figures/icons8-web-64.png" width="24" /></a></p></td>
+<p><a href="https://twitter.com/jennsunday"><img
+src="figures/icons8-twitter-100.png" width="24" /></a><a
+href="https://github.com/jennsunday"><img
+src="figures/icons8-github-64.png" width="24" /></a><a
+href="http://jennsunday.weebly.com"><img src="figures/icons8-web-64.png"
+width="24" /></a></p></td>
 </tr>
 <tr class="odd">
+<td><img src="profiles/Jory.jpg" width="115" /></td>
+<td><h3 id="jory-griffith">Jory Griffith</h3></td>
+</tr>
+<tr class="even">
+<td><img src="profiles/Houghton.jpg" width="115" /></td>
+<td><h3 id="elizabeth-houghton">Elizabeth Houghton</h3>
+<p><a href="https://github.com/ElizabethHoughton"><img
+src="figures/icons8-github-64.png" width="24" /></a></p></td>
+</tr>
+<tr class="odd">
+<td><img src="profiles/maggeislein.jpg" width="115" /></td>
+<td><h3 id="margaret-a.-slein">Margaret A. Slein</h3>
+<p><a href="https://twitter.com/sleinma"><img
+src="figures/icons8-twitter-100.png" width="24" /></a><a
+href="https://github.com/mslein"><img src="figures/icons8-github-64.png"
+width="24" /></a></p></td>
+</tr>
+<tr class="even">
+<td><img src="profiles/JHOANCHAVEZ.jpeg" width="115" /></td>
+<td><h3 id="jhoan-chavez">Jhoan Chavez</h3></td>
+</tr>
+<tr class="odd">
+<td><img src="profiles/Maxime.png" width="115" /></td>
+<td><h3 id="maxime-fraser-franco">Maxime Fraser Franco</h3>
+<p><a href="https://twitter.com/MFraserFranco"><img
+src="figures/icons8-twitter-100.png" width="24" /></a> <a
+href="https://github.com/quantitative-ecologist"><img
+src="figures/icons8-github-64.png" width="24" /></a></p></td>
+</tr>
+<tr class="even">
+<td><img src="profiles/AmyForsythe2.jpg" width="115" /></td>
+<td><h3 id="amy-forsythe">Amy Forsythe</h3>
+<p><a href="https://twitter.com/amybforsythe"><img
+src="figures/icons8-twitter-100.png" width="24" /></a><a
+href="https://github.com/AmyForsythe"><img
+src="figures/icons8-github-64.png" width="24" /></a></p></td>
+</tr>
+<tr class="odd">
+<td><img src="profiles/Victoria.jpg" width="115" /></td>
+<td><h3 id="victoria-glynn">Victoria Glynn</h3></td>
+</tr>
+<tr class="even">
+<td><img src="profiles/Egor.jpg" width="115" /></td>
+<td><h3 id="egor-katkov">Egor Katkov</h3>
+<p><a href="https://twitter.com/egorkatkov1"><img
+src="figures/icons8-twitter-100.png" width="24" /></a> <a
+href="https://github.com/ekatko1"><img
+src="figures/icons8-github-64.png" width="24" /></a> <a
+href="https://www.researchgate.net/profile/Egor-Katkov"><img
+src="figures/icons8-researchgate-a-social-networking-site-for-scientists-and-researchers-to-share-papers-24.png" /></a></p></td>
+</tr>
+<tr class="odd">
+<td><img src="profiles/palmier.jpeg" width="115" /></td>
+<td><h3 id="kirsten-palmier">Kirsten Palmier</h3>
+<p><a href="https://www.urimss.ca/"><img src="figures/icons8-web-64.png"
+width="24" /></a></p></td>
+</tr>
+<tr class="even">
+<td><img src="profiles/Zihaohan.jpg" width="115" /></td>
+<td><h3 id="zihaohan-sang">Zihaohan Sang</h3></td>
+</tr>
+<tr class="odd">
+<td><img src="profiles/ROLANDO.png" width="115" /></td>
+<td><h3 id="rolando-trejo-perez">Rolando Trejo-Perez</h3></td>
+</tr>
+<tr class="even">
 <td></td>
 <td><h3 id="bryn-wiley">Bryn Wiley</h3>
-<p><a href="https://github.com/BrynWiley"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
-</tr>
-<tr class="even">
-<td><img src="profiles/AmyForsythe.jpg" width="116" /></td>
-<td><h3 id="amy-forsythe">Amy Forsythe</h3>
-<p><a href="https://twitter.com/amybforsythe"><img src="figures/icons8-twitter-100.png" width="24" /></a><a href="https://github.com/AmyForsythe"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
+<p><a href="https://github.com/BrynWiley"><img
+src="figures/icons8-github-64.png" width="24" /></a></p></td>
 </tr>
 <tr class="odd">
-<td><img src="profiles/ElizabethHoughton.jpg" width="116" /></td>
-<td><h3 id="elizabeth-houghton">Elizabeth Houghton</h3>
-<p><a href="https://github.com/ElizabethHoughton"><img src="figures/icons8-github-64.png" width="24" /></a></p></td>
-</tr>
-<tr class="even">
-<td><img src="profiles/palmier.jpeg" width="116" /></td>
-<td><h3 id="kirsten-palmier">Kirsten Palmier</h3>
-<p><a href="https://www.urimss.ca/"><img src="figures/icons8-web-64.png" width="24" /></a></p></td>
+<td><img src="profiles/Gracielle_Higino_2776_500.png"
+width="115" /></td>
+<td><h3 id="gracielle-higino">Gracielle Higino</h3>
+<p>Open Science mentor and consultant, science communicator, specialist
+in ecology and evolution.</p>
+<p><a href="https://twitter.com/graciellehigino"><img
+src="figures/icons8-twitter-100.png" width="24" /></a> <a
+href="https://github.com/graciellehigino"><img
+src="figures/icons8-github-64.png" width="24" /></a> <a
+href="https://graciellehigino.github.io/"><img
+src="figures/icons8-web-64.png" width="24" /></a> <a
+href="mailto:graciellehigino@gmail.com"><img
+src="figures/icons8-gmail-logo-64.png" width="24" /></a></p></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
