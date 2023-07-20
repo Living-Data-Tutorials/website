@@ -1,5 +1,5 @@
 ---
-title: "Alberta Chronic Wasting Disease Tutorial"
+title: "Disease Modelling in Mule Deer"
 description: |
   This interactive tutorial explores how a simple compartmental model (the SI model) can be used to track and predict the spread of Chronic Wasting Disease (CWD) in Albertan mule deer over time. It begins by introducing CWD and why it is a growing problem in Albertan mule deer. It then investigates and explains how different levels of transmission, death, and culling can change disease dynamics. Students can test how these different parameters influence the spread of CWD using the sliders on each page.
 author:
