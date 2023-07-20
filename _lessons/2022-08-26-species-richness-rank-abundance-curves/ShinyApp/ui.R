@@ -37,7 +37,7 @@ shinyUI(fluidPage(
       #                    selected = 1998), 
       checkboxGroupInput("month", 
                          h5("Month"), 
-                         choices = month_options,
+                         choices = stats::setNames(month_options, stringr::str_to_title(month_options)),
                          selected = month_options),         
       radioButtons("catchment", 
                          h5("Catchment"), 

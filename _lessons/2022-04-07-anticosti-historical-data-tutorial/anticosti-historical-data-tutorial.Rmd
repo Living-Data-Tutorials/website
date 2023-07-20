@@ -1,7 +1,7 @@
 ---
-title: "Anticosti Historical Data Tutorial"
+title: "Community Ecology: Hemlock Looper Outbreak on Anticosti Island"
 description: |
-    After the storm: Impacts of a hemlock looper outbreak on tree species in Anticosti Island, 1973
+    Impacts of a hemlock looper outbreak on tree species in Anticosti Island, 1973.
 author:
   - name: "Victoria Marie Glynn"
     affiliation: McGill University

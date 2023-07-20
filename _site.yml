@@ -12,15 +12,15 @@ navbar:
       menu:
         # - text: "Codyn"
         #   href: lessons/2022-04-07-codyn-tutorial/index.html
-        - text: "Chronic Wasting Disease"
+        - text: "Disease Modelling"
           href: lessons/2022-06-03-chronic-wasting-disease/index.html
-        - text: "Anticosti Historical Data"
+        - text: "Community Ecology"
           href: lessons/2022-04-07-anticosti-historical-data-tutorial/index.html
-        - text: "Alberta Trees"
+        - text: "Tree Diversity & Dendrochronology"
           href: lessons/2022-04-07-alberta-trees-tutorial/index.html
-        - text: "Tree Swallow Dataset"
+        - text: "R Basics and Data Exploration"
           href: lessons/2022-04-07-tree-swallow-dataset/index.html
-        - text: "Sexual Dimorphism and Sexual Selection"
+        - text: "Sexual Dimorphism & Sexual Selection"
           href: lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html
         - text: "Species Richness Rank Abundance Curves"
           href: lessons/2022-08-26-species-richness-rank-abundance-curves/index.html
