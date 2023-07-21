@@ -58,7 +58,7 @@ With the help of the Turkey lake dataset of benthic invertebrates, we will prese
 
 First, we will teach you how to calculate these metrics using equations and abundance data, and then we will teach you how to use the `codyn` package to calculate these biodiversity metrics quickly and easily.
 
-You will then have the option to learn to calculate biodiversity metrics yourself using an R package called codyn.
+You will then have the option to learn to calculate biodiversity metrics yourself using an R package `codyn`.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Species biodiversity across the globe, downloaded from the Global Biodiversity Information Facility [@GBIF]."}
 library(leaflet)
@@ -78,11 +78,7 @@ addTiles(urlTemplate=tile) # adding our biodiversity layer
 Biodiversity is a broad term, and can be difficult to quantify.
 Biologists have created several standard measures of biodiversity that convey different information about ecosystems and the species living there.
 
-```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Schematic of freshwater lake ecosystem demonstrating the different information biologists to collect to understand biodiversity"}
-knitr::include_graphics("species_scheme.png") # adding an image
-```
-
-Often times, biologists interested in collecting biodiversity data collect a standard set of responses.
+Often times, biologists interested in collecting biodiversity data collect a standard set of responses (see Fig. 3).
 These often include:
 
 1.  The different kinds of species in a given area or environment
@@ -90,6 +86,13 @@ These often include:
 3.  Information about the area itself (i.e. habitat type, weather conditions, etc.)
 4.  If the work involves an setting up an experiment, collecting the control vs. experimental groups as well as metrics for replication and statistical power
 5.  The time frame over which the data were collected
+
+Often this data is collected over a long period of time, which we call *time series data*.
+This allows us to see how these ecosystems are changing due to some disturbance or other changing environmental condition.
+
+```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Schematic of freshwater lake ecosystem demonstrating the different information biologists to collect to understand biodiversity"}
+knitr::include_graphics("species_scheme.png") # adding an image
+```
 
 # Real-world biodiversity data
 
@@ -106,8 +109,9 @@ From 1995 to 2009, scientists collected, identified and counted benthic inverteb
 Benthic invertebrates are small, often microscopic organisms (see Fig. 5), but form an important link between aquatic and terrestrial habitats.
 They can decompose terrestrial matter such as leaves, or consume periphyton (algae and cyanobacteria) growing on rocks within their streams.
 Benthic invertebrates can be a food source for aquatic animals, like small fish, or terrestrial animals such as birds.
-An experiment was conducted in 1997 where certain sampling sites experienced different levels of logging intensity.
-Due to their interaction with the terrestrial realm, we can hypothesize that the biodiversity of benthic invertebrate communities might be affected by logging.
+An experiment was conducted in 1997 where certain sampling sites were logged with different intensities.
+We can hypothesize that the biodiversity of benthic invertebrate communities might be affected by logging because of the effects that logging has on the stream ecosystem such as increased sunlight and temperature, increased photosynthetic activity in the stream, and decreased leaf litter.
+This 14 year time series allows us to look at the immediate effects of logging as well as the subsequent recovery of the stream as foliage begins to grow back.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Various benthic macroinvertebrates under a stereo microscope [@EPA]"}
 knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # include image
@@ -406,7 +410,7 @@ On the y-axis we have the species (numbered), and on the y axis we have the abun
 The plots are organized from high to low abundance.
 Using rank-abundance curves, we can visualize the change in relative abundance and species dominance over time.
 
-As an example, we use a subset of the Turkey Lakes data with six species from the dataset to make a simple rank-abundance curve.
+As an example, we use a subset of the Turkey Lakes data with six of the more abundant species from the dataset to make a simple rank-abundance curve.
 
 ```{r, code_folding=T, fig.cap="Simple rank-abundance curve with 6 species from the Turkey Lakes dataset, with counts from 1995 and 2001. Colour and shape indicate a unique species, with y axis representing abundance."}
 #loading necessary libraries
@@ -427,7 +431,7 @@ ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
   ggtitle("1995")+
   theme_classic()+
   labs(x="Species", y="Abundance", color="Species")+
-  theme(axis.text.x = element_text(face="italic")) # Use italics for species names
+  theme(axis.text.x = element_text(face="italic"), legend.position="none") # Use italics for species names
 
 
 #2007
@@ -439,14 +443,18 @@ b<- subset %>%
   ggtitle("2001")+
   theme_classic()+
   labs(x="Species", y="Abundance", color="Species") +
-  theme(axis.text.x = element_text(face="italic")) # Use italics for species names
+  theme(axis.text.x = element_text(face="italic"), legend.position="none") # Use italics for species names
 
 
 a / b
 ```
 
 We can see here between 1995 and 2001 in our benthic community, there were small differences in absolute counts, with the most abundant species (*Chrironomidae*) decreasing \~5000 in abundance of individuals, but still remaining the most abundance species overall across both years.
-However, *Baetis* was the 2nd most abundant species in 1995, but dropped to 5th most abundant by 2001.
+*Chironomidae* are often very abundant in streams, and are good at taking advantage of the benefits that may be provided by logging, such as increased sunlight availability causing an increase in photosynthetic activity and increased periphyton (algae), which is their primary food source.
+Overall abundance of all species decreases in 2001 compared to 2005, likely because of the regrowth of foliage after logging and decrease in photosynthetic activity in the stream.
+*Baetis* was the 2nd most abundant species in 1995, but dropped to 5th most abundant by 2001.
+This suggests that this species may do better immediately following disturbance.
+However, we would need to look at data from more years to draw conclusions.
 
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="A) *Chironomus plumosus*, a type of chironomid, also called nonbiting midges, or lake flies [@wiki:Chironomidae]. B) *Baetis intercalaris*, a type of mayfly, also known as blue-winged olives [@wiki:Baetis].", out.width = "787px", fig.align='center'}
 knitr::include_graphics("TopSpecies.png")
@@ -608,13 +616,21 @@ df.subset1 %>%
   
 ```
 
-Notice that there is some variation in the shape and the "evenness" (i.e., slope) of the different rank-abundance curves.
-Furthermore, the highest rank in the summary bar plot was 40, whereas the single site with the highest rank has only 29 species.
-This demonstrates that the more we sample, the more rare species we can find.
+Here, the intercept of the line represents the abundance of the most abundant species.
+The slope represents the evenness of the rank abundance curve.
+A steeper slope means that the site is more dominated by one or two species, while a less steep slope means the abundances are more even between species.
+A slope of 0 would represent complete evenness among samples.
+How far the line goes on the X axis represents how many species are in the sample (i.e. species richness).
+This is also called the highest maximum rank.
+The site with the highest maximum rank here is site 6.
 
-Alternatively, we can compare rank-abundance curves from three different catchments, each of which has a different logging intensity.
-Note that all catchments have 10 replicate sites, which allows us to sum across replicates.
-Also note that differences in sampling can affect the shape of the rank-abundance curves, which means that one has to be careful to account for sampling effort when comparing rank-abundance curves from different studies.
+Notice that there is some variation in the shape and the "evenness" (i.e., slope) of the different rank-abundance curves.
+
+In the plot above we are showing different sites seperately from one catchment, but we can pool the samples from the 10 sites in each catchment and compare catchments to one another.
+This allows us to compare rank-abundance curves from three different catchments, each of which has a different logging intensity.
+
+Here are the rank abundance curves for of the 3 catchments with different logging treatment.
+This is only the data from 1998, which is a couple years after logging.
 
 ```{r, code_folding=T, fig.cap="Comparison of rank-abundance curve changes across sites with different logging intensity"}
 plot = 
@@ -646,8 +662,14 @@ plot
   
 ```
 
-Notice that we can rapidly see that the catchment with high intensity logging had the highest species richness (highest maximum rank).
-The catchment that was logged with medium intensity also appears to have a less "even" rank-abundance curve compared to the other two.
+First of all, you can see that when we pool all of the samples from the 10 sites in each catchment, the species richness increases.
+In the first plot at the site level, the highest richness was 29, where here it is 40.
+
+You can see that the catchment with high intensity logging had the highest species richness (highest maximum rank).
+It is common for species richness to increase following a disturbance.
+In this case, it is potentially because the removal of trees increased photosynthetic activity and temperature, which provided more food and a more hospitable habitat for benthic invertebrates.
+Interestingly, the slope of the rank abundance curve for high intensity logging is similar to the slope of the rank abundance curve for no logging, suggesting that logging caused an increase in overall richness but did not effect evenness.
+The catchment that was logged with medium intensity has a less "even" rank-abundance curve compared to the other two.
 In other words, the slope is slightly steeper for the "medium" intensity site than for the "high" and "none" (no logging) catchments.
 Of course, many more sites over several years need to be compared in order to make any generalizable claims about the effects of logging on invertebrate biodiversity in the Turkey Lakes area.
 For more details about the effects of logging at the Turkey Lakes, see @kreutzweiser2005.
@@ -935,3 +957,9 @@ The data for these streams are `subset_codyn_low`, `subset_codyn_high`, and `sub
 Plot these indices.
 Do you see any patterns across years?
 How do these compare to the patterns in the high intensity logging stream?
+
+# Conclusion
+
+In this tutorial, we have explained the meaning of different biodiversity metrics, introduced species accumulation curves and what they can tell you about a community and differences between communities, and showed you how to calculate these metrics using the `codyn` package in R.
+
+If you want to learn more about rank abundance curves and their usefulness in understanding community patterns, [this *Nature* article](https://www.nature.com/scitable/knowledge/library/explaining-general-patterns-in-species-abundance-and-23162842/) has a useful in-depth description.
