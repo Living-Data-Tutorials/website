@@ -26,10 +26,10 @@ knitr::opts_chunk$set(include = T, warning=F, message=F, cache=T)
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-# Tutorial Overview
+# Tutorial overview
 
 Biodiversity is a hot topic in the fact of unprecedented global change in the 21st century.
-With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, Canada](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using `R`.
+With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, Canada](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using *R*.
 
 # Learning objectives
 
@@ -127,7 +127,7 @@ A surber sampler (see video below) was used to collect invertebrates from stream
 }
 </style>
 ```
-```{r code_folding=T, cache=FALSE}
+```{r code_folding=T, message=FALSE, cache=FALSE}
 pacman::p_load("vembedr")
 embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
   use_bs_responsive()
@@ -206,7 +206,7 @@ df.count <-
 xaringanExtra::use_panelset()
 ```
 
-# Metrics of Biodiversity {.panelset}
+# Metrics of biodiversity {.panelset}
 
 There are several different ways to analyse and understand changes in community composition, or the relative abundances of all taxa in a community.
 Each of these metrics allow us to look at different aspects of the biodiversity data we collect [@macdonald2016].
@@ -398,7 +398,7 @@ As with previous biodiversity metrics, we find that evenness is lowest in 1997, 
 :::
 :::
 
-# Visualizing Biodiversity
+# Visualizing biodiversity
 
 Apart from calculating biodiversity using the metrics above, visualizing differences using graphs is another tool we have.
 One way to visualize biodiversity data is to make a rank-abundance curve.
@@ -459,6 +459,8 @@ knitr::include_graphics("TopSpecies.png")
 ### Additional data wrangling {.panel-name}
 
 The dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
+Each site has an alphanumeric code.
+
 You can visualize Rank Abundances for any subset of the dataset using the following [**Shiny App**](https://ekatko1.shinyapps.io/TurkeyLakesInverts/){target="_blank"}.
 
 Using information obtained from the [metadata of this dataset](https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrate_metaEN.csv), we can add some interesting details to the data (for at least a few catchments and years).
@@ -500,7 +502,7 @@ df.clean = df.subset %>%
 :::
 
 ::: panel
-### Summarise Data {.panel-name}
+### Summarise data {.panel-name}
 
 Let's start by looking at catchment "34L", which saw high levels of deforestation in June of 1998, the year following the logging event.
 
@@ -651,11 +653,11 @@ Of course, many more sites over several years need to be compared in order to ma
 For more details about the effects of logging at the Turkey Lakes, see @kreutzweiser2005.
 
 Furthermore, several models have been developed to understand rank-abundance curves (e.g. log-normal, broken stick model).
-The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html) function from the `vegan` `R` package allows fitting of these different curve models [@radfit].
+The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html) function from the `vegan` *R* package allows fitting of these different curve models [@radfit].
 :::
 :::
 
-# Measure and Visualize Biodiversity with `codyn`
+# Measure and visualize biodiversity with `codyn`
 
 Now that we have calculated different biodiversity metrics and rank abundance curves by hand, we can also use existing functions in the `R` package `codyn` [@hallett2016] to quantify and visualizing changes in biodiversity with the Turkey Lakes dataset.
 
@@ -663,7 +665,7 @@ Now that we have calculated different biodiversity metrics and rank abundance cu
 knitr::opts_chunk$set(include = T, warning=F, message=F, echo=T)
 ```
 
-## Load Data and Packages
+## Load data and packages
 
 Along with the `codyn` package, we will also use `ggplot2` and `dplyr` for plotting and cleaning.
 First, we need to load these packages.
@@ -766,7 +768,7 @@ The `metric` argument allows you to specify the metric of evenness that you want
 There are three possible metrics: `Evar`, `SimpsonEvenness`, and `EQ`, which all calculate evenness in different ways.
 We will use Simpson's Evenness in this tutorial.
 
-Remember, if you ever need a refresher on the syntax you can type `?community_structure` into the R script.
+Remember, if you ever need a refresher on the syntax you can type `?community_structure` into the *R* script.
 
 ```{r class.source = 'fold-show'}
 richness_high<-community_structure(df=subset_codyn_high, time.var="year", abundance.var="abundance", replicate.var="replicate", metric="SimpsonEvenness")
