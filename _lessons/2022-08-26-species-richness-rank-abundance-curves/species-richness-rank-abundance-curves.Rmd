@@ -219,10 +219,10 @@ xaringanExtra::use_panelset()
 There are several different ways to analyse and understand changes in community composition, or the relative abundances of all taxa in a community.
 Each of these metrics allow us to look at different aspects of the biodiversity data we collect [@macdonald2016].
 
-1.  ***Species richness*** quantifies the number of different species in a community.
-2.  The ***Shannon-Weiner Index*** estimates species diversity by taking into account the number of species living in a habitat (richness) and their relative abundance (evenness).
-3.  ***Simpson's Diversity Index*** also takes into account species richness and evenness, but puts more emphasis on evenness (i.e. rare species).
-4.  The ***Evenness Index*** assesses the evenness of the abundances of each species.
+1.  **Species richness** quantifies the number of different species in a community.
+2.  The **Shannon-Weiner Index** (Shannon for short) estimates species diversity by taking into account the number of species living in a habitat (richness) and their relative abundance (evenness).
+3.  **Simpson's Diversity Index** also takes into account species richness and evenness, but puts more emphasis on evenness (i.e. rare species).
+4.  **Evenness Indexes** assesses the evenness of the abundances of each species.
 
 Each of these metrics can be calculated by hand using an equation.
 Click through the tabs to learn how to calculate these different measures of biodiversity mathematically and using `R`!
@@ -267,7 +267,7 @@ However, this does not tell us anything about how the abundances of different sp
 :::
 
 ::: panel
-### Shannon-Wiener Index (H') {.panel-name}
+### Shannon (H') {.panel-name}
 
 Another metric we can use to analyze biodiversity is the Shannon-Wiener Index ($H$), which indexes across the sum of all relative proportions of species richness's with an additional logarithmic transformation.
 This equation takes into account both the number of species in a specific area (richness) and relative abundances (evenness).
@@ -325,7 +325,7 @@ However, it seems that biodiversity quickly recovers in the years following the 
 :::
 
 ::: panel
-### Simpson's Index (D) {.panel-name}
+### Simpson (D) {.panel-name}
 
 Another metric we can use to analyse biodiversity in the Simpson's index ($D$) which indexes across the sum of all relative proportions of species's richness with an additional square power transformation.
 Though very similar to the calculation in the Shannon-Wiener Index, the Simpson index is more focused on dominance of species as it highlights the proportion of species in a sample.
@@ -372,7 +372,7 @@ Similarly to the Shannon-Weiner index, biodiversity dropped in 1997, but had rec
 :::
 
 ::: panel
-### Evenness Index (E) {.panel-name}
+### Evenness (E) {.panel-name}
 
 Additionally, we can think about the evenness of species across a given area.
 Evenness is a type of metric for assessing species dominance.
@@ -466,14 +466,14 @@ knitr::include_graphics("TopSpecies.png")
 
 ### Rank abundance curves with Turkey Lakes invertebrate data {.panelset}
 
-::: panelset
-::: panel
-#### Additional data wrangling {.panel-name}
-
-The dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
+The Turkey Lakes dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
 Each site has an alphanumeric code.
 
 You can visualize Rank Abundances for any subset of the dataset using the following [**Shiny App**](https://ekatko1.shinyapps.io/TurkeyLakesInverts/){target="_blank"}.
+
+::: panelset
+::: panel
+#### Additional data wrangling {.panel-name}
 
 Using information obtained from the [metadata of this dataset](https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrate_metaEN.csv), we can add some interesting details to the data (for at least a few catchments and years).
 For the purposes of this portion of the tutorial, we also select a different subset of the data to work with.
@@ -592,9 +592,9 @@ df.summary1 %>%
   theme_classic(base_size=16) # Aesthetic
 ```
 :::
+:::
 
-::: panel
-#### Comparing rank-abundance curves {.panel-name}
+### Comparing rank-abundance curves {.panel-name}
 
 Instead of using bars to represent abundances, we can simply use lines to trace the distribution.
 This allows us to compare multiple distributions.
@@ -680,8 +680,6 @@ For more details about the effects of logging at the Turkey Lakes, see @kreutzwe
 
 Furthermore, several models have been developed to understand rank-abundance curves (e.g. log-normal, broken stick model).
 The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html) function from the `vegan` *R* package allows fitting of these different curve models [@radfit].
-:::
-:::
 
 For more information about rank-abundance curves, see [this *Nature* article](https://www.nature.com/scitable/knowledge/library/explaining-general-patterns-in-species-abundance-and-23162842/).
 
@@ -868,7 +866,7 @@ The `codyn` package allows us to calculate the Shannon diversity index for a sin
 
 ::: panelset
 ::: panel
-### Shannon diversity
+### Calculate Shannon diversity
 
 We will again use the data from the stream with the high logging intensity.
 Luckily, this function has the exact same syntax as the `community_structure()` function!
@@ -896,7 +894,7 @@ You can see it gives us a data frame of `year`, `replicate`, and `Shannon`, whic
 :::
 
 ::: panel
-### Plot Shannon's diversity
+### Plot Shannon diversity
 
 ```{r, code_folding=TRUE, fig.cap="Shannon's diversity of aquatic macroinvertebrates over time. Each point is a replicate."}
 ggplot()+
@@ -910,9 +908,11 @@ ggplot()+
 
 ```
 :::
+:::
 
+::: panelset
 ::: panel
-### Simpon's diversity with `community_diversity`
+### Calculate Simpon diversity
 
 We can also use the same function to calculate Simpson's diversity by simply changing the `metric` argument to `InverseSimpson`.
 Simpson diversity gives more weight to species evenness, as opposed to species richness.
@@ -935,7 +935,7 @@ head(simpson_div_high)
 :::
 
 ::: panel
-### Plot Simpson's diversity
+### Plot Simpson diversity
 
 And then plot.
 
