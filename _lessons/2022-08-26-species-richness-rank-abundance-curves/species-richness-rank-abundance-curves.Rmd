@@ -26,12 +26,12 @@ knitr::opts_chunk$set(include = T, warning=F, message=F, cache=T)
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-# Tutorial overview
+## Tutorial overview
 
 Biodiversity is a hot topic in the fact of unprecedented global change in the 21st century.
 With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, Canada](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using *R*.
 
-# Learning objectives
+## Learning objectives
 
 Using historical data from a freshwater lake ecosystem, by the end of this tutorial you will be able to:
 
@@ -39,7 +39,7 @@ Using historical data from a freshwater lake ecosystem, by the end of this tutor
 2.  Understand and create figures uses to display biodiversity data
 3.  Analyze biodiversity change in benthic invertebrates over multiple disturbance levels and years
 
-# Why biodiversity matters
+## Why biodiversity matters
 
 In an ever-changing world, we are often concerned with how organisms will be able to cope with disturbances and increasingly, global climate change.
 Biodiversity is the variety of life at all levels, from genes to ecosystems.
@@ -73,7 +73,7 @@ addTiles() %>%
 addTiles(urlTemplate=tile) # adding our biodiversity layer
 ```
 
-# Types of data typically collected
+## Types of data typically collected
 
 Biodiversity is a broad term, and can be difficult to quantify.
 Biologists have created several standard measures of biodiversity that convey different information about ecosystems and the species living there.
@@ -94,7 +94,7 @@ This allows us to see how these ecosystems are changing due to some disturbance 
 knitr::include_graphics("species_scheme.png") # adding an image
 ```
 
-# Real-world biodiversity data
+## Real-world biodiversity data
 
 The Turkey Lakes watershed is located in Ontario, Canada, approximately 50 km north of Sault Ste.
 Marie.
@@ -117,7 +117,7 @@ This 14 year time series allows us to look at the immediate effects of logging a
 knitr::include_graphics("benthicmacroinvertebrates_g.carter_noaa600px.jpg") # include image
 ```
 
-## Data collection and structure
+### Data collection and structure
 
 These data are from the Turkey Lakes watershed experiment.
 This dataset contains the abundances of benthic invertebrate species measured in the May and June from 1995 to 2001.
@@ -143,7 +143,7 @@ In 1997, some catchments were logged with varying harvest intensities (low, medi
 First, we will subset the data, clean an process it in order to visualize and compare rank-abundance curves.
 Later in the tutorial, we will using the subsetted data with the `codyn` package to analyze the diversity of these benthic invertebrates over time.
 
-## Downloading and tidying the data
+### Downloading and tidying the data
 
 The data "TWL_invertebrateDensity.csv" from the [Government of Canada "Open Government" Portal on the "Turkey Lakes Watershed" page](https://open.canada.ca/data/dataset/576f1b52-3fce-497e-8e4c-0899acfdca1f) can be downloaded and saved as a `data.frame` object using the `read.csv` function.
 We can look at all the columns of the dataset using the `colnames()` function.
@@ -210,7 +210,11 @@ df.count <-
 xaringanExtra::use_panelset()
 ```
 
-# Metrics of biodiversity {.panelset}
+## Metrics of biodiversity {.panelset}
+
+> ⚠️ If you plan on using metrics of biodiversity, we recommend using Hill numbers for your analysis.
+> See @roswell2021.
+> Although Hill numbers are outside the scope of this tutorial, understanding the biodiversity metrics presented here will help you understand Hill numbers as well.
 
 There are several different ways to analyse and understand changes in community composition, or the relative abundances of all taxa in a community.
 Each of these metrics allow us to look at different aspects of the biodiversity data we collect [@macdonald2016].
@@ -225,7 +229,7 @@ Click through the tabs to learn how to calculate these different measures of bio
 
 ::: panelset
 ::: panel
-## *Species richness* {.panel-name}
+### *Species richness* {.panel-name}
 
 Perhaps the simplest measure of biodiversity is species richness ($S$).
 
@@ -263,7 +267,7 @@ However, this does not tell us anything about how the abundances of different sp
 :::
 
 ::: panel
-## Shannon-Wiener Index (H') {.panel-name}
+### Shannon-Wiener Index (H') {.panel-name}
 
 Another metric we can use to analyze biodiversity is the Shannon-Wiener Index ($H$), which indexes across the sum of all relative proportions of species richness's with an additional logarithmic transformation.
 This equation takes into account both the number of species in a specific area (richness) and relative abundances (evenness).
@@ -321,7 +325,7 @@ However, it seems that biodiversity quickly recovers in the years following the 
 :::
 
 ::: panel
-## Simpson's Index (D) {.panel-name}
+### Simpson's Index (D) {.panel-name}
 
 Another metric we can use to analyse biodiversity in the Simpson's index ($D$) which indexes across the sum of all relative proportions of species's richness with an additional square power transformation.
 Though very similar to the calculation in the Shannon-Wiener Index, the Simpson index is more focused on dominance of species as it highlights the proportion of species in a sample.
@@ -368,7 +372,7 @@ Similarly to the Shannon-Weiner index, biodiversity dropped in 1997, but had rec
 :::
 
 ::: panel
-## Evenness Index (E) {.panel-name}
+### Evenness Index (E) {.panel-name}
 
 Additionally, we can think about the evenness of species across a given area.
 Evenness is a type of metric for assessing species dominance.
@@ -402,7 +406,7 @@ As with previous biodiversity metrics, we find that evenness is lowest in 1997, 
 :::
 :::
 
-# Visualizing biodiversity
+## Visualizing biodiversity
 
 Apart from calculating biodiversity using the metrics above, visualizing differences using graphs is another tool we have.
 One way to visualize biodiversity data is to make a rank-abundance curve.
@@ -460,11 +464,11 @@ However, we would need to look at data from more years to draw conclusions.
 knitr::include_graphics("TopSpecies.png")
 ```
 
-## Rank abundance curves with Turkey Lakes invertebrate data {.panelset}
+### Rank abundance curves with Turkey Lakes invertebrate data {.panelset}
 
 ::: panelset
 ::: panel
-### Additional data wrangling {.panel-name}
+#### Additional data wrangling {.panel-name}
 
 The dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
 Each site has an alphanumeric code.
@@ -510,7 +514,7 @@ df.clean = df.subset %>%
 :::
 
 ::: panel
-### Summarise data {.panel-name}
+#### Summarise data {.panel-name}
 
 Let's start by looking at catchment "34L", which saw high levels of deforestation in June of 1998, the year following the logging event.
 
@@ -551,7 +555,7 @@ df.summary1 =
 :::
 
 ::: panel
-### Plot the data {.panel-name}
+#### Plot the data {.panel-name}
 
 We make a plot to represent the data.
 Note that we need to use the `stats::reorder()` function to get the species on the x-axis in the correct order:
@@ -590,7 +594,7 @@ df.summary1 %>%
 :::
 
 ::: panel
-### Comparing rank-abundance curves {.panel-name}
+#### Comparing rank-abundance curves {.panel-name}
 
 Instead of using bars to represent abundances, we can simply use lines to trace the distribution.
 This allows us to compare multiple distributions.
@@ -679,7 +683,7 @@ The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html)
 :::
 :::
 
-# Measure and visualize biodiversity with `codyn`
+## Measure and visualize biodiversity with `codyn`
 
 Now that we have calculated different biodiversity metrics and rank abundance curves by hand, we can also use existing functions in the `R` package `codyn` [@hallett2016] to quantify and visualizing changes in biodiversity with the Turkey Lakes dataset.
 
@@ -687,7 +691,7 @@ Now that we have calculated different biodiversity metrics and rank abundance cu
 knitr::opts_chunk$set(include = T, warning=F, message=F, echo=T)
 ```
 
-## Load data and packages
+### Load data and packages
 
 Along with the `codyn` package, we will also use `ggplot2` and `dplyr` for plotting and cleaning.
 First, we need to load these packages.
@@ -743,7 +747,7 @@ subset_codyn_ctrl <- data %>%
   filter(treatment=="control")
 ```
 
-## Using the `codyn` package to analyze diversity data over time {.panelset}
+### Using the `codyn` package to analyze diversity data over time {.panelset}
 
 Ecologists are often interested in how diversity changes over time in one place.
 This is particularly interesting when you are looking at how species diversity responds to environmental change.
@@ -754,13 +758,13 @@ We can compare the diversity of different streams with different logging intensi
 
 The `codyn` package allows us to analyze the change in biodiversity over time using different metrics.
 
-## Using `community_structure()`
+### Using `community_structure()`
 
 `community_structure()` is a function in the package `codyn` that calculates species richness and evenness.
 
 ::: panelset
 ::: panel
-## Subset data
+### Subset data
 
 Let's take a look at the high intensity logging stream data.
 
@@ -772,7 +776,7 @@ As you can see, there is a column for year, species, replicate, and abundance.
 :::
 
 ::: panel
-## Calculations with `community_structure()` {.panel-name}
+### Calculations with `community_structure()` {.panel-name}
 
 For example, we can use `community_structure()` to look at the change in species richness and evenness over time in one of the Turkey Lake streams.
 We will choose the stream with high logging intensity as an example.
@@ -853,7 +857,7 @@ Do you see any patterns in the evenness between years?
 :::
 :::
 
-## Using `community_diversity()`
+### Using `community_diversity()`
 
 Species richness and evenness are very simple ways to look at species diversity.
 However, as you learned from the rank abundance curves, species have different abundances within the community, with some species having very high abundance and most species having low abundance.
@@ -862,7 +866,7 @@ The Shannon-Weiner diversity metric does take into account these relative abunda
 
 ::: panelset
 ::: panel
-## Shannon diversity with `community_diversity()`
+### Shannon diversity with `community_diversity()`
 
 The `codyn` package allows you to calculate the Shannon diversity index for a single site over time using the `community_diversity()` function.
 We will again use the data from the stream with the high logging intensity.
@@ -891,7 +895,7 @@ You can see it gives us a data frame of `year`, `replicate`, and `Shannon`, whic
 :::
 
 ::: panel
-## Plot Shannon's diversity
+### Plot Shannon's diversity
 
 ```{r, code_folding=TRUE, fig.cap="Shannon's diversity of aquatic macroinvertebrates over time. Each point is a replicate."}
 ggplot()+
@@ -907,7 +911,7 @@ ggplot()+
 :::
 
 ::: panel
-## Simpon's diversity with `community_diversity`
+### Simpon's diversity with `community_diversity`
 
 We can also use the same function to calculate Simpson's diversity by simply changing the `metric` argument to `InverseSimpson`.
 
@@ -929,7 +933,7 @@ head(simpson_div_high)
 :::
 
 ::: panel
-## Plot Simpson's diversity
+### Plot Simpson's diversity
 
 And then plot.
 
@@ -950,7 +954,7 @@ How do the values compare?
 :::
 :::
 
-## Activity
+### Activity
 
 Calculate richness, evenness, and diversity using both the Shannon and Simpson indices for the streams with low intensity logging, high intensity logging, and no logging.
 The data for these streams are `subset_codyn_low`, `subset_codyn_high`, and `subset_codyn_ctrl`.
@@ -958,8 +962,8 @@ Plot these indices.
 Do you see any patterns across years?
 How do these compare to the patterns in the high intensity logging stream?
 
-# Conclusion
+## Conclusion
 
-In this tutorial, we have explained the meaning of different biodiversity metrics, introduced species accumulation curves and what they can tell you about a community and differences between communities, and showed you how to calculate these metrics using the `codyn` package in R.
+In this tutorial, we have explained the meaning of different biodiversity metrics, introduced rank-abundance curves and what they can tell you about a community and differences between communities, and showed you how to calculate these metrics using the `codyn` package in R.
 
 If you want to learn more about rank abundance curves and their usefulness in understanding community patterns, [this *Nature* article](https://www.nature.com/scitable/knowledge/library/explaining-general-patterns-in-species-abundance-and-23162842/) has a useful in-depth description.
