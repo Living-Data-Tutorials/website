@@ -221,11 +221,11 @@ Each of these metrics allow us to look at different aspects of the biodiversity 
 
 1.  ***Species richness*** quantifies the number of different species in a community.
 2.  The ***Shannon-Weiner Index*** estimates species diversity by taking into account the number of species living in a habitat (richness) and their relative abundance (evenness).
-3.  ***Simpson's Diversity Index*** also takes into account species richness and evenness, but puts more emphasis on rare species.
+3.  ***Simpson's Diversity Index*** also takes into account species richness and evenness, but puts more emphasis on evenness (i.e. rare species).
 4.  The ***Evenness Index*** assesses the evenness of the abundances of each species.
 
 Each of these metrics can be calculated by hand using an equation.
-Click through the tabs to learn how to calculate these different measures of biodiversity!
+Click through the tabs to learn how to calculate these different measures of biodiversity mathematically and using `R`!
 
 ::: panelset
 ::: panel
@@ -295,7 +295,7 @@ Where $n_i$ is the number of individuals of species $i$ and $N$ is the total num
 **Interpretation:** The minimum value of the Shannon's diversity index is 0, which means that there is no diversity (i.e. only one species is found in that habitat).
 The values increase as the number of species increase, and is maximized at a given number of species when is an equal abundance of each species.
 
-```{r, , code_folding=T}
+```{r, code_folding=T}
 shannon <- 
   df.count %>%
   filter(year %in% c(1995, 1997, 2001, 2009)) %>%
@@ -520,7 +520,7 @@ Let's start by looking at catchment "34L", which saw high levels of deforestatio
 
 ```{r}
 df.subset1 <- df.subset %>% 
-  filter(catchment == "34L", 
+  filter(catchment == "34L", # high loggineg
          year      == 1998,
          month     == "june")
 ```
@@ -620,17 +620,17 @@ df.subset1 %>%
   
 ```
 
-Here, the intercept of the line represents the abundance of the most abundant species.
+Here, the y-intercept of the line represents the abundance of the most abundant species.
 The slope represents the evenness of the rank abundance curve.
 A steeper slope means that the site is more dominated by one or two species, while a less steep slope means the abundances are more even between species.
 A slope of 0 would represent complete evenness among samples.
-How far the line goes on the X axis represents how many species are in the sample (i.e. species richness).
+The x-intercept represents how many species are in the sample (i.e. species richness).
 This is also called the highest maximum rank.
 The site with the highest maximum rank here is site 6.
 
 Notice that there is some variation in the shape and the "evenness" (i.e., slope) of the different rank-abundance curves.
 
-In the plot above we are showing different sites seperately from one catchment, but we can pool the samples from the 10 sites in each catchment and compare catchments to one another.
+In the plot above we are showing different sites separately from one catchment, but we can pool the samples from the 10 sites in each catchment and compare catchments to one another.
 This allows us to compare rank-abundance curves from three different catchments, each of which has a different logging intensity.
 
 Here are the rank abundance curves for of the 3 catchments with different logging treatment.
@@ -683,6 +683,8 @@ The [`radfit`](https://search.r-project.org/CRAN/refmans/vegan/html/radfit.html)
 :::
 :::
 
+For more information about rank-abundance curves, see [this *Nature* article](https://www.nature.com/scitable/knowledge/library/explaining-general-patterns-in-species-abundance-and-23162842/).
+
 ## Measure and visualize biodiversity with `codyn`
 
 Now that we have calculated different biodiversity metrics and rank abundance curves by hand, we can also use existing functions in the `R` package `codyn` [@hallett2016] to quantify and visualizing changes in biodiversity with the Turkey Lakes dataset.
@@ -693,13 +695,13 @@ knitr::opts_chunk$set(include = T, warning=F, message=F, echo=T)
 
 ### Load data and packages
 
-Along with the `codyn` package, we will also use `ggplot2` and `dplyr` for plotting and cleaning.
-First, we need to load these packages.
+Along with the `codyn` package, we will also use `ggplot2`, `dplyr` and `tidyr` for plotting, cleaning, and re-formatting data.
 
 ```{r, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(codyn)
 library(dplyr)
+library(tidyr)
 ```
 
 Load, subset and clean the data (see "Rank abundance curves with Turkey Lakes invertebrate data" above for details) :
@@ -720,12 +722,6 @@ data  <-
          year <= 2001, 
          # stringr::str_starts(catchment, stringr::fixed("34")), 
          month %in% c("june", "may"))
-
-# summing over treatments sampling events
-data_sum<- data %>%
-  filter(treatment  %in% c("low", "medium", "high", "control")) %>% 
-  group_by(year, species, treatment, replicate) %>%
-  summarise(abundance = sum(abundance))
 
 ```
 
@@ -758,9 +754,10 @@ We can compare the diversity of different streams with different logging intensi
 
 The `codyn` package allows us to analyze the change in biodiversity over time using different metrics.
 
-### Using `community_structure()`
+### Evenness
 
-`community_structure()` is a function in the package `codyn` that calculates species richness and evenness.
+As we learned earlier, evenness is a metric which allows us to compare the abundance of rare versus rich species, or the slope of the rank-abundance curve.
+`community_structure()` is a function in the package `codyn` that calculates species richness and a number of evenness metrics.
 
 ::: panelset
 ::: panel
@@ -776,38 +773,42 @@ As you can see, there is a column for year, species, replicate, and abundance.
 :::
 
 ::: panel
-### Calculations with `community_structure()` {.panel-name}
+### Calculate evenness {.panel-name}
 
-For example, we can use `community_structure()` to look at the change in species richness and evenness over time in one of the Turkey Lake streams.
+We can use the `community_structure()` function to look at the change in species richness and evenness over time in one of the Turkey Lake streams.
 We will choose the stream with high logging intensity as an example.
 This function can only look at one stream at a time so make sure to subset out the stream that you are interested in.
 
 The community structure function has five arguments.
-1.
-`df` is where you put in the data frame of interest, in our case `subset_codyn_high`.
-2.
-The `time.var` argument is where you put in your time variable (`year`) 3.
-The `abundance.var` argument is where you put the column that holds the abundance variable (`abundance`).
-4.
-The `replicate.var` argument holds the column with the replicates (`replicate`) 5.
-The `metric` argument allows you to specify the metric of evenness that you want the function to calculate.
-There are three possible metrics: `Evar`, `SimpsonEvenness`, and `EQ`, which all calculate evenness in different ways.
-We will use Simpson's Evenness in this tutorial.
 
-Remember, if you ever need a refresher on the syntax you can type `?community_structure` into the *R* script.
+1.  `df`: the data frame of interest, in our case `subset_codyn_high`.
+
+2.  `time.var`: (optional) the name of the time variable column (`year`)
+
+3.  `abundance.var`: the name of the abundance variable column (`abundance`).
+
+4.  `replicate.var`:(optional) the name of the replicates column (`replicate`)
+
+5.  `metric`: the evenness metric that you want the function to calculate.
+
+There are three possible metrics: `Evar`, `SimpsonEvenness`, and `EQ`, which all calculate evenness in different ways.
+We will use Simpson's evenness in this tutorial.
+You can find more information about the function, and the different evenness metrics by typing `?community_structure` into the *R* console.
 
 ```{r class.source = 'fold-show'}
-richness_high<-community_structure(df=subset_codyn_high, time.var="year", abundance.var="abundance", replicate.var="replicate", metric="SimpsonEvenness")
-```
+richness_high <- community_structure(
+  df=subset_codyn_high, 
+  time.var="year", 
+  abundance.var="abundance", 
+  replicate.var="replicate", 
+  metric="SimpsonEvenness")
 
-We can take a look at the output.
-
-```{r}
 head(richness_high)
 ```
 
-As you can see, this returns a data frame with the year, replicate, richness calculation, and evenness measure.
-It calculates richness and evenness separately for each replicate sample in the stream, so we have a measure of variability within samples as well as variability across years.
+As you can see, `community_structure()` returns a data frame with species richness and evenness for each year and replicate.
+It is possible to calculate a measure of variability for each year since we have multiple replicates.
+We leave this as an exercise for the reader.
 :::
 
 ::: panel
@@ -838,7 +839,7 @@ How does the variability between replicates compare to the variability between y
 :::
 
 ::: panel
-#### Plot species evenness
+#### Plot evenness
 
 We can also plot species evenness over time.
 
@@ -857,23 +858,23 @@ Do you see any patterns in the evenness between years?
 :::
 :::
 
-### Using `community_diversity()`
+### Biodiversity metrics
 
-Species richness and evenness are very simple ways to look at species diversity.
+Species richness and evenness are very effective ways to simplify highly complex biodiversity datasets.
 However, as you learned from the rank abundance curves, species have different abundances within the community, with some species having very high abundance and most species having low abundance.
-Species richness does not take into account the relative abundances of each species, which limits the inferences we can make.
-The Shannon-Weiner diversity metric does take into account these relative abundances when calculating the diversity of a community and allows us to make more meaningful inferences about how biodiversity is changing over time.
+As a result, it is difficult to precisely estimate species richness, since more species can often be uncovered by additional sampling.
+The Shannon-Weiner diversity metric addresses this shortcoming to some extent by taking species abundance into account, which allows us to make more meaningful inferences about how biodiversity is changing over time.
+The `codyn` package allows us to calculate the Shannon diversity index for a single site over time using the `community_diversity()` function.
 
 ::: panelset
 ::: panel
-### Shannon diversity with `community_diversity()`
+### Shannon diversity
 
-The `codyn` package allows you to calculate the Shannon diversity index for a single site over time using the `community_diversity()` function.
 We will again use the data from the stream with the high logging intensity.
 Luckily, this function has the exact same syntax as the `community_structure()` function!
 The only difference is that the options for the `metric` argument are `Shannon` and `InverseSimpson`.
 
-We will first use `Shannon`.
+We will first use `Shannon`, which gives more weight to species richness, as opposed to evenness.
 
 ```{r class.source = 'fold-show'}
 shannon_div_high<-
@@ -914,6 +915,7 @@ ggplot()+
 ### Simpon's diversity with `community_diversity`
 
 We can also use the same function to calculate Simpson's diversity by simply changing the `metric` argument to `InverseSimpson`.
+Simpson diversity gives more weight to species evenness, as opposed to species richness.
 
 ```{r class.source = 'fold-show'}
 simpson_div_high <- 
@@ -964,6 +966,10 @@ How do these compare to the patterns in the high intensity logging stream?
 
 ## Conclusion
 
-In this tutorial, we have explained the meaning of different biodiversity metrics, introduced rank-abundance curves and what they can tell you about a community and differences between communities, and showed you how to calculate these metrics using the `codyn` package in R.
-
-If you want to learn more about rank abundance curves and their usefulness in understanding community patterns, [this *Nature* article](https://www.nature.com/scitable/knowledge/library/explaining-general-patterns-in-species-abundance-and-23162842/) has a useful in-depth description.
+In this tutorial, we learned how to go about understanding patterns of biodiversity graphically (e.g., rank-abundance curves), and using metrics (e.g., species richness, Shannon index, Simpson's index, Evenness index(es)).
+We first calculated metrics without using specialized `R` packages, and then used the `codyn` package to do the same thing more easily.
+Since we don't perform any formal statistical analysis in this tutorial, we cannot make any scintific claims about the effect of logging on invertebrate biodiversity in the Turkey lakes watershed.
+Nevertheless, our preliminary analysis do not lead us to believe that there is a great effect of logging.
+We encourage you to think of alternative ways to look at the data that may yield different results.
+Indeed, because of the wealth of data, combined with different metrics and considerations, there is no single "best" way to analyse this type of data.
+However, multiple different analysis can allow one to have a more complete understanding of the patterns of biodiversity.
