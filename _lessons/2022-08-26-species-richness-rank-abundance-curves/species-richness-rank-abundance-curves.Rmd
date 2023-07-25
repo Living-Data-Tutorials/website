@@ -1,5 +1,5 @@
 ---
-title: "Species Richness Rank Abundance Curves: Freshwater Lake Ecosystem"
+title: "Understanding Biodiversity with Metrics and Rank Abundance Curves"
 description: |
   Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves.
 author:
