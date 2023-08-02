@@ -1,7 +1,7 @@
 ---
-title: "Understanding Biodiversity with Metrics and Rank Abundance Curves"
+title: "Understanding Biodiversity with Stream Invertebrates"
 description: |
-  Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves.
+  Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves. We use a dataset featuring rich invertebrate diversity collected from shallow stream beds in the Turkey lakes area in Ontario, Canada.
 author:
   - Jory Griffith
   - Egor Katkov
