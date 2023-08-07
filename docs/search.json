@@ -4,16 +4,16 @@
       "path": "about.html",
       "title": "Meet our team!",
       "author": [],
-      "contents": "\nThis series of tutorials were produced during a working group hosted\nby the Living Data Project, lead by Jennifer Sunday and Joey\nBernhardt.\nThey are based on Canadian open datasets with accompanying R code\nthat can be used to teach/illustrate ecological and evolution concepts,\nand are designed to illustrate and support exploration on a variety of\ncore concepts aimed for undergraduate courses in ecology and\nevolution.\nThese are the amazing folks who are working on this project:\n\nJoey Bernhardt\n\n\nJenn Sunday\n\n\nJory Griffith\n\nElizabeth Houghton\n\n\nMargaret A. Slein\n\n\nJhoan Chavez\n\nMaxime Fraser Franco\n \n\nAmy Forsythe\n\n\nVictoria Glynn\n\nEgor Katkov\n  \n\nKirsten Palmier\n\n\nZihaohan Sang\n\nRolando Trejo-Perez\n\nBryn Wiley\n\n\nGracielle Higino\nOpen Science mentor and consultant, science communicator, specialist\nin ecology and evolution.\n   \n\n\n\n",
-      "last_modified": "2023-07-14T13:12:57-07:00"
+      "contents": "\nThis series of tutorials were produced during a working group hosted\nby the Living Data Project, lead by Jennifer Sunday and Joey\nBernhardt.\nThey are based on Canadian open datasets with accompanying R code\nthat can be used to teach/illustrate ecological and evolution concepts,\nand are designed to illustrate and support exploration on a variety of\ncore concepts aimed for undergraduate courses in ecology and\nevolution.\nThese are the amazing folks who are working on this project:\n\nJoey Bernhardt\n\n\nJenn Sunday\n\n\nJory Griffith\n\nElizabeth Houghton\n\n\nMargaret A. Slein\n\n\nJhoan Chavez\n\nMaxime Fraser Franco\n \n\nAmy Forsythe\n\n\nVictoria Glynn\n\n\nEgor Katkov\n  \n\nKirsten Palmier\n\n\nZihaohan Sang\n\nRolando Trejo-Perez\n\nBryn Wiley\n\n\nGracielle Higino\nOpen Science mentor and consultant, science communicator, specialist\nin ecology and evolution.\n   \n\n\n\n",
+      "last_modified": "2023-08-07T13:05:04-07:00"
     },
     {
       "path": "index.html",
       "title": "Living Data Tutorials",
       "description": "Open educational resources from the Living Data Project.\n",
       "author": [],
-      "contents": "\nWe are a group of early career researchers from Canada creating a series of curated datasets with accompanying R-based tutorials that can be used to teach/illustrate ecological and evolution concepts, based on Canadian-generated data sources.\n\n\n\n",
-      "last_modified": "2023-07-14T12:15:45-07:00"
+      "contents": "\nWe are a group of early career researchers from Canada creating a\nseries of curated datasets with accompanying R-based tutorials that can\nbe used to teach/illustrate ecological and evolution concepts, based on\nCanadian-generated data sources.\n\n\n\n",
+      "last_modified": "2023-08-07T13:08:21-07:00"
     }
   ],
   "collections": ["lessons/lessons.json"]

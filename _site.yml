@@ -12,17 +12,17 @@ navbar:
       menu:
         # - text: "Codyn"
         #   href: lessons/2022-04-07-codyn-tutorial/index.html
-        - text: "Disease Modelling"
+        - text: "Disease Modelling in Mule Deer"
           href: lessons/2022-06-03-chronic-wasting-disease/index.html
-        - text: "Community Ecology"
+        - text: "Community Ecology: Hemlock Looper Outbreak on Anticosti Island"
           href: lessons/2022-04-07-anticosti-historical-data-tutorial/index.html
-        - text: "Tree Diversity & Dendrochronology"
+        - text: "Tree Diversity & Dendrochronology in Alberta, BC Forests"
           href: lessons/2022-04-07-alberta-trees-tutorial/index.html
-        - text: "R Basics and Data Exploration"
+        - text: "R Basics & Data Exploration Using Tree Swallow Life History Data"
           href: lessons/2022-04-07-tree-swallow-dataset/index.html
-        - text: "Sexual Dimorphism & Sexual Selection"
+        - text: "Sexual Dimorphism & Sexual Selection in Tree Swallows"
           href: lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html
-        - text: "Species Richness Rank Abundance Curves"
+        - text: "Understanding Biodiversity with Metrics & Rank Abundance Curves"
           href: lessons/2022-08-26-species-richness-rank-abundance-curves/index.html
     - text: "About"
       href: about.html
