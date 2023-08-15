@@ -28,7 +28,7 @@ knitr::opts_chunk$set(error = TRUE)
 
 ## Tutorial overview
 
-Biodiversity is a hot topic in the fact of unprecedented global change in the 21st century.
+Biodiversity is a hot topic in the face of unprecedented global change in the 21st century.
 With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, Canada](https://open.canada.ca/data/en/dataset/f9e1595d-27bb-4a6a-b94d-6b9bed7db263), we demonstrate how to quantify biodiversity quantitatively and visually using *R*.
 
 ## Learning objectives
@@ -36,16 +36,16 @@ With a publicly available dataset, [from the Turkey Lakes Watershed in Ontario, 
 Using historical data from a freshwater lake ecosystem, by the end of this tutorial you will be able to:
 
 1.  Identify, calculate, and implement commonly used metrics to quantify biodiversity
-2.  Understand and create figures uses to display biodiversity data
-3.  Analyze biodiversity change in benthic invertebrates over multiple disturbance levels and years
+2.  Understand and create figures used to display biodiversity data
+3.  Analyze biodiversity change in benthic invertebrates over multiple years and disturbance levels
 
 ## Why biodiversity matters
 
 In an ever-changing world, we are often concerned with how organisms will be able to cope with disturbances and increasingly, global climate change.
 Biodiversity is the variety of life at all levels, from genes to ecosystems.
-Not only is biodiversity important for ecosystems to function properly, it is also an important buffer to withstanding changing environments.
-When there is high biodiversity, there is a higher chance of some organisms surviving ecosystems that are changing due to disturbance or climate change.
-Biodiversity therefore increases the resiliency of these ecosystems and the likelihood that they will be able to persist beyond this change.
+Not only is biodiversity important for ecosystems to function properly, it is also an important buffer for withstanding changing environments.
+When there is high biodiversity, there is a higher chance of some organisms surviving ecosystem change due to disturbance or climate change.
+Biodiversity therefore increases the resiliency of these ecosystems and the likelihood that they will be able to persist.
 
 *We have hidden the R code that is not part of the learning objectives, but if you want to view or recreate this code, click the "Show Code" button*
 
@@ -53,7 +53,8 @@ Biodiversity therefore increases the resiliency of these ecosystems and the like
 knitr::include_graphics("biodiv_scheme.png") # including an image
 ```
 
-Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
+Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.
+However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
 With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of rank-abundance curves.
 
 First, we will teach you how to calculate these metrics using equations and abundance data, and then we will teach you how to use the `codyn` package to calculate these biodiversity metrics quickly and easily.
@@ -63,7 +64,8 @@ You will then have the option to learn to calculate biodiversity metrics yoursel
 ```{r, include=T, message=FALSE, warning=FALSE, code_folding=T, fig.cap="Species biodiversity across the globe, downloaded from the Global Biodiversity Information Facility [@GBIF]."}
 library(leaflet)
 
-prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' # downloading global species occurrence data
+prefix = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' 
+# downloading global species occurrence data
 style = 'style=purpleYellow.point'
 tile = paste0(prefix,style)
 
@@ -108,7 +110,8 @@ knitr::include_graphics("TurkeyMap.jpg")
 From 1995 to 2009, scientists collected, identified and counted benthic invertebrates from various stream beds around the Turkey Lakes catchment.
 Benthic invertebrates are small, often microscopic organisms (see Fig. 5), but form an important link between aquatic and terrestrial habitats.
 They can decompose terrestrial matter such as leaves, or consume periphyton (algae and cyanobacteria) growing on rocks within their streams.
-Benthic invertebrates can be a food source for aquatic animals, like small fish, or terrestrial animals such as birds.
+Benthic invertebrates can be a food source for aquatic animals like small fish, or terrestrial animals such as birds.
+
 An experiment was conducted in 1997 where certain sampling sites were logged with different intensities.
 We can hypothesize that the biodiversity of benthic invertebrate communities might be affected by logging because of the effects that logging has on the stream ecosystem such as increased sunlight and temperature, increased photosynthetic activity in the stream, and decreased leaf litter.
 This 14 year time series allows us to look at the immediate effects of logging as well as the subsequent recovery of the stream as foliage begins to grow back.
@@ -131,8 +134,8 @@ A surber sampler (see video below) was used to collect invertebrates from stream
 }
 </style>
 ```
-```{r code_folding=T, message=FALSE, cache=FALSE}
-pacman::p_load("vembedr")
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
+pacman::p_load("vembedr") # load package for including video
 embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
   use_bs_responsive()
 ```
@@ -140,7 +143,7 @@ embed_url("https://www.youtube.com/watch?v=BNrc9YkPpfA") %>%
 Several catchments within the watershed were sampled at ten sites each (for replication).
 In 1997, some catchments were logged with varying harvest intensities (low, medium, and high).
 
-First, we will subset the data, clean an process it in order to visualize and compare rank-abundance curves.
+First, we will subset the data, clean and process it in order to visualize and compare rank-abundance curves.
 Later in the tutorial, we will using the subsetted data with the `codyn` package to analyze the diversity of these benthic invertebrates over time.
 
 ### Downloading and tidying the data
@@ -152,13 +155,13 @@ We can look at all the columns of the dataset using the `colnames()` function.
 df.read <- read.csv(file="Data/TLW_invertebrateDensity.csv") 
 ```
 
-``` r
+```{r}
 # load Turkey Lakes invertebrate density data 
 # from the Govornament of Canada website
 df.read <- read.csv(file="https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrateDensity.csv") 
 
 # Or, if that doesn't work, from our GitHub:
-if(!exists("df.read")) {
+if(!exists("df.read")) { 
   df.read <- 
   read.csv("https://raw.githubusercontent.com/Living-Data-Tutorials/website/main/_lessons/2022-08-26-species-richness-rank-abundance-curves/Data/TLW_invertebrateDensity.csv")
 } 
@@ -175,10 +178,12 @@ As you can see, the columns of the dataset are:
 -   Catchment number.
     There are 11 catchments (stream study areas), and each has an alphanumeric code.
 
--   Year and month that the data was collected - A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundances of benthic invertebrates from ten sites within each catchment on each sampling date)
+-   Year and month that the data was collected.
+
+-   A number for the replicate (there are 10 replicates for each sampling date, which means they counted the abundances of benthic invertebrates from ten sites within each catchment on each sampling date).
 
 -   A column for each of the species with their densities.
-    Densities in units of individuals per m^2^ were calculated by dividing the counts by the area of the surber sampler (see video above; 0.32 m^2^ in this case)
+    Densities in units of individuals per m^2^ were calculated by dividing the counts by the area of the surber sampler (see video above; 0.32 m^2^ in this case).
 
 First, in order to quantify biodiversity, we will convert the species densities reported in the dataset back to the raw counts (i.e. abundances) to obtain whole numbers of individuals.
 To do this, it is helpful to transform the "wide" format `data.frame` (where each species is a column) to "long" format, where species names are all found in a single column using the `tidyr::pivot_longer()` function.
@@ -237,16 +242,16 @@ The equation for species richness is:
 
 $S = \sum_{i=1}^{S}p_i^o$
 
-$p_i^o$ represents the proportion of individuals of species $i$, taking the sum across each of these species
+$p_i^o$ represents the proportion of individuals of species $i$, taking the sum across each of these species.
 
 **Step 1:** Count the number of unique species recorded in that year.
 Then you can look at how the number of different species in a community changes over time.
 
 **Interpretation:** A higher number means there are more species, and therefore species richness is higher.
 
-```{r, message=FALSE, warning=FALSE, code_folding=T}
+```{r, code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 #loading necessary libraries (kableExtra makes tables)
-pacman::p_load(kableExtra)
+pacman::p_load(kableExtra) # load package for making table
 richness_table <- df.count %>%
   # Removing species that had 0 observations
   filter(Count > 0,
@@ -269,7 +274,7 @@ However, this does not tell us anything about how the abundances of different sp
 ::: panel
 ### Shannon (H') {.panel-name}
 
-Another metric we can use to analyze biodiversity is the Shannon-Wiener Index ($H$), which indexes across the sum of all relative proportions of species richness's with an additional logarithmic transformation.
+Another metric we can use to analyze biodiversity is the Shannon-Wiener Index ($H$), which indexes across the sum of all relative proportions of species richness with an additional logarithmic transformation.
 This equation takes into account both the number of species in a specific area (richness) and relative abundances (evenness).
 
 The equation for the Shannon-Weiner Index is:
@@ -278,7 +283,7 @@ $$
 H' = - \sum_{i=1}^{S}p_i~\ln(p_i)
 $$
 
-**Step 1:** Calculate $p_i$ for each species, which is the proportion of the $i$th individual in the
+**Step 1:** Calculate $p_i$ for each species.
 
 $$
 p_i = n_i/N
@@ -327,7 +332,7 @@ However, it seems that biodiversity quickly recovers in the years following the 
 ::: panel
 ### Simpson (D) {.panel-name}
 
-Another metric we can use to analyse biodiversity in the Simpson's index ($D$) which indexes across the sum of all relative proportions of species's richness with an additional square power transformation.
+Another metric we can use to analyse biodiversity in the Simpson's index ($D$) which indexes across the sum of all relative proportions of species richness with an additional square power transformation.
 Though very similar to the calculation in the Shannon-Wiener Index, the Simpson index is more focused on dominance of species as it highlights the proportion of species in a sample.
 
 The equation for Simpson's diversity is:
@@ -408,7 +413,8 @@ As with previous biodiversity metrics, we find that evenness is lowest in 1997, 
 
 ## Visualizing biodiversity
 
-Apart from calculating biodiversity using the metrics above, visualizing differences using graphs is another tool we have.
+Apart from calculating biodiversity using the metrics above we can also visualize differences using plots.
+
 One way to visualize biodiversity data is to make a rank-abundance curve.
 On the y-axis we have the species (numbered), and on the y axis we have the abundance.
 The plots are organized from high to low abundance.
@@ -426,7 +432,7 @@ subset <- df.count %>%
   group_by(year, Species) %>%
   summarise(sum=sum(Count))
 
-#2007
+#1995
 a<- subset %>%
   filter(year==1995) %>%
 ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
@@ -438,7 +444,7 @@ ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
   theme(axis.text.x = element_text(face="italic"), legend.position="none") # Use italics for species names
 
 
-#2007
+#2001
 b<- subset %>%
   filter(year==2001) %>%
   ggplot(aes(x=reorder(Species, -sum), y=sum, shape=Species, colour=Species))+
@@ -478,7 +484,7 @@ You can visualize Rank Abundances for any subset of the dataset using the follow
 Using information obtained from the [metadata of this dataset](https://ftp.maps.canada.ca/pub//nrcan_rncan/Forests_Foret/TLW/TLW_invertebrate_metaEN.csv), we can add some interesting details to the data (for at least a few catchments and years).
 For the purposes of this portion of the tutorial, we also select a different subset of the data to work with.
 
-```{r}
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 ## Different catchments had different logging intensities
 treatment = tibble(catchment =             c("34M",  "34U",    "34L"),
                    `Logging Intensity`   = c("none", "medium", "high"))
@@ -498,7 +504,7 @@ df.subset =
 
 Then, we will clean up the data by removing any species whose count is zero across all the different sites and years.
 
-```{r}
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 ## Find species that have 0 abundance across all sites and years.
 NA_sp = df.subset %>%
   group_by(Species) %>%
@@ -518,7 +524,7 @@ df.clean = df.subset %>%
 
 Let's start by looking at catchment "34L", which saw high levels of deforestation in June of 1998, the year following the logging event.
 
-```{r}
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 df.subset1 <- df.subset %>% 
   filter(catchment == "34L", # high loggineg
          year      == 1998,
@@ -527,7 +533,7 @@ df.subset1 <- df.subset %>%
 
 Next, we can sum the count data over all the replicate sites within the catchment to obtain a total count within the catchment.
 
-```{r}
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 df.raw.summary1 = 
   df.subset1 %>%
   group_by(Species) %>%
@@ -537,7 +543,7 @@ df.raw.summary1 =
 
 Then, we order the species from most abundant to least abundant.
 
-```{r}
+```{r code_folding=T, include=T, warning=FALSE, message=FALSE, cache=FALSE}
 df.ordered.summary1 = 
   df.raw.summary1 %>%
   arrange(desc(TotalCount)) 
@@ -748,7 +754,7 @@ This is particularly interesting when you are looking at how species diversity r
 This environmental change can be a single disturbance event such as a forest fire or more long-term change such as temperature increases due to climate change.
 
 The Turkey Lakes dataset provides us with an opportunity to look at how the diversity of benthic invertebrates changes over time and in response to logging, given that areas of the river were subjected to different levels of logging.
-We can compare the diversity of different streams with different logging intensities and we can also compare the diversity of streams.
+We can compare the diversity of different streams with different logging intensities.
 
 The `codyn` package allows us to analyze the change in biodiversity over time using different metrics.
 
