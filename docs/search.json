@@ -14,6 +14,14 @@
       "author": [],
       "contents": "\nWe are a group of early career researchers from Canada creating a\nseries of curated datasets with accompanying R-based tutorials that can\nbe used to teach/illustrate ecological and evolution concepts, based on\nCanadian-generated data sources.\n\n\n\n",
       "last_modified": "2023-12-20T14:17:30-05:00"
+    },
+    {
+      "path": "instructors.html",
+      "title": "Guidelines for instructors",
+      "description": "Hosted on this website are 6 teaching tutorials and associated files available for instructors to teach core concepts in  ecology and evolutionary biology. We designed these tutorials to span a variety of topics, skills levels, and formats to allow instructors to use as is or modify according to their needs. Here we outline additional guidelines to help instructors to implement these tutorials in their courses.",
+      "author": [],
+      "contents": "\nUsage\nHow should I use these tutorials?\nHow should I integrate these tutorials into my lesson plan?\nHow can I modify these to accommodate other skill levels or topics?\nExample lesson plan skeleton for a 60 min lesson\n10 min overview of topics covered and/or referenced in the tutorial\nTo make this a longer discussion for a larger course, you could include examples of recent papers drawing important conclusions about the topic at hand based on skills taught in the tutorials\nAdditional topics and concepts to explore\nHowever, I wonder if it would be valuable to augment the tutorials with questions, activities, or learning objectives that explicitly ask students to consider the benefits and challenges of open datasets, reproducible workflows, and so on as they work through the modules?\nlink to open science eduction\n\n\n\n",
+      "last_modified": "2023-12-20T14:47:35-05:00"
     }
   ],
   "collections": ["lessons/lessons.json"]

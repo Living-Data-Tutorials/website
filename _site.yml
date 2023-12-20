@@ -8,6 +8,8 @@ navbar:
   right:
     - text: "Home"
       href: index.html
+    - text: "Guidelines for instructors"
+      href: instructors.html
     - text: "Tutorials"
       menu:
         # - text: "Codyn"

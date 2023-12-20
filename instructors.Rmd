@@ -1,0 +1,23 @@
+---
+title: "Guidelines for instructors"
+description: |
+  Hosted on this website are 6 teaching tutorials and associated files available for instructors to teach core concepts in  ecology and evolutionary biology. We designed these tutorials to span a variety of topics, skills levels, and formats to allow instructors to use as is or modify according to their needs. Here we outline additional guidelines to help instructors to implement these tutorials in their courses.
+---
+
+# Usage
+
+- How should I use these tutorials? 
+- How should I integrate these tutorials into my lesson plan?
+- How can I modify these to accommodate other skill levels or topics?
+
+
+# Example lesson plan skeleton for a 60 min lesson
+
+- 10 min overview of topics covered and/or referenced in the tutorial
+- To make this a longer discussion for a larger course, you could include examples of recent papers drawing important conclusions about the topic at hand based on skills taught in the tutorials
+
+
+# Additional topics and concepts to explore
+
+However, I wonder if it would be valuable to augment the tutorials with questions, activities, or learning objectives that explicitly ask students to consider the benefits and challenges of open datasets, reproducible workflows, and so on as they work through the modules?
+[link to open science eduction](https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsites.google.com%2Fopenscienceeducation.org%2Fose&data=05%7C01%7Cjory.griffith%40mail.mcgill.ca%7C4ff766c9083043da164308dbee85bc26%7Ccd31967152e74a68afa9fcf8f89f09ea%7C0%7C0%7C638366030510906597%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIi)
