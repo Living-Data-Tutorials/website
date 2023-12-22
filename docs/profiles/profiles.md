@@ -35,9 +35,8 @@ GitHub:https://github.com/BrynWiley
 
 
 Victoria Marie Glynn
-Website: https://victoriamglynn.weebly.com/
 Github: @vmglynn
-Science communication Instagram: https://www.instagram.com/vmg_inpanama/
+ResearchGate: https://www.researchgate.net/profile/Victoria-Glynn
 
 
 Amy Forsythe
