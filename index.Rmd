@@ -11,6 +11,6 @@ creative_commons: CC BY-NC
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-We are a group of early career researchers from Canada who created a series of curated datasets with accompanying R-based tutorials. The six tutorials are based on Canadian open datasets with accompanying R code that can be used to teach and illustrate ecological and evolutionary concepts in undergraduate university courses.
+We are a group of early career researchers from Canada who created a series of curated datasets with accompanying R-based tutorials. The six tutorials are based on Canadian open datasets with accompanying R code that can be used in undergraduate courses in ecology and evolutionary biology.
 
-We designed the tutorials to illustrate and support exploration of core concepts in ecology and evolutionary biology. The tutorials span a variety of topics, skill levels, and formats to allow instructors to use as is or modify according to their needs. Please consult our guidelines for instructors for recommendations on how to use our tutorials in the classroom.
+We designed the tutorials to teach, illustrate, and support exploration of core concepts in ecology and evolutionary biology. The tutorials span a variety of topics, skill levels, and formats to allow instructors to use as is or modify according to their needs. Please consult our guidelines for instructors for recommendations on how to use our tutorials in the classroom.
