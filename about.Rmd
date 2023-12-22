@@ -4,9 +4,7 @@ title: "Meet our team!"
 
 This series of tutorials was produced during a working group hosted by the Living Data Project, led by Jennifer Sunday and Joey Bernhardt in 2022.
 
-The tutorials are based on Canadian open datasets with accompanying R code that can be used to teach/illustrate ecological and evolution concepts and are designed to illustrate and support exploration of a variety of core concepts aimed at undergraduate courses in ecology and evolution.
-
-These are the amazing folks who are working on this project:
+These are the amazing folks who worked on this project:
 
 +------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | ![](profiles/joey2.png){width="130"}                                   | ### Joey Bernhardt                                                                                                                                                                                                                                                                                                                                |
