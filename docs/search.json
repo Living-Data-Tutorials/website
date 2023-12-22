@@ -12,8 +12,8 @@
       "title": "Living Data Tutorials",
       "description": "Open educational resources from the Living Data Project.\n",
       "author": [],
-      "contents": "\nWe are a group of early career researchers from Canada who created a series of curated datasets with accompanying R-based tutorials. The six tutorials are based on Canadian open datasets with accompanying R code that can be used to teach and illustrate ecological and evolutionary concepts in undergraduate university courses.\nWe designed the tutorials to illustrate and support exploration of a variety of core concepts in ecology and evolutionary biology. The tutorials span a variety of topics, skill levels, and formats to allow instructors to use as is or modify according to their needs. Please consult our guidelines for instructors for recommendations on how to use our tutorials in the classroom.\n\n\n\n",
-      "last_modified": "2023-12-22T13:23:41-05:00"
+      "contents": "\nWe are a group of early career researchers from Canada who created a series of curated datasets with accompanying R-based tutorials. The six tutorials are based on Canadian open datasets with accompanying R code that can be used to teach and illustrate ecological and evolutionary concepts in undergraduate university courses.\nWe designed the tutorials to illustrate and support exploration of core concepts in ecology and evolutionary biology. The tutorials span a variety of topics, skill levels, and formats to allow instructors to use as is or modify according to their needs. Please consult our guidelines for instructors for recommendations on how to use our tutorials in the classroom.\n\n\n\n",
+      "last_modified": "2023-12-22T13:30:44-05:00"
     },
     {
       "path": "instructors.html",
