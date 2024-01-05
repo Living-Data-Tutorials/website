@@ -1,25 +1,48 @@
 ---
 title: "Guidelines for instructors"
 description: |
-  Here we provide guidelines to help instructors implement our tutorials in their courses.
+  Here we provide guidelines to help instructors implement our tutorials in their courses. In addition, we provide a sample lesson plan that can be adapted with any of the tutorials. Our tutorials were designed to be pre-packaged, portable, and ready to use. The easiest way to implement them in the classroom is to share the link to our website with students so that they can dive-in directly in the tutorials section.
 ---
 
 # General usage
-
-## Implementation in the classroom
-
-Our tutorials were designed to be pre-packaged, portable, and ready to use. Thus, the easiest way to implement them in the classroom is to share the link to our website with students so that they can dive-in directly in the tutorials section.
 
 ## Integration into a lesson
 
 Each tutorial requires between one and three hours to be fully completed depending on the tutorial and student's skill level. We recommend that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
 
+Below are a series of prompting questions with directions for instructors to embark on. These just scratch the surface on where one can go with these tutorials, the same can be said for the skeleton lesson plan that follows as well. We offer these simply as entry points, but there is no limit for where to take them.
+
+### How should I use these tutorials?  
+
+1. As inspiration for things to teach and how to introduce data and core concepts
+2. As a lesson plan for an entire class focused on having different student groups explore all the tutorials and teach concepts back to one another (more student led and student taught teaching methods employed, perhaps 3rd and 4th year undergrads)
+3. As an activity as part of a broader lesson plan centered around a specific topic featured in one of the tutorials 
+4. As a catalyst for discussion on how we can make better use of publicly available data and how we are really drowning in data in the modern age
+
+### How should I integrate these tutorials into my lesson plan?  
+
+1. Utilize small groups to explore the tutorials and foster small group discussion
+2. Link concepts in the tutorial with popular science or recent journal articles that bridge the gap from the data to the scientific community
+3. As supplementary review to compliment case studies or topics covered in previous lectures
+
+### How can I modify these to accommodate other skill levels or topics?   
+
+1. Include an introduction to reproducible workflows, open science practices (e.g. OSE)
+2. Include an introduction to other well known databases of publicly available data (e.g. GBIF)
+3. Adapt any of the RMD or tutorials files to include data that is more relevant to a researcher or course, with the option to extend the concepts introduced into larger modelling or research frameworks
+
+
 ## 60 minute lesson plan example
 
-To do: Build the skeleton
-
-- 10 min overview of topics covered and/or referenced in the tutorial
-- To make this a longer discussion for a larger course, you could include examples of recent papers drawing important conclusions about the topic at hand based on skills taught in the tutorials
+| Time      | Activity                                                                                              |
+|-----------|-------------------------------------------------------------------------------------------------------|
+| 10 min    | Overview of topics covered and/or referenced in the tutorial                                          |
+| *Optional 45 min* | To make this a longer discussion for a larger course, you could include examples of recent papers (2-3 papers) drawing important conclusions about the topic at hand based on skills taught in the tutorials |
+| 25 min    | Group exploration of the concepts via tutorials, with the guiding questions:                           |
+|           | 1. What was the dataset being explored in this tutorial                                                |
+|           | 2. What concepts did this tutorial explore with the data? Are there other concepts you think could have been explored with this dataset?                |
+|           | 3. Recreating a given plot or calculation referenced in this tutorial with a new, publicly available dataset. What did you explore and why? Prepare a 2 min presentation with your group to share our how you applied concepts in this tutorial to new data |
+| 25 min    | Presentation of new figures/metrics by student groups, closing remarks.                               |
 
 # Reuse
 
