@@ -466,8 +466,8 @@ d-title {
 </style>
 
 <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
 <script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
 <script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
@@ -796,6 +796,7 @@ d-title .dt-tags {
 d-article table.gt_table td,
 d-article table.gt_table th {
   border-bottom: none;
+  font-size: 100%;
 }
 
 .html-widget {
@@ -836,9 +837,21 @@ d-article table.gt_table th {
   display: none !important;
 }
 
+hr.section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0px;
+}
+
+
+d-byline {
+  border-top: none;
+}
+
 d-article {
   padding-top: 2.5rem;
   padding-bottom: 30px;
+  border-top: none;
 }
 
 d-appendix {
@@ -933,6 +946,11 @@ d-article div.sourceCode pre {
 d-article div.sourceCode pre {
   padding-left: 18px;
   font-size: 14px;
+}
+
+/* tweak for Pandoc numbered line within distill */
+d-article pre.numberSource code > span {
+    left: -2em;
 }
 
 d-article pre {
@@ -1037,10 +1055,6 @@ figure img.external {
   position: relative;
   margin-bottom: 2.5em;
   margin-top: 1.5em;
-}
-
-.figure img {
-  width: 100%;
 }
 
 .figure .caption {
@@ -1698,6 +1712,12 @@ function init_distill() {
   // create d-title
   $('.d-title').changeElementType('d-title');
 
+  // separator
+  var separator = '<hr class="section-separator" style="clear: both"/>';
+  // prepend separator above appendix
+  $('.d-byline').before(separator);
+  $('.d-article').before(separator);
+
   // create d-byline
   var byline = $('<d-byline></d-byline>');
   $('.d-byline').replaceWith(byline);
@@ -1775,8 +1795,9 @@ function init_distill() {
   $('.distill-force-highlighting-css').parent().remove();
 
   // remove empty line numbers inserted by pandoc when using a
-  // custom syntax highlighting theme
-  $('code.sourceCode a:empty').remove();
+  // custom syntax highlighting theme, except when numbering line
+  // in code chunk
+  $('pre:not(.numberLines) code.sourceCode a:empty').remove();
 
   // load distill framework
   load_distill_framework();
@@ -1802,12 +1823,13 @@ function init_distill() {
     // add orcid ids
     $('.authors-affiliations').find('.author').each(function(i, el) {
       var orcid_id = front_matter.authors[i].orcidID;
+      var author_name = front_matter.authors[i].author
       if (orcid_id) {
         var a = $('<a></a>');
         a.attr('href', 'https://orcid.org/' + orcid_id);
         var img = $('<img></img>');
         img.addClass('orcid-id');
-        img.attr('alt', 'ORCID ID');
+        img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
         img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
         a.append(img);
         $(this).append(a);
@@ -1872,9 +1894,21 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      const citeChild = $(this).children()[0]
+      // Do not process if @xyz has been used without escaping and without bibliography activated
+      // https://github.com/rstudio/distill/issues/466
+      if (citeChild === undefined) return true
+
+      if (citeChild.nodeName == "D-FOOTNOTE") {
+        var fn = citeChild
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
-        return "<p>" + $('#ref-' + ref).html() + "</p>";
+        // Could use CSS.escape too here, we insure backward compatibility in navigator
+        return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
       }).join("\n");
       window.tippy(this, {
         allowHTML: true,
@@ -1886,6 +1920,31 @@ function init_distill() {
         placement: 'bottom-start'
       });
     });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
 
     // clear polling timer
     clearInterval(tid);
@@ -1985,6 +2044,8 @@ function init_common() {
   // mark non-body figures created by knitr chunks as 100% width
   $('.layout-chunk').each(function(i, val) {
     var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
     if ($(this).attr('data-layout') !== "l-body") {
       figures.css('width', '100%');
     } else {
@@ -2007,7 +2068,7 @@ function init_common() {
   // get rid of index.html references in header
   if (window.location.protocol !== "file:") {
     $('.distill-site-header a[href]').each(function(i,val) {
-      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
     });
   }
 
@@ -2407,7 +2468,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Disease Modelling in Mule Deer","description":"This interactive tutorial explores how a simple compartmental model (the SI model) can be used to track and predict the spread of Chronic Wasting Disease (CWD) in Albertan mule deer over time. It begins by introducing CWD and why it is a growing problem in Albertan mule deer. It then investigates and explains how different levels of transmission, death, and culling can change disease dynamics. Students can test how these different parameters influence the spread of CWD using the sliders on each page.","authors":[{"author":"Amy Forsythe","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""},{"author":"Bryn Wiley","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-06-03T00:00:00.000-07:00","citationText":"Forsythe & Wiley, 2022"}
+{"title":"Disease Modelling in Mule Deer","description":"This interactive tutorial explores how a simple compartmental model (the SI model) can be used to track and predict the spread of Chronic Wasting Disease (CWD) in Albertan mule deer over time. It begins by introducing CWD and why it is a growing problem in Albertan mule deer. It then investigates and explains how different levels of transmission, death, and culling can change disease dynamics. Students can test how these different parameters influence the spread of CWD using the sliders on each page.","authors":[{"author":"Amy Forsythe","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""},{"author":"Bryn Wiley","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-06-03T00:00:00.000-04:00","citationText":"Forsythe & Wiley, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2420,6 +2481,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 </div>
 <div class="nav-right">
 <a href="../../index.html">Home</a>
+<a href="../../instructors.html">Guidelines for instructors</a>
 <div class="nav-dropdown">
 <button class="nav-dropbtn">
 Tutorials

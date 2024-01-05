@@ -11,7 +11,7 @@ Github: @joeybernhardt
 Maxime Fraser Franco
 Twitter: @MFraserFranco
 Github: @quantitative-ecologist
-
+ResearchGate: https://www.researchgate.net/profile/Maxime-Fraser-Franco
 
 
 Egor Katkov

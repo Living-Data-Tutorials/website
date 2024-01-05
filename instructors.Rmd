@@ -1,0 +1,56 @@
+---
+title: "Guidelines for instructors"
+description: |
+  Here we provide guidelines to help instructors implement our tutorials in their courses.
+---
+
+# General usage
+
+## Implementation in the classroom
+
+Our tutorials were designed to be pre-packaged, portable, and ready to use. Thus, the easiest way to implement them in the classroom is to share the link to our website with students so that they can dive-in directly in the tutorials section.
+
+## Integration into a lesson
+
+Each tutorial requires between one and three hours to be fully completed depending on the tutorial and student's skill level. We recommend that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
+
+## 60 minute lesson plan example
+
+To do: Build the skeleton
+
+- 10 min overview of topics covered and/or referenced in the tutorial
+- To make this a longer discussion for a larger course, you could include examples of recent papers drawing important conclusions about the topic at hand based on skills taught in the tutorials
+
+# Reuse
+
+Our objective was to provide instructors with tutorials spanning a wide-range of skill levels so that they can implement them at different undergraduate levels (1^st^, 2^nd^, and 3^rd^ year students).
+
+Instructors can also reuse our tutorials under our license terms to adapt the content to their specific needs. This requires to download the files of a specific tutorial hosted on GitHub to modify it locally.
+
+Here are the links to the GitHub repositories:  
+
+- [Disease Modelling in Mule Deer](https://github.com/Living-Data-Tutorials/Alberta-CWD)
+
+- [Community Ecology: Hemlock Looper Outbreak on Anticosti Island](https://github.com/Living-Data-Tutorials/Anticosti-Historical-Data)
+- [Tree Diversity & Dendrochronology in Alberta, BC Forests](https://github.com/Living-Data-Tutorials/LDP_Alberta_Trees_Group)
+
+- [R Basics & Data Exploration Using Tree Swallow Life History Data](https://github.com/Living-Data-Tutorials/nest-box)
+
+- [Sexual Dimorphism & Sexual Selection in Tree Swallows](https://github.com/Living-Data-Tutorials/nest-box)
+
+- [Understanding Biodiversity with Metrics & Rank Abundance Curves](https://github.com/Living-Data-Tutorials/benthic-invert)
+
+If you have any suggestions on improvements, you can also clone our repositories locally, implement your changes, and create a pull request.
+
+
+# Additional topics and concepts to explore
+
+To do:
+
+Augment this section with questions, activities, or learning objectives that explicitly ask students to consider the benefits and challenges of:  
+
+- open datasets
+- reproducible workflows
+- etc
+
+[Link to open science eduction for ideas](https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsites.google.com%2Fopenscienceeducation.org%2Fose&data=05%7C01%7Cjory.griffith%40mail.mcgill.ca%7C4ff766c9083043da164308dbee85bc26%7Ccd31967152e74a68afa9fcf8f89f09ea%7C0%7C0%7C638366030510906597%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIi)
