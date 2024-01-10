@@ -1,5 +1,5 @@
 ---
-title: "R Basics and Data Exploration Using Tree Swallow Life History Data"
+title: "Tree Swallow Life History: R Basics & Data Exploration"
 description: |
   This is a tutorial to get you familiar with R and explore ecological concepts through a Tree Swallow nest productivity dataset. Please download the accompanying RMarkdown file and data to follow along with this tutorial in R.
 author:
@@ -27,9 +27,13 @@ ipak <- function(pkg){
     sapply(pkg, require, character.only = TRUE)
 }
 
-packages <- c("dplyr", "ggplot2", "tidyr", "lubridate", "reshape", "readr", "vembedr", "xfun")
+packages <- c("dplyr", "ggplot2", "tidyr", "lubridate", "reshape", "readr", "vembedr", "xfun", "distill")
 ipak(packages)
 ```
+
+### Follow along in RStudio!
+ 
+For this tutorial, you have the option to follow along online or you can download the R Markdown file and datasets and follow along and practice coding in RStudio. To follow along in RStudio, download the following files:
 
 ```{r echo=FALSE}
 xfun::embed_file('tree-swallow-dataset.Rmd', text = 'Download required RMarkdown file')
@@ -39,21 +43,31 @@ xfun::embed_file('tree-swallow-dataset.Rmd', text = 'Download required RMarkdown
 xfun::embed_dir('TRES/', text = 'Download required data')
 ```
 
+Next, you must unzip the folder containing the datasets (TRES) and place the "tree-swallow-dataset.Rmd" R Markdown file into a new folder (e.g. folder name: "R-basics-tutorial") with the datasets folder (TRES). An example file structure is depicted below:
+
+![](TRES/file-structure.png){.external}
+
+NOTE: in order for this tutorial to run in RStudio, you must follow the file structure above. Your .Rmd file must be labeled "tree-swallow-dataset.Rmd" and the datasets folder must be labeled "TRES". Make sure you do not use spaces or special characters in your folder name either as good practice!
+
+
 ## Tutorial Learning Objectives
 
-In this tutorial you will learn how to:
+In this tutorial you will:
 
-- Work with data in R studio
-  - Use simple commands in `R` (e.g., subsetting, changing class, aggregating data)
+- Explore and utilize basic commands for handling ecological data in `R`
+  - e.g., subsetting, changing class, aggregating data
+- Practice graphing data in appropriate formats
   - Graph a simple bar chart
-  - Graph a time series 
-- Observe trends in figures
+  - Graph a time series
+- Observe trends and draw conclusions from figures
+
+
 
 ## Tree Swallow Nest Productivity
 
 ### Let's get to know our dataset!
 
-The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, Canada, from 1974 to 2014. Each summer, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. Clutch here refers to the total eggs a bird lays in a nesting attempt. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
+The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of Tree Swallows around the Long Point Biosphere Reserve, Ontario, Canada, from 1974 to 2014. Each summer, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. Clutch here refers to the total eggs a bird lays in a nesting attempt. This dataset includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
 
 
 Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
@@ -63,7 +77,7 @@ Through Bird Studies Canada, Long Point Bird Observatory monitored three nest bo
 ```{r, echo=FALSE}
  # Define variable containing url
  url <- "https://naturevancouver.ca/wp-content/uploads/2019/10/PeterWard_TreeSwallow.jpg"
- ```
+```
 <center><img src="`r url`" alt="url" width="60%"></center>
 Tree Swallows utilising a nest box. Photo by Peter Ward. Image from [Nature Vancouver]("https://naturevancouver.ca/tree-swallow-nesting-box-program/").
 
@@ -76,7 +90,7 @@ Check out this video below to see how birds are banded, courtesy of the [Monomoy
 ```{r, echo = FALSE, message= FALSE}
  library(vembedr)
  embed_url("https://www.youtube.com/watch?v=UCEa8oepOt0&t=148s")
- ```
+```
 ### Tree Swallow Age
  
 You might be asking, how can you tell how old a bird is? For the most part, banders rely on the bird's wing feathers to determine their age. However, after the bird is 2 years old, it's very difficult to reliably age the birds. Only recapture data can help determine the age of the banded bird after it's older than 2 years. 
@@ -183,7 +197,7 @@ str(banding) #This is important, because the variables need to match what they a
 
 ### Subsetting and conditional subsetting elements
 
-* The `[` operator can be used to select multiple elements of an object: The `[` operator can be used to extract specific rows or columns from a data set where DATA[row, column]
+* The `[` operator can be used to select multiple elements of an object: The `[` operator can be used to extract specific rows or columns from a dataset where DATA[row, column]
 
 * The `$` operator can be used to extract elements by the element's name
 
@@ -236,7 +250,7 @@ banding3
 
 Now that you have a good handle on basic subsetting, let's dig a little deeper and use logical operators to further subset your data. 
 
-What if you want to focus in on looking at just one sex? How would you extract only data related to female birds from these data? One way to do this would be to use the subset() function and logical operators to separate out the data of interests from your data set. 
+What if you want to focus in on looking at just one sex? How would you extract only data related to female birds from these data? One way to do this would be to use the subset() function and logical operators to separate out the data of interests from your dataset. 
 
 - *< (less than)*
 - *<= (less than or equal to)*
@@ -424,7 +438,7 @@ Much better!
 ***
 
 ## Next Steps
-You have completed the "Getting familiar with R and the Tree Swallow Dataset" tutorial! 
+You have completed the "Getting familiar with `R` and the Tree Swallow Dataset" tutorial! 
 
 Looking for more of a challenge? Check out [this tutorial](https://living-data-tutorials.github.io/website/lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html) where we use the Tree Swallow Dataset to examine ecological concepts like life history traits and sexual dimorphism. 
 

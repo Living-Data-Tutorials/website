@@ -20,7 +20,7 @@ navbar:
           href: lessons/2022-04-07-anticosti-historical-data-tutorial/index.html
         - text: "Tree Diversity & Dendrochronology in Alberta, BC Forests"
           href: lessons/2022-04-07-alberta-trees-tutorial/index.html
-        - text: "R Basics & Data Exploration Using Tree Swallow Life History Data"
+        - text: "Tree Swallow Life History: R Basics & Data Exploration"
           href: lessons/2022-04-07-tree-swallow-dataset/index.html
         - text: "Sexual Dimorphism & Sexual Selection in Tree Swallows"
           href: lessons/2022-04-07-sexual-dimorphism-and-sexual-selection/index.html

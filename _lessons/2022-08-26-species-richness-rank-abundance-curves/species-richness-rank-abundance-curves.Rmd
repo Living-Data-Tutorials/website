@@ -1,7 +1,7 @@
 ---
 title: "Understanding Biodiversity with Stream Invertebrates"
 description: |
-  Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves. We use a dataset featuring rich invertebrate diversity collected from shallow stream beds in the Turkey lakes area in Ontario, Canada.
+  Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves. We use a dataset featuring rich invertebrate diversity collected from shallow stream beds in the Turkey Lakes area in Ontario, Canada.
 author:
   - Jory Griffith
   - Egor Katkov
@@ -55,7 +55,7 @@ knitr::include_graphics("biodiv_scheme.png") # including an image
 
 Ecologists are often interested in the effects of perturbations (e.g. disturbances like fires, logging, flooding or pollution) on biodiversity, which can yield information and context for ecosystem health.
 However, boiling biodiversity down to a single metric can be difficult and incomplete depending on the goal.
-With the help of the Turkey lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of rank-abundance curves.
+With the help of the Turkey Lake dataset of benthic invertebrates, we will present you with a number of common metrics to assess biodiversity, their meaning, and how they can be visualized with the help of rank-abundance curves.
 
 First, we will teach you how to calculate these metrics using equations and abundance data, and then we will teach you how to use the `codyn` package to calculate these biodiversity metrics quickly and easily.
 
@@ -974,7 +974,7 @@ How do these compare to the patterns in the high intensity logging stream?
 
 In this tutorial, we learned how to go about understanding patterns of biodiversity graphically (e.g., rank-abundance curves), and using metrics (e.g., species richness, Shannon index, Simpson's index, Evenness index(es)).
 We first calculated metrics without using specialized `R` packages, and then used the `codyn` package to do the same thing more easily.
-Since we don't perform any formal statistical analysis in this tutorial, we cannot make any scintific claims about the effect of logging on invertebrate biodiversity in the Turkey lakes watershed.
+Since we don't perform any formal statistical analysis in this tutorial, we cannot make any scintific claims about the effect of logging on invertebrate biodiversity in the Turkey Lakes watershed.
 Nevertheless, our preliminary analysis do not lead us to believe that there is a great effect of logging.
 We encourage you to think of alternative ways to look at the data that may yield different results.
 Indeed, because of the wealth of data, combined with different metrics and considerations, there is no single "best" way to analyse this type of data.

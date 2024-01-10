@@ -26,9 +26,13 @@ ipak <- function(pkg){
         install.packages(new.pkg, dependencies = TRUE)
     sapply(pkg, require, character.only = TRUE)
 }
-packages <- c("ggplot2", "ggpubr", "dplyr", "tidyr", "lubridate", "reshape", "readr", "vembedr", "xfun")
+packages <- c("ggplot2", "ggpubr", "dplyr", "tidyr", "lubridate", "reshape", "readr", "vembedr", "xfun", "distill")
 ipak(packages)
 ```
+
+### Follow along in RStudio!
+ 
+For this tutorial, you have the option to follow along online or you can download the R Markdown file and datasets and follow along and practice coding in RStudio. To follow along in RStudio, download the following files:
 
 ```{r echo=FALSE}
 xfun::embed_file('sexual-dimorphism-and-sexual-selection.Rmd', text = 'Download required RMarkdown file')
@@ -38,13 +42,19 @@ xfun::embed_file('sexual-dimorphism-and-sexual-selection.Rmd', text = 'Download 
 xfun::embed_dir('TRES/', text = 'Download required data')
 ```
 
+Next, you must unzip the folder containing the datasets (TRES) and place the "tree-swallow-dataset.Rmd" R Markdown file into a new folder (e.g. folder name: "R-basics-tutorial") with the datasets folder (TRES). An example file structure is depicted below:
+
+![](TRES/file-structure.png){.external}
+
+NOTE: in order for this tutorial to run in RStudio, you must follow the file structure above. Your .Rmd file must be labeled "sexual-dimorphism-and-sexual-selection.Rmd" and the datasets folder must be labeled "TRES". Make sure you do not use spaces or special characters in your folder name either as good practice!
+
 ## Tutorial learning objectives
 
-In this tutorial, students will:
+In this tutorial, you will:
 
-- Explore whether sexual dimorphism is present in a population of Tree Swallows found in Long Point, Ontario, Canada
-- Learn about some of the life history traits of Tree Swallows
-- Understand trade-offs between the number of clutches a bird may have and the number of eggs in each clutch
+- Identify if sexual dimorphism is present in a population of Tree Swallows found in Long Point, Ontario, Canada
+- Explore some of the life history traits of Tree Swallows
+- Evaluate trade-offs between the number of clutches a bird may have and the number of eggs in each clutch
 - Evaluate how the sampled population of Tree Swallow’s birth rates have changed over time
 
 
@@ -55,7 +65,7 @@ In this tutorial, students will:
 
 Looking to explore the dataset used in this tutorial more in-depth? Check out [this tutorial](https://living-data-tutorials.github.io/website/lessons/2022-04-07-tree-swallow-dataset/index.html) where we use the Tree Swallow Dataset to learn about basic `R` functions and making plots in `R`.
 
-The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of tree swallows around the Long Point Biosphere Reserve, Ontario, Canada, from 1974 to 2014. Each summer, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. Clutch here refers to the total eggs a bird lays in a nesting attempt. This data set includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
+The Tree Swallow (*Tachycineta bicolor*) is one of the most common birds in eastern North America that normally nests in tree cavities excavated by other species like woodpeckers, but also readily accepts human made nest boxes. Based on this quality and their abundance, Birds Canada has monitored nest boxes of Tree Swallows around the Long Point Biosphere Reserve, Ontario, Canada, from 1974 to 2014. Each summer, volunteer research assistants check nest box contents daily, and band the adults and their young. Nest-box records are available from about 300 boxes from 3-4 sites during this period. Data collected includes nest box observations, clutch initiation dates, clutch size and egg weight, nest success, weather, insect abundance, and banding data. Clutch here refers to the total eggs a bird lays in a nesting attempt. This dataset includes all data entry related to eggs, nests, nestlings, nest check observations, and banding data from 1977 to 2014. More information on this dataset can be found [here]("https://figshare.com/articles/dataset/Tree_Swallow_Nest_Box_Productivity_Dataset_from_Long-Point_Ontario_Canada_1977-2014_/14156801/1?file=26736347"). 
 
 
 Additionally, in 2021, this dataset was quality checked and made open access by Jonathan Diamond through a Data Rescue internship with the [Living Data Project]("https://www.ciee-icee.ca/data.html"), an initiative through the Canadian Institute of Ecology and Evolution that rescues legacy datasets.  
@@ -179,7 +189,7 @@ Image from [ThoughtCo.]("https://www.thoughtco.com/peacock-facts-4690664")
   
 ***
 
-To determine if **sexual dimorphism** exists in this tree swallow data we will get you to explore the average size measurements taken for each bird. Since birds were tracked using a band number, and birds may have been captured multiple times throughout their life, we will observe the differences in average size measurement taken for each bird.
+To determine if **sexual dimorphism** exists in this Tree Swallow data we will get you to explore the average size measurements taken for each bird. Since birds were tracked using a band number, and birds may have been captured multiple times throughout their life, we will observe the differences in average size measurement taken for each bird.
 
 ```{r echo = TRUE, code_folding=TRUE}
 # look at the following variable to see how they differ by gender : wing_chord, tail, and weight
@@ -222,7 +232,7 @@ ggplot(weight, aes(factor(sex), weight, fill=sex)) +
 ```
 
 
-Now, to get a sense of how much the wind chord length, tail length, and weight differs between male (M) and female (F) tree swallows lets find the mean value for each.
+Now, to get a sense of how much the wind chord length, tail length, and weight differs between male (M) and female (F) Tree Swallows lets find the mean value for each.
 
 
 ```{r echo = TRUE, code_folding=TRUE}
@@ -253,23 +263,23 @@ embed_url("https://www.youtube.com/watch?v=nPhVOZiPokA")
 ***
 **Questions**
 
-*What is the average wing chord length, tail length, and weight of the male tree swallows?* 
+*What is the average wing chord length, tail length, and weight of the male Tree Swallows?* 
 
-*What is the average wing chord length, tail length, and weight of the female tree swallows?* 
+*What is the average wing chord length, tail length, and weight of the female Tree Swallows?* 
 
-*Do these findings suggest that there is some level of sexual dimorphism in tree swallows?*
+*Do these findings suggest that there is some level of sexual dimorphism in Tree Swallows?*
 
-*What type of pressures could lead to sexual dimorphism in tree swallows?* 
+*What type of pressures could lead to sexual dimorphism in Tree Swallows?* 
 
 ```{r echo = FALSE, code_folding=TRUE}
 # Answers
 
-# Male tree swallows:
+# Male Tree Swallows:
 # average wing chord length = 118.18 mm
 # average tail length = 55.70 mm
 # average weight = 20.76 g
 
-# Female tree swallows:
+# Female Tree Swallows:
 # average wing chord length = 113.58 mm
 # average tail length = 54.34 mm
 # average weight = 20.41 g
@@ -354,7 +364,7 @@ banding_nest.wing_chord$sex <- as.factor(banding_nest.wing_chord$sex)
 banding_nest.wing_chord$nest_box <- as.factor(banding_nest.wing_chord$nest_box )
 ```
 
-Lets see if we see any patterns between the number of eggs there are per clutch (clutch_size) and the weight or size of the parent tree swallow.
+Lets see if we see any patterns between the number of eggs there are per clutch (clutch_size) and the weight or size of the parent Tree Swallow.
 
 ```{r echo = TRUE, code_folding=TRUE}
 plot(clutch_size ~ wing_chord, banding_nest.wing_chord,
@@ -430,6 +440,6 @@ It may appear that the average clutch size is declining overtime however when lo
 
 ## Take-homes
 
-After going through these data you have now had the opportunity to learn a bit about tree swallows, and more specifically look at a community of tree swallows found in Long Point, Ontario. This population appeared to show signs of sexual dimorphism, where the male swallows had longer wing chords and tails and were heavier. As well, we noticed that there appeared t be a trade off between clutch size and the number of clutched in a nest. An important thing to not is that these relationships were speculative and statistical analyses will be required to support these findings in this population.
+After going through these data you have now had the opportunity to learn a bit about Tree Swallows, and more specifically look at a community of Tree Swallows found in Long Point, Ontario. This population appeared to show signs of sexual dimorphism, where the male swallows had longer wing chords and tails and were heavier. As well, we noticed that there appeared t be a trade off between clutch size and the number of clutched in a nest. An important thing to not is that these relationships were speculative and statistical analyses will be required to support these findings in this population.
 
 Lastly, these data did not show trends of larger birds having more eggs and we observed no conclusive temporal trends of changes in birth rates over time. It is not uncommon that data is collected with certain hypotheses in mind and trend or relationships are ultimately not found to support these hypotheses!
