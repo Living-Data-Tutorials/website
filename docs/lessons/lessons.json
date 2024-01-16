@@ -48,7 +48,7 @@
   {
     "path": "lessons/2022-04-07-alberta-trees-tutorial/",
     "title": "Tree Diversity & Dendrochronology in Alberta, BC Forests",
-    "description": "This tutorial allows students to estimate and visualize the vascular plant diversity variation along space and the enviromnetand and tree ring dynamics over time.",
+    "description": "This tutorial allows students to estimate and visualize vascular plant diversity along space and the environment as well as tree ring dynamics over time.",
     "author": [
       {
         "name": "Jhoan Chavez",
@@ -67,8 +67,8 @@
     "categories": [],
     "contents": "\n\n\n\n\n\n\n",
     "preview": {},
-    "last_modified": "2024-01-10T10:06:24-08:00",
-    "input_file": {}
+    "last_modified": "2024-01-16T14:51:27-05:00",
+    "input_file": "alberta-trees-tutorial.knit.md"
   },
   {
     "path": "lessons/2022-04-07-anticosti-historical-data-tutorial/",
