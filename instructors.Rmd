@@ -1,16 +1,15 @@
 ---
 title: "Guidelines for instructors"
 description: |
-  Here we provide guidelines to help instructors implement our tutorials in their courses. In addition, we provide a sample lesson plan that can be adapted with any of the tutorials. Our tutorials were designed to be pre-packaged, portable, and ready to use. The easiest way to implement them in the classroom is to share the link to our website with students so that they can dive-in directly in the tutorials section.
+  Here, we provide guidelines to help instructors implement these tutorials in their courses. In addition, we provide a sample lesson plan that can be adapted for use with any of the tutorials. These tutorials were designed to be pre-packaged, portable, and ready to use. To implement these tutorials in the classroom, simply share the website link  with students so that they can dive-in directly in these tutorials!
 ---
-
-# General usage
 
 ## Integration into a lesson
 
-Each tutorial requires between one and three hours to be fully completed depending on the tutorial and student's skill level. We recommend that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
+Each tutorial requires between one and three hours to be fully completed depending on the tutorial and student’s skill level. We recommend that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
 
 Below are a series of prompting questions with directions for instructors to embark on. These just scratch the surface on where one can go with these tutorials, the same can be said for the skeleton lesson plan that follows as well. We offer these simply as entry points, but there is no limit for where to take them.
+
 
 ### How should I use these tutorials?  
 
@@ -27,8 +26,8 @@ Below are a series of prompting questions with directions for instructors to emb
 
 ### How can I modify these to accommodate other skill levels or topics?   
 
-1. Include an introduction to reproducible workflows, open science practices (e.g. OSE)
-2. Include an introduction to other well known databases of publicly available data (e.g. GBIF)
+1. Include an introduction to reproducible workflows and open science practices (e.g. [Open Science Education](https://sites.google.com/openscienceeducation.org/ose))
+2. Include an introduction to other well known databases of publicly available data (e.g. [Global Biodiversity Information Facility](https://www.gbif.org/))
 3. Adapt any of the RMD or tutorials files to include data that is more relevant to a researcher or course, with the option to extend the concepts introduced into larger modelling or research frameworks
 
 
@@ -57,7 +56,7 @@ Here are the links to the GitHub repositories:
 - [Community Ecology: Hemlock Looper Outbreak on Anticosti Island](https://github.com/Living-Data-Tutorials/Anticosti-Historical-Data)
 - [Tree Diversity & Dendrochronology in Alberta, BC Forests](https://github.com/Living-Data-Tutorials/LDP_Alberta_Trees_Group)
 
-- [R Basics & Data Exploration Using Tree Swallow Life History Data](https://github.com/Living-Data-Tutorials/nest-box)
+- [Tree Swallow Life History: R Basics & Data Exploration](https://github.com/Living-Data-Tutorials/nest-box)
 
 - [Sexual Dimorphism & Sexual Selection in Tree Swallows](https://github.com/Living-Data-Tutorials/nest-box)
 
@@ -66,14 +65,14 @@ Here are the links to the GitHub repositories:
 If you have any suggestions on improvements, you can also clone our repositories locally, implement your changes, and create a pull request.
 
 
-# Additional topics and concepts to explore
+# Additional topics to explore
 
-To do:
+After students have worked through their tutorial, you may ask them to further explore the importance of open science practices by discussing as a class, discussing in small groups, or completing written reflections around the following questions:  
 
-Augment this section with questions, activities, or learning objectives that explicitly ask students to consider the benefits and challenges of:  
+1. What is the purpose of open science?
+2. What are the benefits and challenges of open science?
+3. What are the benefits and challenges of sharing data?
+4. How might a reproducible workflow contribute to practicing open science?
+5. What are some steps you could take to practice open science during your undergraduate degree?
+6. Identify one aspect of your tutorial that utilizes open science practices.
 
-- open datasets
-- reproducible workflows
-- etc
-
-[Link to open science eduction for ideas](https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsites.google.com%2Fopenscienceeducation.org%2Fose&data=05%7C01%7Cjory.griffith%40mail.mcgill.ca%7C4ff766c9083043da164308dbee85bc26%7Ccd31967152e74a68afa9fcf8f89f09ea%7C0%7C0%7C638366030510906597%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIi)
