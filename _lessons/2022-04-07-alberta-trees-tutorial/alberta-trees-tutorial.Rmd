@@ -1,7 +1,7 @@
 ---
 title: "Tree Diversity & Dendrochronology in Alberta, BC Forests"
 description: |
-  This tutorial allows students to estimate and visualize the vascular plant diversity variation along space and the enviromnetand and tree ring dynamics over time.
+  This tutorial allows students to estimate and visualize vascular plant diversity along space and the environment as well as tree ring dynamics over time.
 author:
   - Jhoan Chavez
   - Zihaohan Sang
