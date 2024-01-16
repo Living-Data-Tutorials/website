@@ -42,7 +42,7 @@ xfun::embed_file('sexual-dimorphism-and-sexual-selection.Rmd', text = 'Download 
 xfun::embed_dir('TRES/', text = 'Download required data')
 ```
 
-Next, you must unzip the folder containing the datasets (TRES) and place the "tree-swallow-dataset.Rmd" R Markdown file into a new folder (e.g. folder name: "R-basics-tutorial") with the datasets folder (TRES). An example file structure is depicted below:
+Next, you must unzip the folder containing the datasets (TRES) and place the "tree-swallow-dataset.Rmd" R Markdown file into a new folder (e.g. folder name: "Tree-Swallows-tutorial") with the datasets folder (TRES). An example file structure is depicted below:
 
 ![](TRES/file-structure.png){.external}
 
@@ -73,9 +73,10 @@ Additionally, in 2021, this dataset was quality checked and made open access by 
 Through Bird Studies Canada, Long Point Bird Observatory monitored three nest box colonies of Tree Swallows.
 
 ```{r, echo=FALSE}
- # Define variable containing url
- url <- "https://naturevancouver.ca/wp-content/uploads/2019/10/PeterWard_TreeSwallow.jpg"
- ```
+# Define variable containing url
+url <- "https://naturevancouver.ca/wp-content/uploads/2019/10/PeterWard_TreeSwallow.jpg"
+
+```
 <center><img src="`r url`" alt="url" width="60%"></center>
 Tree Swallows utilising a nest box. Photo by Peter Ward. Image from [Nature Vancouver]("https://naturevancouver.ca/tree-swallow-nesting-box-program/").
 
@@ -138,6 +139,7 @@ library(lubridate)
 library(reshape)
 library(readr)
 library(ggpubr)
+library(distill)
 
 # Here we are pulling the actual datasets into R
 banding <- read.csv("TRES/banding_final.csv")
