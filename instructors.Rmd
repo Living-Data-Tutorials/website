@@ -65,7 +65,7 @@ Here are the links to the GitHub repositories:
 If you have any suggestions on improvements, you can also clone our repositories locally, implement your changes, and create a pull request.
 
 
-# Additional topics to explore
+# Additional topics to explore with students
 
 After students have worked through their tutorial, you may ask them to further explore the importance of open science practices by discussing as a class, discussing in small groups, or completing written reflections around the following questions:  
 
@@ -75,4 +75,9 @@ After students have worked through their tutorial, you may ask them to further e
 4. How might a reproducible workflow contribute to practicing open science?
 5. What are some steps you could take to practice open science during your undergraduate degree?
 6. Identify one aspect of your tutorial that utilizes open science practices.
+
+# Additional R resources for instructors
+
+- R for Data Science: an e-book diving into R topics,language, and additional formats (e.g. R scripts, RMarkdown, etc.) [link](https://r4ds.had.co.nz/)
+- RStudio Education: R led teaching resource with specific learning modules and tutorial for students, instructors, and trainers [link](https://education.rstudio.com/)
 
