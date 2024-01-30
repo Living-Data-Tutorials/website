@@ -1,5 +1,5 @@
 ---
-title: "Understanding Biodiversity with Stream Invertebrates"
+title: "Understanding Biodiversity with Metrics & Rank Abundance Curves"
 description: |
   Learn to understand what biodiversity means, how to quantify and compare it using metrics such as Shannon-Weiner and Simpson's indexes, and visualize it using Rank-Abundance Curves. We use a dataset featuring rich invertebrate diversity collected from shallow stream beds in the Turkey Lakes area in Ontario, Canada.
 author:
@@ -472,7 +472,7 @@ knitr::include_graphics("TopSpecies.png")
 
 ### Rank abundance curves with Turkey Lakes invertebrate data {.panelset}
 
-The Turkey Lakes dataset spans multiple years, months, and catchments within the Turkey lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
+The Turkey Lakes dataset spans multiple years, months, and catchments within the Turkey Lakes watershed and includes densities for a wide array of invertebrate species across multiple replicate sites.
 Each site has an alphanumeric code.
 
 You can visualize Rank Abundances for any subset of the dataset using the following [**Shiny App**](https://ekatko1.shinyapps.io/TurkeyLakesInverts/){target="_blank"}.
