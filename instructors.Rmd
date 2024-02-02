@@ -1,35 +1,42 @@
 ---
 title: "Guidelines for instructors"
 description: |
-  Here, we provide guidelines to help instructors implement these tutorials in their courses. In addition, we provide a sample lesson plan that can be adapted for use with any of the tutorials. These tutorials were designed to be pre-packaged, portable, and ready to use. To implement these tutorials in the classroom, simply share the website link  with students so that they can dive-in directly in these tutorials!
+  Here, we provide guidelines to help instructors implement the tutorials in their courses. We designed the tutorials to be pre-packaged, portable, and ready to use. To implement them in the classroom, simply share the website link with students so that they can dive-in directly and start learning!
 ---
 
 ## Integration into a lesson
 
-Each tutorial requires between one and three hours to be fully completed depending on the tutorial and student’s skill level. We recommend that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
+**Time to complete one tutorial** : 1 to 3 hours.
 
-Below are a series of prompting questions with directions for instructors to embark on. These just scratch the surface on where one can go with these tutorials, the same can be said for the skeleton lesson plan that follows as well. We offer these simply as entry points, but there is no limit for where to take them.
+**Recommendations** : The time to complete a tutorial varies between tutorials and should depend on the student’s skill and experience level. We suggest that instructors plan on choosing one tutorial per lesson as concepts do not overlap across tutorials. This would include a short introduction to the tutorial and dataset so that students are acquainted with the ecological theory, concepts, and ideas behind the data.
 
+Below are a series of prompting questions with directions for instructors to embark on. We offer these simply as entry points, but there is no limit for where to take them.
 
-### How should I use these tutorials?  
+### 1. How should I use these tutorials?  
 
-1. As inspiration for things to teach and how to introduce data and core concepts
-2. As a lesson plan for an entire class focused on having different student groups explore all the tutorials and teach concepts back to one another (more student led and student taught teaching methods employed, perhaps 3rd and 4th year undergrads)
-3. As an activity as part of a broader lesson plan centered around a specific topic featured in one of the tutorials 
-4. As a catalyst for discussion on how we can make better use of publicly available data and how we are really drowning in data in the modern age
+- As inspiration for teaching data science and discipline-specific concepts
+- As a lesson plan for an entire class focused on having different student groups explore all the tutorials and teach concepts back to one another (more student led and student taught teaching methods employed, perhaps 3rd and 4th year undergrads)
+- As an activity part of a broader lesson plan centered around a specific ecological topic featured in one of the tutorials 
+- As a catalyst for discussion on how we can make better use of publicly available data in the Age of Data
 
-### How should I integrate these tutorials into my lesson plan?  
+### 2. How should I integrate these tutorials into my lesson plan?  
 
-1. Utilize small groups to explore the tutorials and foster small group discussion
-2. Link concepts in the tutorial with popular science or recent journal articles that bridge the gap from the data to the scientific community
-3. As supplementary review to compliment case studies or topics covered in previous lectures
+- Utilize small groups to explore the tutorials and foster small group discussions
+- Link concepts in the tutorial with popular science or recent journal articles that bridge the gap from the data to the scientific community
+- Employ the content as supplementary teaching materials to complement case studies or topics covered in previous lectures
 
-### How can I modify these to accommodate other skill levels or topics?   
+### 3. How can I accommodate the tutorials to other skill levels or topics?   
 
-1. Include an introduction to reproducible workflows and open science practices (e.g. [Open Science Education](https://sites.google.com/openscienceeducation.org/ose))
-2. Include an introduction to other well known databases of publicly available data (e.g. [Global Biodiversity Information Facility](https://www.gbif.org/))
-3. Adapt any of the RMD or tutorials files to include data that is more relevant to a researcher or course, with the option to extend the concepts introduced into larger modelling or research frameworks
+Our objective was to provide instructors with tutorials spanning a wide-range of skill levels so that they can implement them at different undergraduate levels (1^st^, 2^nd^, and 3^rd^ year students).
 
+One way in which instructors can easily ensure that their class starts with similar foundations in open science principles is to :  
+
+- Include an introduction to reproducible workflows and open science practices (e.g. [Open Science Education](https://sites.google.com/openscienceeducation.org/ose)) before students dive in the tutorials
+- Include an introduction to well-known databases of publicly available data (e.g. [Global Biodiversity Information Facility](https://www.gbif.org/))
+
+Instructors can also reuse our tutorials under our license terms to adapt the content to their specific needs. This requires to download the .Rmd file of a specific tutorial hosted on GitHub to modify it locally in Rstudio for example. Please refer to the [README on our GitHub repository](https://github.com/Living-Data-Tutorials/website) for instructions. Once the .Rmd files are successfully downloaded, instructors can adapt the content to include data that is more relevant to their course topics. This also provides the option to extend the concepts introduced into larger modelling or research frameworks.
+
+If you have any suggestions on improvements, you can clone our [website repository]((https://github.com/Living-Data-Tutorials/website)) locally, implement your changes, and create a pull request.
 
 ## 60 minute lesson plan example
 
@@ -43,40 +50,27 @@ Below are a series of prompting questions with directions for instructors to emb
 |           | 3. Recreating a given plot or calculation referenced in this tutorial with a new, publicly available dataset. What did you explore and why? Prepare a 2 min presentation with your group to share our how you applied concepts in this tutorial to new data |
 | 25 min    | Presentation of new figures/metrics by student groups, closing remarks.                               |
 
-# Reuse
-
-Our objective was to provide instructors with tutorials spanning a wide-range of skill levels so that they can implement them at different undergraduate levels (1^st^, 2^nd^, and 3^rd^ year students).
-
-Instructors can also reuse our tutorials under our license terms to adapt the content to their specific needs. This requires to download the files of a specific tutorial hosted on GitHub to modify it locally.
-
-Here are the links to the GitHub repositories:  
-
-- [Disease Modelling in Mule Deer](https://github.com/Living-Data-Tutorials/Alberta-CWD)
-
-- [Community Ecology: Hemlock Looper Outbreak on Anticosti Island](https://github.com/Living-Data-Tutorials/Anticosti-Historical-Data)
-- [Tree Diversity & Dendrochronology in Alberta, BC Forests](https://github.com/Living-Data-Tutorials/LDP_Alberta_Trees_Group)
-
-- [Tree Swallow Life History: R Basics & Data Exploration](https://github.com/Living-Data-Tutorials/nest-box)
-
-- [Sexual Dimorphism & Sexual Selection in Tree Swallows](https://github.com/Living-Data-Tutorials/nest-box)
-
-- [Understanding Biodiversity with Metrics & Rank Abundance Curves](https://github.com/Living-Data-Tutorials/benthic-invert)
-
-If you have any suggestions on improvements, you can also clone our repositories locally, implement your changes, and create a pull request.
-
-
-# Open science topics to explore with students
+## Open science topics to explore with students
 
 After students have worked through their tutorial, you may ask them to further explore the importance of open science practices by discussing as a class, discussing in small groups, or completing written reflections around the following questions:  
 
-1. What is the purpose of open science?
-2. What are the benefits and challenges of open science?
-3. What are the benefits and challenges of sharing data?
-4. How might a reproducible workflow contribute to practicing open science?
-5. What are some steps you could take to practice open science during your undergraduate degree?
-6. Identify one aspect of your tutorial that utilizes open science practices.
+- What is the purpose of open science?
+- What are the benefits and challenges of open science?
+- What are the benefits and challenges of sharing data?
+- How might a reproducible workflow contribute to practicing open science?
+- What are some steps you could take to practice open science during your undergraduate degree?
+- Identify one aspect of your tutorial that utilizes open science practices.
 
-# Additional R resources for instructors
+## Technical resources for instructors
+
+### R programming
 
 - [R for Data Science](https://r4ds.had.co.nz/): an e-book diving into R topics, language, and additional formats (e.g. R scripts, RMarkdown, etc.)
 - [RStudio Education](https://education.rstudio.com/): teaching resource with specific learning modules and tutorial for students, instructors, and trainers
+
+### Git and GitHub
+
+- [Get started with GitHub](https://docs.github.com/en/get-started): a general resource from GitHub developers on how to use the platform
+- [GitHub in Ecology and Evolution](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.14108): a paper published in *Methods in Ecology and Evolution* by Pereira Braga et al. (2023)
+- [Git and GitHub for ecologists tutorial](https://ourcodingclub.github.io/tutorials/git/): a tutorial on how to use Git and GitHub for version control which may help instructors on how to navigate our GitHub and reuse our tutorials
+- [Setting up a GitHub repository tutorial](https://ourcodingclub.github.io/tutorials/git-for-labs/): a tutorial on how to setup one's own GitHub repository
